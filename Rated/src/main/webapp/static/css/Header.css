@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
+    color: white;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1f1f1f;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo a {
+    text-decoration: none; 
+    color: white; 
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .logo a:hover {
+    color: #aaa; 
+}
+
+header .search-container {
+    display: flex;
+    align-items: center;
+}
+
+header .search-bar input {
+    width: 400px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+}
+
+header .catalogue-button {
+	margin-left: 20px;
+    padding: 8px 15px;
+    background-color: #ff4c4c;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+header .catalogue-button:hover {
+    background-color: #e60000;
+}
+
+header .user-icon {
+    display: flex;
+    align-items: center;
+}
+
+header .user-icon a {
+	font-size: 22px;
+    text-decoration: none;
+    color: white;
+}
+
+header .user-icon a:hover {
+    color: #aaa;
+}

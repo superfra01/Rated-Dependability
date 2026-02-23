@@ -1,0 +1,536 @@
+/* Impostazione generale della pagina */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #2c2c2c; /* sfondo scuro */
+    color: #fff; /* testo bianco */
+}
+
+.page-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sezione centrale: colonna sx (recensioni) e dx (dettagli film) */
+.content-section {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* Colonna di sinistra */
+.left-column {
+    flex: 2;
+    padding: 20px;
+}
+
+/* Barra di ordinamento (Sorted by...) */
+.sort-bar {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.sort-bar span {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Singola review-card */
+.review-card {
+    background-color: #3a3a3a;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.review-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-align: center; /* Titolo recensione centrato (opzionale, se vuoi a sx toglilo) */
+}
+
+.review-username {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-align: center;
+    color: #ff4c4c;
+}
+
+.review-text {
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.review-stars {
+    color: #ffaa00; 
+    margin-bottom: 10px;
+    text-align: center; /* Stelle recensione centrate */
+}
+
+/* Sezione azioni (like/dislike) recensione */
+.review-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start; /* Allinea i bottoni a sinistra */
+    gap: 15px;
+}
+
+.likes-dislikes {
+    display: flex;
+    gap: 10px;
+}
+
+.likes-dislikes button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.likes-dislikes button:hover {
+    background-color: #555;
+}
+
+.likes-dislikes button.active {
+    background-color: #ff4c4c;
+}
+
+.likes-dislikes button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.likes-dislikes span {
+    font-weight: bold;
+}
+
+/* Messaggio "nessuna recensione" */
+.no-reviews-msg {
+    margin: 20px 0;
+    font-style: italic;
+    color: #ccc;
+}
+
+/* --- COLONNA DI DESTRA (DETTAGLI FILM) --- */
+.right-column {
+    flex: 1;
+    padding: 20px;
+    background-color: #292929;
+}
+
+/* Contenitore principale dettagli */
+.film-details {
+    display: flex;
+    flex-direction: column;
+    /* FIX: align-items flex-start spinge locandina e blocchi a sinistra */
+    align-items: flex-start; 
+    /* FIX: text-align left forza il testo a sinistra */
+    text-align: left;
+    width: 100%;
+}
+
+.film-poster {
+    width: 150px; /* Dimensione fissa locandina */
+    border-radius: 4px;
+    margin-bottom: 15px;
+    /* Assicuriamoci che non abbia margin auto */
+    margin-left: 0;
+    margin-right: 0;
+    object-fit: cover;
+}
+
+.film-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: left; /* Forza allineamento a sinistra */
+    width: 100%;
+}
+
+/* Stelle SOTTO il titolo del film */
+.film-details .review-stars {
+    text-align: left; /* Allinea le stelle del film a sinistra */
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* --- SEZIONE REGISTA, CAST, DURATA --- */
+.film-meta-details {
+    width: 100%;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+    text-align: left; /* FIX: Allineamento a sinistra */
+}
+
+.film-meta-details p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.5;
+    display: flex; /* Utile se vuoi etichetta e valore allineati perfettamente */
+    align-items: baseline;
+}
+
+.film-meta-details strong {
+    color: #fff;
+    font-weight: 600;
+    margin-right: 8px; /* Spazio tra etichetta e testo */
+    min-width: 60px; /* Opzionale: allinea verticalmente i valori se vuoi una colonna ordinata */
+}
+
+.film-year-genre {
+    font-size: 15px;
+    color: #ff4c4c; /* Colore accent per Anno | Genere */
+    font-weight: bold;
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+.film-description {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #ddd;
+    text-align: left; /* Trama allineata a sinistra */
+}
+
+/* --- STILI PULSANTI LISTE (WATCHLIST/VISTO) --- */
+.user-lists-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+}
+
+.btn-list-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: transparent;
+}
+
+/* Gestione stato Disabled per i pulsanti lista */
+.btn-list-action:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    border-color: #555;
+    color: #aaa;
+    background-color: #333;
+}
+.btn-list-action:disabled:hover {
+    background-color: #333; /* Nessun effetto hover */
+    color: #aaa;
+}
+/* Eccezione: se è disabilitato ma attivo (es. Visto perché recensito), mantiene il colore */
+.btn-list-action.active:disabled {
+    opacity: 0.8; 
+    border-color: transparent;
+}
+
+
+/* Bottone Watchlist (Blu/Ciano style) */
+.btn-watchlist {
+    color: #4fc3f7;
+    border-color: #4fc3f7;
+}
+
+.btn-watchlist:hover,
+.btn-watchlist.active {
+    background-color: #4fc3f7;
+    color: #292929;
+}
+
+/* Bottone Watched (Verde style) */
+.btn-watched {
+    color: #81c784;
+    border-color: #81c784;
+}
+
+.btn-watched:hover, 
+.btn-watched.active {
+    background-color: #81c784;
+    color: #292929;
+}
+
+/* ----------------------------------------------------- */
+
+/* Pulsante RATE IT */
+.rate-film {
+    margin-top: 10px;
+    width: 100%; /* Occupa larghezza per allineamento */
+    text-align: left; /* Bottone a sinistra */
+}
+
+.btn-rate {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-rate:hover {
+    background-color: #e60000;
+}
+
+/* Pulsanti per Gestione Film (Elimina e Modifica) */
+.manage-film {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.btn-delete,
+.btn-modify {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center; /* Testo dentro il bottone centrato */
+}
+
+.btn-delete:hover,
+.btn-modify:hover {
+    background-color: #e60000;
+}
+
+.btn-modify {
+    background-color: #4caf50;
+}
+
+.btn-modify:hover {
+    background-color: #45a049;
+}
+
+/* Overlay Form */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.overlay-content {
+    position: relative;
+    background-color: #292929;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center; /* Qui dentro va bene centrato il form */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overlay-content h2 {
+    margin-bottom: 20px;
+    color: #ff4c4c;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.overlay-content label {
+    display: block;
+    font-size: 16px;
+    color: #fff;
+    margin: 10px 0 5px;
+    align-self: flex-start;
+    width: 100%;
+    text-align: left;
+}
+
+.overlay-content input,
+.overlay-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3a3a3a;
+    color: #fff;
+    font-size: 15px;
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Importante per padding */
+}
+
+.overlay-content input:focus,
+.overlay-content textarea:focus {
+    border-color: #ff4c4c;
+    outline: none;
+}
+
+.overlay-content .star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 20px;
+    align-items: center;
+}
+
+.overlay-content .star-rating input {
+    display: none;
+}
+
+.overlay-content .star-rating label {
+    cursor: pointer;
+}
+
+.overlay-content .star-rating label i {
+    font-size: 30px;
+    color: #444;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.overlay-content .star-rating label:hover i,
+.overlay-content .star-rating label:hover ~ label i,
+.overlay-content .star-rating input:checked ~ label i {
+    color: #ff4c4c;
+    transform: scale(1.2);
+}
+
+.overlay-content .btn-submit {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+}
+
+.overlay-content .btn-submit:hover {
+    background-color: #e60000;
+    transform: scale(1.05);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.close-btn:hover {
+    color: #ff4c4c;
+    transform: rotate(90deg);
+}
+
+/* Animazioni */
+@keyframes fadeIn {
+    from { background-color: rgba(0, 0, 0, 0); }
+    to { background-color: rgba(0, 0, 0, 0.8); }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.overlay-content form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-link {
+    color: #ff4c4c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+    color: #e60000;
+}
+
+.btn-report {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-report:hover {
+    background-color: #d32f2f;
+}
+
+.btn-report:disabled {
+    background-color: #e57373;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+    .content-section {
+        flex-direction: column;
+    }
+    .right-column {
+        margin-top: 20px;
+        border-top: 1px solid #444; /* Separatore su mobile */
+        padding-top: 20px;
+    }
+}

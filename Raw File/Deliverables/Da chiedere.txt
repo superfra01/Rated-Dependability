@@ -1,0 +1,17 @@
+3.2.1 sospensione degli utenti: il moderatore devo solo rimuovere le recenzioni o anche sospendere gli account?
+
+
+RAD
+class diagram
+come possiamo gestire i report? va creata una relazione tra utente e recensione?
+Rombini nel class diagram
+Sequence Diagram
+SD02.1 mostraMessaggio(errore) o null?
+SD04 Interfaccia utente? è una casse corretta? 
+i nomi delle classi sono corrette?
+
+i nomi delle funzioni sono corrette?
+
+l'aggiunta di una recensione è fatta bene?
+la valutazione di una recensione è fatta bene?
+

@@ -1,0 +1,206 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2d2d2d;
+    color: white;
+}
+
+main {
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #1f1f1f;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+header input[type="text"] {
+    flex-grow: 1;
+    margin: 0 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    outline: none;
+}
+
+header input[type="text"]:focus {
+    border-color: #ff4c4c;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.6);
+}
+
+header button {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+header button:hover {
+    background-color: #e60000;
+}
+
+.login-container {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.login-container h3 {
+    color: #ff4c4c;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-container h4 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-container form {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea {
+    width: calc(100% - 24px);
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: white;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus,
+textarea:focus {
+    border-color: #ff4c4c;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.6);
+}
+
+textarea {
+    resize: none;
+}
+
+/* --- STILI PER I GENERI --- */
+.genres-section {
+    width: 100%;
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.genres-container {
+    max-height: 160px; /* Altezza massima con scroll */
+    overflow-y: auto;
+    background-color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Stile per indicare errore sul container dei generi */
+.genres-container.error {
+    border-color: #ff4c4c;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.6);
+}
+
+.genre-item {
+    display: flex;
+    align-items: center;
+}
+
+.genre-item input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    /* Reset larghezza per checkbox */
+    width: auto !important; 
+    margin-bottom: 0 !important;
+}
+
+.genre-item label {
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+}
+
+.backend-error {
+    color: #ff4c4c;
+    font-size: 13px;
+    text-align: center;
+    padding: 15px 0;
+}
+/* -------------------------- */
+
+form span {
+    font-size: 12px;
+    color: #ff4c4c;
+    margin-left: 5px;
+    display: block;
+    margin-top: -8px; 
+    margin-bottom: 10px; 
+}
+
+input.error, textarea.error {
+    border-color: #ff4c4c;
+    box-shadow: 0 0 8px rgba(255, 76, 76, 0.6);
+}
+
+button {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 94%; 
+    box-sizing: border-box;
+    text-align: center; 
+}
+
+button:hover {
+    background-color: #e60000;
+}
+
+a.register-now,
+a.login-now {
+    color: #ff4c4c;
+    text-decoration: none;
+    text-align: center; 
+}
+
+a.register-now:hover,
+a.login-now:hover {
+    color: #e60000;
+}

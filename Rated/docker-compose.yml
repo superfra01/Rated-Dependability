@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # --- TOMCAT APP ---
+  webapp:
+    build: .
+    container_name: mia_webapp_container
+    ports:
+      - "8080:8080" # Accesso Web
+      - "8000:8000" # Accesso Debug Eclipse
+    environment:
+      - JPDA_ADDRESS=*:8000
+      - JPDA_TRANSPORT=dt_socket
+    volumes:
+      # QUESTA È LA PARTE IMPORTANTE:
+      # Collega la cartella 'target' del tuo PC direttamente dentro Tomcat nel container.
+      # Quando Maven aggiorna 'mia-app.war' sul PC, Docker lo vede subito.
+      - ./target/rated-app.war:/usr/local/tomcat/webapps/ROOT.war
+      - ./server.xml:/usr/local/tomcat/conf/server.xml
+    depends_on:
+      - db_service
+    networks:
+      - dev-network
+
+  # --- MYSQL DATABASE ---
+  db_service:
+    image: mysql:8.0
+    container_name: mio_db_container
+    #command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      LANG: C.UTF-8
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: RatedDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - dev-network
+
+  db_gui:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"  # Lo vedrai su localhost:8081
+    networks:
+      - dev-network
+
+volumes:
+  db_data:
+
+networks:
+  dev-network:

@@ -1,0 +1,6 @@
+3.2.1 da sistemare (sospensione degli utenti) Non l'abbiamo mai implementata quindi dobbiamo decidere cosa fare
+Aggiungere la possibilità di visualizzare gli altri utenti a tutti gli "utenti"
+
+
+Modifiche requirement analysis:
+Fare l'indice

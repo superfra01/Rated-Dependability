@@ -1,0 +1,261 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1767538884084,2514,1. Home Page,200,,Utenti Concorrenti 1-1,text,true,,2940,116,6,6,http://localhost:8080/,2514,0,46
+1767538884919,1679,1. Home Page,200,,Utenti Concorrenti 1-3,text,true,,2940,116,6,6,http://localhost:8080/,1679,0,2
+1767538886412,186,1. Home Page,200,,Utenti Concorrenti 1-6,text,true,,2940,116,6,6,http://localhost:8080/,186,0,2
+1767538884426,2172,1. Home Page,200,,Utenti Concorrenti 1-2,text,true,,2940,116,6,6,http://localhost:8080/,2172,0,2
+1767538885912,686,1. Home Page,200,,Utenti Concorrenti 1-5,text,true,,2940,116,6,6,http://localhost:8080/,686,0,2
+1767538885417,1181,1. Home Page,200,,Utenti Concorrenti 1-4,text,true,,2940,116,6,6,http://localhost:8080/,1181,0,2
+1767538886911,17,1. Home Page,200,,Utenti Concorrenti 1-7,text,true,,2940,116,7,7,http://localhost:8080/,17,0,3
+1767538887410,15,1. Home Page,200,,Utenti Concorrenti 1-8,text,true,,2940,116,8,8,http://localhost:8080/,15,0,2
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-4,text,true,,3042,498,8,8,http://localhost:8080/?loginSuccess=true,1046,0,0
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-6,text,true,,3045,501,8,8,http://localhost:8080/?loginSuccess=true,1046,0,0
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-1,text,true,,3042,498,8,8,http://localhost:8080/?loginSuccess=true,1047,0,0
+1767538886611,1046,2. Login-0,302,,Utenti Concorrenti 1-4,,true,,152,311,8,8,http://localhost:8080/login,1046,0,0
+1767538886611,1046,2. Login-0,302,,Utenti Concorrenti 1-6,,true,,152,314,8,8,http://localhost:8080/login,1046,0,0
+1767538886611,1047,2. Login-0,302,,Utenti Concorrenti 1-1,,true,,152,311,8,8,http://localhost:8080/login,1047,0,0
+1767538887426,249,2. Login,200,,Utenti Concorrenti 1-8,text,true,,3047,503,8,8,http://localhost:8080/?loginSuccess=true,232,0,0
+1767538886930,745,2. Login,200,,Utenti Concorrenti 1-7,text,true,,3043,499,8,8,http://localhost:8080/?loginSuccess=true,727,0,0
+1767538887426,232,2. Login-0,302,,Utenti Concorrenti 1-8,,true,,152,316,8,8,http://localhost:8080/login,232,0,0
+1767538886930,727,2. Login-0,302,,Utenti Concorrenti 1-7,,true,,152,312,8,8,http://localhost:8080/login,727,0,0
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-3,text,true,,3041,497,8,8,http://localhost:8080/?loginSuccess=true,1047,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-7,text,true,,2891,187,8,8,http://localhost:8080/?loginSuccess=true,15,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-8,text,true,,2895,187,8,8,http://localhost:8080/?loginSuccess=true,14,0,0
+1767538886611,1047,2. Login-0,302,,Utenti Concorrenti 1-3,,true,,152,310,8,8,http://localhost:8080/login,1047,0,0
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-2,text,true,,3044,500,8,8,http://localhost:8080/?loginSuccess=true,1046,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-3,text,true,,2889,187,8,8,http://localhost:8080/?loginSuccess=true,14,0,0
+1767538886611,1064,2. Login,200,,Utenti Concorrenti 1-5,text,true,,3043,499,8,8,http://localhost:8080/?loginSuccess=true,1046,0,0
+1767538886611,1046,2. Login-0,302,,Utenti Concorrenti 1-2,,true,,152,313,8,8,http://localhost:8080/login,1046,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-1,text,true,,2890,187,8,8,http://localhost:8080/?loginSuccess=true,15,0,0
+1767538886611,1046,2. Login-0,302,,Utenti Concorrenti 1-5,,true,,152,312,8,8,http://localhost:8080/login,1046,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-4,text,true,,2890,187,8,8,http://localhost:8080/?loginSuccess=true,15,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-5,text,true,,2891,187,8,8,http://localhost:8080/?loginSuccess=true,15,0,0
+1767538887661,14,2. Login-1,200,,Utenti Concorrenti 1-6,text,true,,2893,187,8,8,http://localhost:8080/?loginSuccess=true,14,0,0
+1767538887660,15,2. Login-1,200,,Utenti Concorrenti 1-2,text,true,,2892,187,8,8,http://localhost:8080/?loginSuccess=true,15,0,0
+1767538887907,21,1. Home Page,200,,Utenti Concorrenti 1-9,text,true,,2940,116,9,9,http://localhost:8080/,21,0,2
+1767538887929,87,2. Login,200,,Utenti Concorrenti 1-9,text,true,,3043,499,9,9,http://localhost:8080/?loginSuccess=true,78,0,0
+1767538887929,78,2. Login-0,302,,Utenti Concorrenti 1-9,,true,,152,312,9,9,http://localhost:8080/login,78,0,0
+1767538888008,8,2. Login-1,200,,Utenti Concorrenti 1-9,text,true,,2891,187,9,9,http://localhost:8080/?loginSuccess=true,8,0,0
+1767538888405,23,1. Home Page,200,,Utenti Concorrenti 1-10,text,true,,2940,116,10,10,http://localhost:8080/,23,0,2
+1767538888430,27,2. Login,200,,Utenti Concorrenti 1-10,text,true,,3044,500,10,10,http://localhost:8080/?loginSuccess=true,18,0,0
+1767538888430,18,2. Login-0,302,,Utenti Concorrenti 1-10,,true,,152,313,10,10,http://localhost:8080/login,18,0,0
+1767538888449,8,2. Login-1,200,,Utenti Concorrenti 1-10,text,true,,2892,187,10,10,http://localhost:8080/?loginSuccess=true,8,0,0
+1767538887678,955,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-2,text,true,,8870,177,10,10,http://localhost:8080/catalogo,954,0,0
+1767538887678,955,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-1,text,true,,8868,177,10,10,http://localhost:8080/catalogo,951,0,0
+1767538888460,172,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-10,text,true,,8870,177,10,10,http://localhost:8080/catalogo,169,0,0
+1767538887677,960,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-8,text,true,,8873,177,10,10,http://localhost:8080/catalogo,955,0,0
+1767538887677,955,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-7,text,true,,8869,177,10,10,http://localhost:8080/catalogo,952,0,0
+1767538887677,967,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-3,text,true,,8867,177,10,10,http://localhost:8080/catalogo,966,0,0
+1767538888019,626,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-9,text,true,,8869,177,10,10,http://localhost:8080/catalogo,626,0,0
+1767538887678,977,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-5,text,true,,8869,177,10,10,http://localhost:8080/catalogo,976,0,0
+1767538887678,982,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-6,text,true,,8871,177,10,10,http://localhost:8080/catalogo,981,0,0
+1767538887677,984,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-4,text,true,,8868,177,10,10,http://localhost:8080/catalogo,982,0,0
+1767538888643,656,4. Dettagli Film,200,,Utenti Concorrenti 1-7,text,true,,7262,183,10,10,http://localhost:8080/film?idFilm=11,656,0,0
+1767538888662,643,4. Dettagli Film,200,,Utenti Concorrenti 1-4,text,true,,17709,182,10,10,http://localhost:8080/film?idFilm=5,642,0,0
+1767538888657,649,4. Dettagli Film,200,,Utenti Concorrenti 1-5,text,true,,17729,182,10,10,http://localhost:8080/film?idFilm=9,648,0,0
+1767538888646,660,4. Dettagli Film,200,,Utenti Concorrenti 1-3,text,true,,17751,182,10,10,http://localhost:8080/film?idFilm=6,658,0,0
+1767538888641,666,4. Dettagli Film,200,,Utenti Concorrenti 1-1,text,true,,19825,182,10,10,http://localhost:8080/film?idFilm=3,663,0,0
+1767538888648,677,4. Dettagli Film,200,,Utenti Concorrenti 1-9,text,true,,19843,182,10,10,http://localhost:8080/film?idFilm=2,668,0,0
+1767538888642,684,4. Dettagli Film,200,,Utenti Concorrenti 1-8,text,true,,17733,182,10,10,http://localhost:8080/film?idFilm=9,684,0,0
+1767538888642,685,4. Dettagli Film,200,,Utenti Concorrenti 1-10,text,true,,19884,182,10,10,http://localhost:8080/film?idFilm=2,663,0,0
+1767538888662,666,4. Dettagli Film,200,,Utenti Concorrenti 1-6,text,true,,17774,182,10,10,http://localhost:8080/film?idFilm=8,644,0,0
+1767538888641,688,4. Dettagli Film,200,,Utenti Concorrenti 1-2,text,true,,17651,182,10,10,http://localhost:8080/film?idFilm=7,685,0,0
+1767538889308,23,5. Ricerca Film,200,,Utenti Concorrenti 1-3,text,true,,4675,192,10,10,http://localhost:8080/ricerca?filmCercato=The,23,0,0
+1767538889304,63,5. Ricerca Film,200,,Utenti Concorrenti 1-7,text,true,,4677,192,10,10,http://localhost:8080/ricerca?filmCercato=The,63,0,0
+1767538889310,60,5. Ricerca Film,200,,Utenti Concorrenti 1-1,text,true,,4676,192,10,10,http://localhost:8080/ricerca?filmCercato=The,60,0,0
+1767538889308,68,5. Ricerca Film,200,,Utenti Concorrenti 1-5,text,true,,4677,192,10,10,http://localhost:8080/ricerca?filmCercato=The,68,0,0
+1767538889307,69,5. Ricerca Film,200,,Utenti Concorrenti 1-4,text,true,,4676,192,10,10,http://localhost:8080/ricerca?filmCercato=The,69,0,0
+1767538889328,53,5. Ricerca Film,200,,Utenti Concorrenti 1-9,text,true,,4677,192,10,10,http://localhost:8080/ricerca?filmCercato=The,53,0,0
+1767538889329,54,5. Ricerca Film,200,,Utenti Concorrenti 1-10,text,true,,4678,192,10,10,http://localhost:8080/ricerca?filmCercato=The,53,0,0
+1767538889332,57,5. Ricerca Film,200,,Utenti Concorrenti 1-2,text,true,,4678,192,10,10,http://localhost:8080/ricerca?filmCercato=The,57,0,0
+1767538889328,61,5. Ricerca Film,200,,Utenti Concorrenti 1-8,text,true,,4681,192,10,10,http://localhost:8080/ricerca?filmCercato=The,61,0,0
+1767538889333,73,5. Ricerca Film,200,,Utenti Concorrenti 1-6,text,true,,4679,192,10,10,http://localhost:8080/ricerca?filmCercato=The,73,0,0
+1767538889332,203,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-3,text,true,,20002,563,10,10,http://localhost:8080/film?idFilm=6,149,0,0
+1767538889332,149,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-3,,true,,147,381,10,10,http://localhost:8080/ValutaFilm,149,0,0
+1767538889482,53,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-3,text,true,,19855,182,10,10,http://localhost:8080/film?idFilm=6,51,0,0
+1767538889537,23,7. Logout,200,,Utenti Concorrenti 1-3,text,true,,3074,344,10,10,http://localhost:8080/,12,0,0
+1767538889537,12,7. Logout-0,302,,Utenti Concorrenti 1-3,,true,,134,175,10,10,http://localhost:8080/logout,12,0,0
+1767538889550,10,7. Logout-1,200,,Utenti Concorrenti 1-3,text,true,,2940,169,10,10,http://localhost:8080/,10,0,0
+1767538889408,166,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-6,text,true,,20045,563,9,9,http://localhost:8080/film?idFilm=8,100,0,0
+1767538889408,100,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-6,,true,,147,381,9,9,http://localhost:8080/ValutaFilm,100,0,0
+1767538889510,64,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-6,text,true,,19898,182,9,9,http://localhost:8080/film?idFilm=8,62,0,0
+1767538889385,192,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-10,text,true,,20031,563,9,9,http://localhost:8080/film?idFilm=2,128,0,0
+1767538889385,128,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-10,,true,,147,381,9,9,http://localhost:8080/ValutaFilm,128,0,0
+1767538889514,63,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-10,text,true,,19884,182,9,9,http://localhost:8080/film?idFilm=2,62,0,0
+1767538889576,19,7. Logout,200,,Utenti Concorrenti 1-6,text,true,,3074,344,9,9,http://localhost:8080/,10,0,0
+1767538889576,10,7. Logout-0,302,,Utenti Concorrenti 1-6,,true,,134,175,9,9,http://localhost:8080/logout,10,0,0
+1767538889587,8,7. Logout-1,200,,Utenti Concorrenti 1-6,text,true,,2940,169,9,9,http://localhost:8080/,8,0,0
+1767538889578,24,7. Logout,200,,Utenti Concorrenti 1-10,text,true,,3074,344,8,8,http://localhost:8080/,11,0,0
+1767538889578,11,7. Logout-0,302,,Utenti Concorrenti 1-10,,true,,134,175,8,8,http://localhost:8080/logout,11,0,0
+1767538889590,12,7. Logout-1,200,,Utenti Concorrenti 1-10,text,true,,2940,169,8,8,http://localhost:8080/,12,0,0
+1767538889377,245,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-5,text,true,,19990,563,7,7,http://localhost:8080/film?idFilm=9,187,0,0
+1767538889377,187,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-5,,true,,147,381,7,7,http://localhost:8080/ValutaFilm,187,0,0
+1767538889564,58,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-5,text,true,,19843,182,7,7,http://localhost:8080/film?idFilm=9,57,0,0
+1767538889623,12,7. Logout,200,,Utenti Concorrenti 1-5,text,true,,3074,344,7,7,http://localhost:8080/,6,0,0
+1767538889623,6,7. Logout-0,302,,Utenti Concorrenti 1-5,,true,,134,175,7,7,http://localhost:8080/logout,6,0,0
+1767538889629,6,7. Logout-1,200,,Utenti Concorrenti 1-5,text,true,,2940,169,7,7,http://localhost:8080/,6,0,0
+1767538889391,288,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-2,text,true,,19917,563,6,6,http://localhost:8080/film?idFilm=7,243,0,0
+1767538889391,243,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-2,,true,,147,381,6,6,http://localhost:8080/ValutaFilm,243,0,0
+1767538889635,44,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-2,text,true,,19770,182,6,6,http://localhost:8080/film?idFilm=7,44,0,0
+1767538889680,15,7. Logout,200,,Utenti Concorrenti 1-2,text,true,,3074,344,6,6,http://localhost:8080/,8,0,0
+1767538889680,8,7. Logout-0,302,,Utenti Concorrenti 1-2,,true,,134,175,6,6,http://localhost:8080/logout,8,0,0
+1767538889689,6,7. Logout-1,200,,Utenti Concorrenti 1-2,text,true,,2940,169,6,6,http://localhost:8080/,6,0,0
+1767538889371,345,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-1,text,true,,22082,563,5,5,http://localhost:8080/film?idFilm=3,293,0,0
+1767538889371,293,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-1,,true,,147,381,5,5,http://localhost:8080/ValutaFilm,293,0,0
+1767538889665,51,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-1,text,true,,21935,182,5,5,http://localhost:8080/film?idFilm=3,48,0,0
+1767538889720,14,7. Logout,200,,Utenti Concorrenti 1-1,text,true,,3074,344,5,5,http://localhost:8080/,6,0,0
+1767538889720,6,7. Logout-0,302,,Utenti Concorrenti 1-1,,true,,134,175,5,5,http://localhost:8080/logout,6,0,0
+1767538889727,7,7. Logout-1,200,,Utenti Concorrenti 1-1,text,true,,2940,169,5,5,http://localhost:8080/,7,0,0
+1767538889391,361,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-8,text,true,,22089,563,4,4,http://localhost:8080/film?idFilm=9,309,0,0
+1767538889391,309,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-8,,true,,147,381,4,4,http://localhost:8080/ValutaFilm,309,0,0
+1767538889701,51,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-8,text,true,,21942,182,4,4,http://localhost:8080/film?idFilm=9,50,0,0
+1767538889754,15,7. Logout,200,,Utenti Concorrenti 1-8,text,true,,3074,344,4,4,http://localhost:8080/,7,0,0
+1767538889754,7,7. Logout-0,302,,Utenti Concorrenti 1-8,,true,,134,175,4,4,http://localhost:8080/logout,7,0,0
+1767538889762,7,7. Logout-1,200,,Utenti Concorrenti 1-8,text,true,,2940,169,4,4,http://localhost:8080/,6,0,0
+1767538889382,407,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-9,text,true,,22105,563,3,3,http://localhost:8080/film?idFilm=2,354,0,0
+1767538889382,354,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-9,,true,,147,381,3,3,http://localhost:8080/ValutaFilm,354,0,0
+1767538889737,52,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-9,text,true,,21958,182,3,3,http://localhost:8080/film?idFilm=2,52,0,0
+1767538889791,14,7. Logout,200,,Utenti Concorrenti 1-9,text,true,,3074,344,3,3,http://localhost:8080/,6,0,0
+1767538889791,6,7. Logout-0,302,,Utenti Concorrenti 1-9,,true,,134,175,3,3,http://localhost:8080/logout,6,0,0
+1767538889798,7,7. Logout-1,200,,Utenti Concorrenti 1-9,text,true,,2940,169,3,3,http://localhost:8080/,6,0,0
+1767538889380,431,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-7,text,true,,9411,565,2,2,http://localhost:8080/film?idFilm=11,404,0,0
+1767538889380,404,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-7,,true,,148,382,2,2,http://localhost:8080/ValutaFilm,404,0,0
+1767538889785,26,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-7,text,true,,9263,183,2,2,http://localhost:8080/film?idFilm=11,25,0,0
+1767538889812,16,7. Logout,200,,Utenti Concorrenti 1-7,text,true,,3074,344,2,2,http://localhost:8080/,8,0,0
+1767538889812,8,7. Logout-0,302,,Utenti Concorrenti 1-7,,true,,134,175,2,2,http://localhost:8080/logout,8,0,0
+1767538889820,8,7. Logout-1,200,,Utenti Concorrenti 1-7,text,true,,2940,169,2,2,http://localhost:8080/,8,0,0
+1767538889377,501,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-4,text,true,,19965,563,1,1,http://localhost:8080/film?idFilm=5,464,0,0
+1767538889377,464,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-4,,true,,147,381,1,1,http://localhost:8080/ValutaFilm,464,0,0
+1767538889842,36,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-4,text,true,,19818,182,1,1,http://localhost:8080/film?idFilm=5,36,0,0
+1767538889879,16,7. Logout,200,,Utenti Concorrenti 1-4,text,true,,3074,344,1,1,http://localhost:8080/,8,0,0
+1767538889879,8,7. Logout-0,302,,Utenti Concorrenti 1-4,,true,,134,175,1,1,http://localhost:8080/logout,8,0,0
+1767538889888,7,7. Logout-1,200,,Utenti Concorrenti 1-4,text,true,,2940,169,1,1,http://localhost:8080/,7,0,0
+1767539252096,63,1. Home Page,200,,Utenti Concorrenti 1-1,text,true,,2940,116,1,1,http://localhost:8080/,62,0,44
+1767539252189,20,2. Login,200,,Utenti Concorrenti 1-1,text,true,,3042,498,1,1,http://localhost:8080/?loginSuccess=true,14,0,0
+1767539252189,14,2. Login-0,302,,Utenti Concorrenti 1-1,,true,,152,311,1,1,http://localhost:8080/login,14,0,0
+1767539252205,4,2. Login-1,200,,Utenti Concorrenti 1-1,text,true,,2890,187,1,1,http://localhost:8080/?loginSuccess=true,4,0,0
+1767539252380,10,1. Home Page,200,,Utenti Concorrenti 1-2,text,true,,2940,116,2,2,http://localhost:8080/,10,0,2
+1767539252391,16,2. Login,200,,Utenti Concorrenti 1-2,text,true,,3044,500,2,2,http://localhost:8080/?loginSuccess=true,9,0,0
+1767539252391,9,2. Login-0,302,,Utenti Concorrenti 1-2,,true,,152,313,2,2,http://localhost:8080/login,9,0,0
+1767539252400,7,2. Login-1,200,,Utenti Concorrenti 1-2,text,true,,2892,187,2,2,http://localhost:8080/?loginSuccess=true,7,0,0
+1767539252211,219,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-1,text,true,,7594223,177,2,2,http://localhost:8080/catalogo,31,0,0
+1767539252522,93,4. Dettagli Film,200,,Utenti Concorrenti 1-1,text,true,,749132,182,2,2,http://localhost:8080/film?idFilm=8,79,0,0
+1767539252409,188,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-2,text,true,,7594225,177,2,2,http://localhost:8080/catalogo,42,0,0
+1767539252617,75,5. Ricerca Film,200,,Utenti Concorrenti 1-1,text,true,,2763003,192,2,2,http://localhost:8080/ricerca?filmCercato=The,21,0,0
+1767539252640,78,4. Dettagli Film,200,,Utenti Concorrenti 1-2,text,true,,749120,183,2,2,http://localhost:8080/film?idFilm=11,60,0,0
+1767539252719,91,5. Ricerca Film,200,,Utenti Concorrenti 1-2,text,true,,2763005,192,2,2,http://localhost:8080/ricerca?filmCercato=The,31,0,0
+1767539252878,12,1. Home Page,200,,Utenti Concorrenti 1-3,text,true,,2940,116,3,3,http://localhost:8080/,12,0,5
+1767539252891,23,2. Login,200,,Utenti Concorrenti 1-3,text,true,,3041,497,3,3,http://localhost:8080/?loginSuccess=true,9,0,0
+1767539252891,9,2. Login-0,302,,Utenti Concorrenti 1-3,,true,,152,310,3,3,http://localhost:8080/login,9,0,0
+1767539252900,14,2. Login-1,200,,Utenti Concorrenti 1-3,text,true,,2889,187,3,3,http://localhost:8080/?loginSuccess=true,14,0,0
+1767539252693,225,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-1,text,true,,751389,563,3,3,http://localhost:8080/film?idFilm=8,131,0,0
+1767539252693,131,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-1,,true,,147,381,3,3,http://localhost:8080/ValutaFilm,131,0,0
+1767539252825,93,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-1,text,true,,751242,182,3,3,http://localhost:8080/film?idFilm=8,55,0,0
+1767539252920,13,7. Logout,200,,Utenti Concorrenti 1-1,text,true,,3074,344,3,3,http://localhost:8080/,7,0,0
+1767539252920,7,7. Logout-0,302,,Utenti Concorrenti 1-1,,true,,134,175,3,3,http://localhost:8080/logout,7,0,0
+1767539252928,5,7. Logout-1,200,,Utenti Concorrenti 1-1,text,true,,2940,169,3,3,http://localhost:8080/,5,0,0
+1767539252811,193,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-2,text,true,,751391,565,2,2,http://localhost:8080/film?idFilm=11,112,0,0
+1767539252811,112,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-2,,true,,148,382,2,2,http://localhost:8080/ValutaFilm,112,0,0
+1767539252924,80,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-2,text,true,,751243,183,2,2,http://localhost:8080/film?idFilm=11,56,0,0
+1767539253005,12,7. Logout,200,,Utenti Concorrenti 1-2,text,true,,3074,344,2,2,http://localhost:8080/,4,0,0
+1767539253005,4,7. Logout-0,302,,Utenti Concorrenti 1-2,,true,,134,175,2,2,http://localhost:8080/logout,4,0,0
+1767539253009,8,7. Logout-1,200,,Utenti Concorrenti 1-2,text,true,,2940,169,2,2,http://localhost:8080/,8,0,0
+1767539252916,306,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-3,text,true,,7594222,177,1,1,http://localhost:8080/catalogo,97,0,0
+1767539253255,49,4. Dettagli Film,200,,Utenti Concorrenti 1-3,text,true,,753128,182,1,1,http://localhost:8080/film?idFilm=7,38,0,0
+1767539253305,69,5. Ricerca Film,200,,Utenti Concorrenti 1-3,text,true,,2763002,192,2,2,http://localhost:8080/ricerca?filmCercato=The,14,0,0
+1767539253372,8,1. Home Page,200,,Utenti Concorrenti 1-4,text,true,,2940,116,2,2,http://localhost:8080/,8,0,2
+1767539253382,12,2. Login,200,,Utenti Concorrenti 1-4,text,true,,3042,498,2,2,http://localhost:8080/?loginSuccess=true,8,0,0
+1767539253382,8,2. Login-0,302,,Utenti Concorrenti 1-4,,true,,152,311,2,2,http://localhost:8080/login,8,0,0
+1767539253390,4,2. Login-1,200,,Utenti Concorrenti 1-4,text,true,,2890,187,2,2,http://localhost:8080/?loginSuccess=true,4,0,0
+1767539253376,76,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-3,text,true,,753275,563,2,2,http://localhost:8080/film?idFilm=7,6,0,0
+1767539253376,6,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-3,,true,,147,381,2,2,http://localhost:8080/ValutaFilm,6,0,0
+1767539253382,70,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-3,text,true,,753128,182,2,2,http://localhost:8080/film?idFilm=7,51,0,0
+1767539253454,31,7. Logout,200,,Utenti Concorrenti 1-3,text,true,,3074,344,2,2,http://localhost:8080/,20,0,0
+1767539253454,20,7. Logout-0,302,,Utenti Concorrenti 1-3,,true,,134,175,2,2,http://localhost:8080/logout,20,0,0
+1767539253475,10,7. Logout-1,200,,Utenti Concorrenti 1-3,text,true,,2940,169,2,2,http://localhost:8080/,10,0,0
+1767539253395,235,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-4,text,true,,7594223,177,1,1,http://localhost:8080/catalogo,25,0,0
+1767539253666,72,4. Dettagli Film,200,,Utenti Concorrenti 1-4,text,true,,749021,182,1,1,http://localhost:8080/film?idFilm=4,53,0,0
+1767539253739,63,5. Ricerca Film,200,,Utenti Concorrenti 1-4,text,true,,2763003,192,1,1,http://localhost:8080/ricerca?filmCercato=The,18,0,0
+1767539253803,59,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-4,text,true,,749168,563,1,1,http://localhost:8080/film?idFilm=4,6,0,0
+1767539253803,6,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-4,,true,,147,381,1,1,http://localhost:8080/ValutaFilm,6,0,0
+1767539253809,53,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-4,text,true,,749021,182,1,1,http://localhost:8080/film?idFilm=4,40,0,0
+1767539253863,9,7. Logout,200,,Utenti Concorrenti 1-4,text,true,,3074,344,2,2,http://localhost:8080/,4,0,0
+1767539253863,4,7. Logout-0,302,,Utenti Concorrenti 1-4,,true,,134,175,2,2,http://localhost:8080/logout,4,0,0
+1767539253867,5,7. Logout-1,200,,Utenti Concorrenti 1-4,text,true,,2940,169,2,2,http://localhost:8080/,5,0,0
+1767539253870,7,1. Home Page,200,,Utenti Concorrenti 1-5,text,true,,2940,116,1,1,http://localhost:8080/,7,0,1
+1767539253878,13,2. Login,200,,Utenti Concorrenti 1-5,text,true,,3043,499,1,1,http://localhost:8080/?loginSuccess=true,7,0,0
+1767539253878,7,2. Login-0,302,,Utenti Concorrenti 1-5,,true,,152,312,1,1,http://localhost:8080/login,7,0,0
+1767539253886,5,2. Login-1,200,,Utenti Concorrenti 1-5,text,true,,2891,187,1,1,http://localhost:8080/?loginSuccess=true,5,0,0
+1767539253892,172,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-5,text,true,,7594224,177,1,1,http://localhost:8080/catalogo,22,0,0
+1767539254098,57,4. Dettagli Film,200,,Utenti Concorrenti 1-5,text,true,,757382,182,1,1,http://localhost:8080/film?idFilm=3,43,0,0
+1767539254156,69,5. Ricerca Film,200,,Utenti Concorrenti 1-5,text,true,,2763004,192,1,1,http://localhost:8080/ricerca?filmCercato=The,15,0,0
+1767539254226,69,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-5,text,true,,757529,563,1,1,http://localhost:8080/film?idFilm=3,7,0,0
+1767539254226,7,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-5,,true,,147,381,1,1,http://localhost:8080/ValutaFilm,7,0,0
+1767539254234,61,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-5,text,true,,757382,182,1,1,http://localhost:8080/film?idFilm=3,47,0,0
+1767539254296,8,7. Logout,200,,Utenti Concorrenti 1-5,text,true,,3074,344,1,1,http://localhost:8080/,3,0,0
+1767539254296,3,7. Logout-0,302,,Utenti Concorrenti 1-5,,true,,134,175,1,1,http://localhost:8080/logout,3,0,0
+1767539254300,4,7. Logout-1,200,,Utenti Concorrenti 1-5,text,true,,2940,169,1,1,http://localhost:8080/,4,0,0
+1767539254367,11,1. Home Page,200,,Utenti Concorrenti 1-6,text,true,,2940,116,1,1,http://localhost:8080/,11,0,2
+1767539254380,11,2. Login,200,,Utenti Concorrenti 1-6,text,true,,3045,501,1,1,http://localhost:8080/?loginSuccess=true,6,0,0
+1767539254380,6,2. Login-0,302,,Utenti Concorrenti 1-6,,true,,152,314,1,1,http://localhost:8080/login,6,0,0
+1767539254386,5,2. Login-1,200,,Utenti Concorrenti 1-6,text,true,,2893,187,1,1,http://localhost:8080/?loginSuccess=true,5,0,0
+1767539254392,170,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-6,text,true,,7594226,177,1,1,http://localhost:8080/catalogo,27,0,0
+1767539254595,49,4. Dettagli Film,200,,Utenti Concorrenti 1-6,text,true,,738535,182,1,1,http://localhost:8080/film?idFilm=5,38,0,0
+1767539254645,74,5. Ricerca Film,200,,Utenti Concorrenti 1-6,text,true,,2763006,192,1,1,http://localhost:8080/ricerca?filmCercato=The,15,0,0
+1767539254879,6,1. Home Page,200,,Utenti Concorrenti 1-7,text,true,,2940,116,2,2,http://localhost:8080/,6,0,1
+1767539254886,10,2. Login,200,,Utenti Concorrenti 1-7,text,true,,3043,499,2,2,http://localhost:8080/?loginSuccess=true,5,0,0
+1767539254886,5,2. Login-0,302,,Utenti Concorrenti 1-7,,true,,152,312,2,2,http://localhost:8080/login,5,0,0
+1767539254892,4,2. Login-1,200,,Utenti Concorrenti 1-7,text,true,,2891,187,2,2,http://localhost:8080/?loginSuccess=true,4,0,0
+1767539254720,197,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-6,text,true,,740806,563,2,2,http://localhost:8080/film?idFilm=5,145,0,0
+1767539254720,145,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-6,,true,,147,381,2,2,http://localhost:8080/ValutaFilm,145,0,0
+1767539254865,52,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-6,text,true,,740659,182,2,2,http://localhost:8080/film?idFilm=5,35,0,0
+1767539254919,12,7. Logout,200,,Utenti Concorrenti 1-6,text,true,,3074,344,2,2,http://localhost:8080/,6,0,0
+1767539254919,6,7. Logout-0,302,,Utenti Concorrenti 1-6,,true,,134,175,2,2,http://localhost:8080/logout,6,0,0
+1767539254926,5,7. Logout-1,200,,Utenti Concorrenti 1-6,text,true,,2940,169,2,2,http://localhost:8080/,5,0,0
+1767539254897,158,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-7,text,true,,7594224,177,1,1,http://localhost:8080/catalogo,21,0,0
+1767539255088,43,4. Dettagli Film,200,,Utenti Concorrenti 1-7,text,true,,751013,183,1,1,http://localhost:8080/film?idFilm=11,31,0,0
+1767539255132,59,5. Ricerca Film,200,,Utenti Concorrenti 1-7,text,true,,2763004,192,1,1,http://localhost:8080/ricerca?filmCercato=The,19,0,0
+1767539255191,61,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-7,text,true,,751161,565,1,1,http://localhost:8080/film?idFilm=11,5,0,0
+1767539255191,5,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-7,,true,,148,382,1,1,http://localhost:8080/ValutaFilm,5,0,0
+1767539255197,55,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-7,text,true,,751013,183,1,1,http://localhost:8080/film?idFilm=11,35,0,0
+1767539255253,9,7. Logout,200,,Utenti Concorrenti 1-7,text,true,,3074,344,1,1,http://localhost:8080/,4,0,0
+1767539255253,4,7. Logout-0,302,,Utenti Concorrenti 1-7,,true,,134,175,1,1,http://localhost:8080/logout,4,0,0
+1767539255258,4,7. Logout-1,200,,Utenti Concorrenti 1-7,text,true,,2940,169,1,1,http://localhost:8080/,4,0,0
+1767539255366,7,1. Home Page,200,,Utenti Concorrenti 1-8,text,true,,2940,116,1,1,http://localhost:8080/,7,0,1
+1767539255374,10,2. Login,200,,Utenti Concorrenti 1-8,text,true,,3047,503,1,1,http://localhost:8080/?loginSuccess=true,6,0,0
+1767539255374,6,2. Login-0,302,,Utenti Concorrenti 1-8,,true,,152,316,1,1,http://localhost:8080/login,6,0,0
+1767539255380,4,2. Login-1,200,,Utenti Concorrenti 1-8,text,true,,2895,187,1,1,http://localhost:8080/?loginSuccess=true,4,0,0
+1767539255384,151,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-8,text,true,,7594228,177,1,1,http://localhost:8080/catalogo,18,0,0
+1767539255561,48,4. Dettagli Film,200,,Utenti Concorrenti 1-8,text,true,,742669,182,1,1,http://localhost:8080/film?idFilm=6,38,0,0
+1767539255610,53,5. Ricerca Film,200,,Utenti Concorrenti 1-8,text,true,,2763008,192,1,1,http://localhost:8080/ricerca?filmCercato=The,12,0,0
+1767539255663,107,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-8,text,true,,744950,563,1,1,http://localhost:8080/film?idFilm=6,67,0,0
+1767539255663,67,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-8,,true,,147,381,1,1,http://localhost:8080/ValutaFilm,67,0,0
+1767539255731,39,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-8,text,true,,744803,182,1,1,http://localhost:8080/film?idFilm=6,29,0,0
+1767539255771,7,7. Logout,200,,Utenti Concorrenti 1-8,text,true,,3074,344,1,1,http://localhost:8080/,3,0,0
+1767539255771,3,7. Logout-0,302,,Utenti Concorrenti 1-8,,true,,134,175,1,1,http://localhost:8080/logout,3,0,0
+1767539255774,4,7. Logout-1,200,,Utenti Concorrenti 1-8,text,true,,2940,169,1,1,http://localhost:8080/,3,0,0
+1767539255864,6,1. Home Page,200,,Utenti Concorrenti 1-9,text,true,,2940,116,1,1,http://localhost:8080/,6,0,1
+1767539255871,9,2. Login,200,,Utenti Concorrenti 1-9,text,true,,3043,499,1,1,http://localhost:8080/?loginSuccess=true,5,0,0
+1767539255871,5,2. Login-0,302,,Utenti Concorrenti 1-9,,true,,152,312,1,1,http://localhost:8080/login,5,0,0
+1767539255876,4,2. Login-1,200,,Utenti Concorrenti 1-9,text,true,,2891,187,1,1,http://localhost:8080/?loginSuccess=true,4,0,0
+1767539255881,136,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-9,text,true,,7594224,177,1,1,http://localhost:8080/catalogo,20,0,0
+1767539256048,42,4. Dettagli Film,200,,Utenti Concorrenti 1-9,text,true,,748982,182,1,1,http://localhost:8080/film?idFilm=4,31,0,0
+1767539256091,53,5. Ricerca Film,200,,Utenti Concorrenti 1-9,text,true,,2763004,192,1,1,http://localhost:8080/ricerca?filmCercato=The,12,0,0
+1767539256145,125,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-9,text,true,,751244,563,1,1,http://localhost:8080/film?idFilm=4,77,0,0
+1767539256145,77,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-9,,true,,147,381,1,1,http://localhost:8080/ValutaFilm,77,0,0
+1767539256222,48,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-9,text,true,,751097,182,1,1,http://localhost:8080/film?idFilm=4,37,0,0
+1767539256270,8,7. Logout,200,,Utenti Concorrenti 1-9,text,true,,3074,344,1,1,http://localhost:8080/,3,0,0
+1767539256270,3,7. Logout-0,302,,Utenti Concorrenti 1-9,,true,,134,175,1,1,http://localhost:8080/logout,3,0,0
+1767539256274,4,7. Logout-1,200,,Utenti Concorrenti 1-9,text,true,,2940,169,1,1,http://localhost:8080/,4,0,0
+1767539256362,7,1. Home Page,200,,Utenti Concorrenti 1-10,text,true,,2940,116,1,1,http://localhost:8080/,7,0,2
+1767539256369,9,2. Login,200,,Utenti Concorrenti 1-10,text,true,,3044,500,1,1,http://localhost:8080/?loginSuccess=true,6,0,0
+1767539256369,6,2. Login-0,302,,Utenti Concorrenti 1-10,,true,,152,313,1,1,http://localhost:8080/login,6,0,0
+1767539256375,3,2. Login-1,200,,Utenti Concorrenti 1-10,text,true,,2892,187,1,1,http://localhost:8080/?loginSuccess=true,3,0,0
+1767539256379,137,3. Visualizza Catalogo,200,,Utenti Concorrenti 1-10,text,true,,7594225,177,1,1,http://localhost:8080/catalogo,18,0,0
+1767539256542,44,4. Dettagli Film,200,,Utenti Concorrenti 1-10,text,true,,751203,183,1,1,http://localhost:8080/film?idFilm=11,33,0,0
+1767539256587,52,5. Ricerca Film,200,,Utenti Concorrenti 1-10,text,true,,2763005,192,1,1,http://localhost:8080/ricerca?filmCercato=The,11,0,0
+1767539256640,87,6. Aggiungi Recensione,200,,Utenti Concorrenti 1-10,text,true,,753473,565,1,1,http://localhost:8080/film?idFilm=11,38,0,0
+1767539256640,38,6. Aggiungi Recensione-0,302,,Utenti Concorrenti 1-10,,true,,148,382,1,1,http://localhost:8080/ValutaFilm,38,0,0
+1767539256679,48,6. Aggiungi Recensione-1,200,,Utenti Concorrenti 1-10,text,true,,753325,183,1,1,http://localhost:8080/film?idFilm=11,35,0,0
+1767539256727,8,7. Logout,200,,Utenti Concorrenti 1-10,text,true,,3074,344,1,1,http://localhost:8080/,4,0,0
+1767539256727,4,7. Logout-0,302,,Utenti Concorrenti 1-10,,true,,134,175,1,1,http://localhost:8080/logout,4,0,0
+1767539256732,3,7. Logout-1,200,,Utenti Concorrenti 1-10,text,true,,2940,169,1,1,http://localhost:8080/,3,0,0

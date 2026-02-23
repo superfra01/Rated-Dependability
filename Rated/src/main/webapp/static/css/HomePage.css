@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
+    color: white;
+    text-align: center;
+}
+
+main {
+    /* Padding bilanciato: ne troppo stretto (20px) ne troppo largo (50px) */
+    padding: 30px 20px; 
+    padding-bottom: 80px;
+}
+
+/* --- About Section --- */
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 40px; /* Distanza media dai consigliati */
+}
+
+.about-container .logo-large {
+    /* DIMENSIONE MEDIA: 280px (prima era 220px o 350px) */
+    width: 280px; 
+}
+
+.about-container .description {
+    font-size: 17px; /* Dimensione testo intermedia */
+    line-height: 1.6;
+    color: #ccc;
+    margin-bottom: 25px; 
+}
+
+.catalogue-button {
+    padding: 10px 20px;
+    background-color: #ff4c4c; 
+    border: none;    
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+    
+.catalogue-button:hover {
+    background-color: #e60000;
+}
+
+/* --- Recommendations Section Styles --- */
+.recommendations-container {
+    width: 95%;
+    max-width: 1300px; /* Larghezza massima contenuta */
+    margin: 0 auto;
+    text-align: left;
+    border-top: 1px solid #444;
+    padding-top: 25px;
+}
+
+.section-title {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    padding-left: 10px;
+}
+
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Contenitore scorrevole */
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 5px;
+    scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- CARD FILM: DIMENSIONI MEDIE --- */
+.film-card-mini {
+    /* LARGHEZZA: 220px (via di mezzo perfetta) */
+    flex: 0 0 240px; 
+    background-color: #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+
+.film-card-mini:hover {
+    transform: scale(1.03);
+}
+
+.poster-container {
+    width: 100%;
+    /* ALTEZZA: 330px (proporzione 2:3 rispetto alla larghezza) */
+    height: 330px; 
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.poster-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-container {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    min-height: 85px;
+}
+
+.film-title {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+    cursor: pointer;
+}
+
+.film-title:hover {
+    text-decoration: underline;
+}
+
+/* Pulsante "Non mi interessa" */
+.remove-btn {
+    background-color: transparent;
+    border: 1px solid #666;
+    color: #bbb;
+    padding: 6px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    background-color: #555;
+    color: #fff;
+    border-color: #888;
+}
+
+/* Pulsanti Navigazione */
+.nav-btn {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 2.2rem;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.nav-btn:hover {
+    background-color: #ff4c4c;
+}
+
+.left-btn { left: -22px; }
+.right-btn { right: -22px; }

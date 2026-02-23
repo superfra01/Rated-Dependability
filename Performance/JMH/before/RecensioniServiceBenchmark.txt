@@ -1,0 +1,287 @@
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.RecensioniServiceBenchmark.testAddRecensione
+
+# Run progress: 0,00% complete, ETA 00:03:40
+# Fork: 1 of 2
+# Warmup Iteration   1: 1618,613 ns/op
+# Warmup Iteration   2: 1578,788 ns/op
+# Warmup Iteration   3: 1566,200 ns/op
+# Warmup Iteration   4: 1565,872 ns/op
+# Warmup Iteration   5: 1544,745 ns/op
+# Warmup Iteration   6: 1560,770 ns/op
+# Warmup Iteration   7: 1570,753 ns/op
+# Warmup Iteration   8: 1615,808 ns/op
+# Warmup Iteration   9: 1567,000 ns/op
+# Warmup Iteration  10: 1570,535 ns/op
+# Warmup Iteration  11: 1561,097 ns/op
+# Warmup Iteration  12: 1559,390 ns/op
+# Warmup Iteration  13: 1518,807 ns/op
+# Warmup Iteration  14: 1572,538 ns/op
+# Warmup Iteration  15: 1569,798 ns/op
+Iteration   1: 1520,054 ns/op
+Iteration   2: 1457,686 ns/op
+Iteration   3: 1470,010 ns/op
+Iteration   4: 1454,154 ns/op
+Iteration   5: 1474,521 ns/op
+Iteration   6: 1471,692 ns/op
+Iteration   7: 1557,082 ns/op
+Iteration   8: 1554,003 ns/op
+Iteration   9: 1404,638 ns/op
+Iteration  10: 1288,857 ns/op
+Iteration  11: 1433,219 ns/op
+Iteration  12: 1502,971 ns/op
+Iteration  13: 1901,053 ns/op
+Iteration  14: 1505,962 ns/op
+Iteration  15: 1400,926 ns/op
+Iteration  16: 1981,676 ns/op
+Iteration  17: 2908,189 ns/op
+Iteration  18: 3225,395 ns/op
+Iteration  19: 1696,866 ns/op
+Iteration  20: 1687,328 ns/op
+Iteration  21: 1853,204 ns/op
+Iteration  22: 2655,768 ns/op
+Iteration  23: 1882,541 ns/op
+Iteration  24: 1548,291 ns/op
+Iteration  25: 1519,343 ns/op
+Iteration  26: 1484,115 ns/op
+Iteration  27: 1385,547 ns/op
+Iteration  28: 1435,723 ns/op
+Iteration  29: 1504,177 ns/op
+Iteration  30: 1589,698 ns/op
+Iteration  31: 1395,973 ns/op
+Iteration  32: 1272,071 ns/op
+Iteration  33: 1270,698 ns/op
+Iteration  34: 1255,972 ns/op
+Iteration  35: 1267,776 ns/op
+Iteration  36: 1477,671 ns/op
+Iteration  37: 1429,048 ns/op
+Iteration  38: 1301,774 ns/op
+Iteration  39: 1273,692 ns/op
+Iteration  40: 1271,704 ns/op
+
+# Run progress: 25,00% complete, ETA 00:02:49
+# Fork: 2 of 2
+# Warmup Iteration   1: 1382,443 ns/op
+# Warmup Iteration   2: 1333,041 ns/op
+# Warmup Iteration   3: 1278,572 ns/op
+# Warmup Iteration   4: 1306,080 ns/op
+# Warmup Iteration   5: 1281,911 ns/op
+# Warmup Iteration   6: 1322,593 ns/op
+# Warmup Iteration   7: 1302,726 ns/op
+# Warmup Iteration   8: 1274,202 ns/op
+# Warmup Iteration   9: 1249,244 ns/op
+# Warmup Iteration  10: 1276,741 ns/op
+# Warmup Iteration  11: 1370,535 ns/op
+# Warmup Iteration  12: 1272,269 ns/op
+# Warmup Iteration  13: 1427,469 ns/op
+# Warmup Iteration  14: 1505,142 ns/op
+# Warmup Iteration  15: 1452,712 ns/op
+Iteration   1: 1363,021 ns/op
+Iteration   2: 1294,302 ns/op
+Iteration   3: 1269,332 ns/op
+Iteration   4: 1279,448 ns/op
+Iteration   5: 1249,669 ns/op
+Iteration   6: 1246,157 ns/op
+Iteration   7: 1307,140 ns/op
+Iteration   8: 1255,563 ns/op
+Iteration   9: 1261,374 ns/op
+Iteration  10: 1269,466 ns/op
+Iteration  11: 1365,780 ns/op
+Iteration  12: 1367,349 ns/op
+Iteration  13: 1270,014 ns/op
+Iteration  14: 1265,334 ns/op
+Iteration  15: 1398,383 ns/op
+Iteration  16: 1441,796 ns/op
+Iteration  17: 1396,409 ns/op
+Iteration  18: 1399,285 ns/op
+Iteration  19: 1410,354 ns/op
+Iteration  20: 1395,198 ns/op
+Iteration  21: 1310,622 ns/op
+Iteration  22: 1269,300 ns/op
+Iteration  23: 1303,466 ns/op
+Iteration  24: 1258,355 ns/op
+Iteration  25: 1245,203 ns/op
+Iteration  26: 1292,871 ns/op
+Iteration  27: 1318,272 ns/op
+Iteration  28: 1266,733 ns/op
+Iteration  29: 1250,073 ns/op
+Iteration  30: 1263,314 ns/op
+Iteration  31: 1299,372 ns/op
+Iteration  32: 1250,763 ns/op
+Iteration  33: 1259,443 ns/op
+Iteration  34: 1252,610 ns/op
+Iteration  35: 1243,139 ns/op
+Iteration  36: 1256,166 ns/op
+Iteration  37: 1249,810 ns/op
+Iteration  38: 1256,779 ns/op
+Iteration  39: 1263,960 ns/op
+Iteration  40: 1259,142 ns/op
+
+
+Result "benchmark.RecensioniServiceBenchmark.testAddRecensione":
+  1448,073 ±(99.9%) 129,558 ns/op [Average]
+  (min, avg, max) = (1243,139, 1448,073, 3225,395), stdev = 339,030
+  CI (99.9%): [1318,515, 1577,631] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.RecensioniServiceBenchmark.testGetAllRecensioniSegnalate
+
+# Run progress: 50,00% complete, ETA 00:01:53
+# Fork: 1 of 2
+# Warmup Iteration   1: 4043,703 ns/op
+# Warmup Iteration   2: 4442,765 ns/op
+# Warmup Iteration   3: 4079,412 ns/op
+# Warmup Iteration   4: 3696,885 ns/op
+# Warmup Iteration   5: 3528,449 ns/op
+# Warmup Iteration   6: 4141,381 ns/op
+# Warmup Iteration   7: 3893,581 ns/op
+# Warmup Iteration   8: 3749,159 ns/op
+# Warmup Iteration   9: 3619,796 ns/op
+# Warmup Iteration  10: 3639,171 ns/op
+# Warmup Iteration  11: 3795,603 ns/op
+# Warmup Iteration  12: 3885,540 ns/op
+# Warmup Iteration  13: 3582,286 ns/op
+# Warmup Iteration  14: 3528,410 ns/op
+# Warmup Iteration  15: 3561,187 ns/op
+Iteration   1: 3587,746 ns/op
+Iteration   2: 3559,143 ns/op
+Iteration   3: 3490,854 ns/op
+Iteration   4: 3548,915 ns/op
+Iteration   5: 3510,412 ns/op
+Iteration   6: 3622,989 ns/op
+Iteration   7: 3637,794 ns/op
+Iteration   8: 3568,080 ns/op
+Iteration   9: 3591,256 ns/op
+Iteration  10: 3769,308 ns/op
+Iteration  11: 3516,496 ns/op
+Iteration  12: 3599,498 ns/op
+Iteration  13: 3524,734 ns/op
+Iteration  14: 3488,297 ns/op
+Iteration  15: 3552,395 ns/op
+Iteration  16: 3472,925 ns/op
+Iteration  17: 3839,148 ns/op
+Iteration  18: 3492,604 ns/op
+Iteration  19: 3533,490 ns/op
+Iteration  20: 3496,821 ns/op
+Iteration  21: 3516,261 ns/op
+Iteration  22: 3569,515 ns/op
+Iteration  23: 3602,752 ns/op
+Iteration  24: 3544,226 ns/op
+Iteration  25: 3655,646 ns/op
+Iteration  26: 3550,475 ns/op
+Iteration  27: 3527,455 ns/op
+Iteration  28: 3595,512 ns/op
+Iteration  29: 3608,115 ns/op
+Iteration  30: 3922,802 ns/op
+Iteration  31: 4485,783 ns/op
+Iteration  32: 4179,459 ns/op
+Iteration  33: 4521,214 ns/op
+Iteration  34: 3737,639 ns/op
+Iteration  35: 3578,924 ns/op
+Iteration  36: 3546,201 ns/op
+Iteration  37: 3577,644 ns/op
+Iteration  38: 3639,839 ns/op
+Iteration  39: 3561,502 ns/op
+Iteration  40: 3662,074 ns/op
+
+# Run progress: 75,00% complete, ETA 00:00:56
+# Fork: 2 of 2
+# Warmup Iteration   1: 3839,762 ns/op
+# Warmup Iteration   2: 3697,973 ns/op
+# Warmup Iteration   3: 3612,862 ns/op
+# Warmup Iteration   4: 3546,646 ns/op
+# Warmup Iteration   5: 3561,453 ns/op
+# Warmup Iteration   6: 3515,605 ns/op
+# Warmup Iteration   7: 3565,836 ns/op
+# Warmup Iteration   8: 3648,117 ns/op
+# Warmup Iteration   9: 3524,620 ns/op
+# Warmup Iteration  10: 3503,495 ns/op
+# Warmup Iteration  11: 3584,963 ns/op
+# Warmup Iteration  12: 3610,195 ns/op
+# Warmup Iteration  13: 3575,370 ns/op
+# Warmup Iteration  14: 3578,090 ns/op
+# Warmup Iteration  15: 3572,212 ns/op
+Iteration   1: 3735,421 ns/op
+Iteration   2: 3422,969 ns/op
+Iteration   3: 3381,162 ns/op
+Iteration   4: 3389,132 ns/op
+Iteration   5: 3456,787 ns/op
+Iteration   6: 3406,353 ns/op
+Iteration   7: 3397,884 ns/op
+Iteration   8: 3391,147 ns/op
+Iteration   9: 3547,153 ns/op
+Iteration  10: 3362,186 ns/op
+Iteration  11: 3385,360 ns/op
+Iteration  12: 3397,116 ns/op
+Iteration  13: 3415,459 ns/op
+Iteration  14: 3383,355 ns/op
+Iteration  15: 3395,573 ns/op
+Iteration  16: 3405,907 ns/op
+Iteration  17: 3842,957 ns/op
+Iteration  18: 4670,414 ns/op
+Iteration  19: 3778,548 ns/op
+Iteration  20: 3563,908 ns/op
+Iteration  21: 3423,220 ns/op
+Iteration  22: 3424,803 ns/op
+Iteration  23: 3443,560 ns/op
+Iteration  24: 3436,431 ns/op
+Iteration  25: 3402,332 ns/op
+Iteration  26: 3388,006 ns/op
+Iteration  27: 3384,665 ns/op
+Iteration  28: 3393,387 ns/op
+Iteration  29: 3421,734 ns/op
+Iteration  30: 3381,793 ns/op
+Iteration  31: 3381,043 ns/op
+Iteration  32: 3364,601 ns/op
+Iteration  33: 3424,622 ns/op
+Iteration  34: 3377,477 ns/op
+Iteration  35: 3398,934 ns/op
+Iteration  36: 3417,821 ns/op
+Iteration  37: 3722,734 ns/op
+Iteration  38: 3399,538 ns/op
+Iteration  39: 3389,189 ns/op
+Iteration  40: 3420,504 ns/op
+
+
+Result "benchmark.RecensioniServiceBenchmark.testGetAllRecensioniSegnalate":
+  3563,889 ±(99.9%) 94,081 ns/op [Average]
+  (min, avg, max) = (3362,186, 3563,889, 4670,414), stdev = 246,194
+  CI (99.9%): [3469,808, 3657,970] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:03:46
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                          Mode  Cnt     Score     Error  Units
+RecensioniServiceBenchmark.testAddRecensione       avgt   80  1448,073 ± 129,558  ns/op
+RecensioniServiceBenchmark.testGetAllRecensioniSegnalate  avgt   80  3563,889 ±  94,081  ns/op

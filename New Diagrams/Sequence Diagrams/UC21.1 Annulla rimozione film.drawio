@@ -1,0 +1,48 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.3 Chrome/130.0.6723.137 Electron/33.2.1 Safari/537.36" version="26.0.3">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="1020" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZQMrNJd17YIVapfnb067-1" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="50" y="110" width="20" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-2" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="ZQMrNJd17YIVapfnb067-1">
+          <mxGeometry x="5" y="50" width="10" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-3" value="Gestore del Catalogo" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="70" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-4" value="clickOnRemoveFilm()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.8;exitY=0.166;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" target="ZQMrNJd17YIVapfnb067-6">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="64" y="219.76" as="sourcePoint" />
+            <mxPoint x="220" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-5" value=":Film_Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="150" y="110" width="160" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-6" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="ZQMrNJd17YIVapfnb067-5">
+          <mxGeometry x="75" y="85" width="10" height="305" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-7" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="ZQMrNJd17YIVapfnb067-5">
+          <mxGeometry x="80" y="150" width="10" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-8" value="showForm()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="ZQMrNJd17YIVapfnb067-5" target="ZQMrNJd17YIVapfnb067-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="85" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="115" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZQMrNJd17YIVapfnb067-14" value="clickNo()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="65" y="290" as="sourcePoint" />
+            <mxPoint x="230" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

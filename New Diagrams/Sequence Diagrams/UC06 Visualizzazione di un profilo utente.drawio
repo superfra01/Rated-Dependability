@@ -1,0 +1,118 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.4 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.4">
+  <diagram name="Page-1" id="zOEEpCLVx3BSE4MT3N1Z">
+    <mxGraphModel dx="1020" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-40" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="528" y="870" width="20" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-41" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-40" vertex="1">
+          <mxGeometry x="5" y="60" width="10" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-42" value=":Film_Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="618" y="860" width="116" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-43" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-42" vertex="1">
+          <mxGeometry x="53" y="70" width="10" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-44" value="" style="shape=umlDestroy;whiteSpace=wrap;html=1;strokeWidth=3;targetShapes=umlLifeline;" parent="bJD-7n71ggJvzxjQHtQu-42" vertex="1">
+          <mxGeometry x="43" y="300" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-45" value="clickUserName()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="543" y="970" as="sourcePoint" />
+            <mxPoint x="675.5" y="970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-46" value=":Utenti_Control" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="798" y="860" width="110" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-47" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-46" vertex="1">
+          <mxGeometry x="50" y="110" width="10" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-48" value="getUserProfile(username)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="678" y="980" as="sourcePoint" />
+            <mxPoint x="847.5" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-49" value=":Registro_Utenti" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="968" y="860" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-50" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-49" vertex="1">
+          <mxGeometry x="45" y="110" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-51" value="getUtente(username)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" target="bJD-7n71ggJvzxjQHtQu-49" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="858" y="990" as="sourcePoint" />
+            <mxPoint x="928" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-52" value="user" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" parent="1" target="bJD-7n71ggJvzxjQHtQu-46" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1018" y="1030" as="sourcePoint" />
+            <mxPoint x="938" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-53" value=":UserProfile_Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1388" y="1200" width="130" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-54" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-53" vertex="1">
+          <mxGeometry x="60" y="50" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-55" value="Utente&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="510" y="840" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-56" value=":Catalogo_Recensioni" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1118" y="860" width="140" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-57" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="bJD-7n71ggJvzxjQHtQu-56" vertex="1">
+          <mxGeometry x="65" y="185" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-58" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="858" y="1069.5" as="sourcePoint" />
+            <mxPoint x="1183" y="1069.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-59" value="findRecensioni(user)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="bJD-7n71ggJvzxjQHtQu-58" vertex="1" connectable="0">
+          <mxGeometry x="-0.125" y="-1" relative="1" as="geometry">
+            <mxPoint x="-5" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-60" value="recensioni" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180.5" y="1090" as="sourcePoint" />
+            <mxPoint x="855.5" y="1090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bJD-7n71ggJvzxjQHtQu-61" value="showUserProfilePage(user, recensioni, films)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" parent="1" edge="1" source="bJD-7n71ggJvzxjQHtQu-46">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="858" y="1210" as="sourcePoint" />
+            <mxPoint x="1390" y="1220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lx-Z8_oRLkYsmT3eZM5w-1" value=":Catalogo" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="1288" y="860" width="100" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="Lx-Z8_oRLkYsmT3eZM5w-2" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="Lx-Z8_oRLkYsmT3eZM5w-1">
+          <mxGeometry x="45" y="265" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Lx-Z8_oRLkYsmT3eZM5w-3" value="getFilms(recensioni)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="858" y="1130" as="sourcePoint" />
+            <mxPoint x="1333" y="1130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lx-Z8_oRLkYsmT3eZM5w-4" value="films" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1" source="Lx-Z8_oRLkYsmT3eZM5w-2">
+          <mxGeometry x="0.0275" y="-9" width="160" relative="1" as="geometry">
+            <mxPoint x="1339.5" y="1159" as="sourcePoint" />
+            <mxPoint x="860" y="1159" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

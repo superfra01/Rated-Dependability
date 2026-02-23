@@ -1,0 +1,191 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2e2e2e; /* Sfondo scuro */
+    color: #fff; /* Colore testo bianco */
+}
+
+.catalog-container {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.catalog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.sorting {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    color: #ddd;
+}
+
+.sorting a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #ddd;
+    padding: 4px 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #444;
+    transition: background-color 0.2s;
+}
+
+.sorting a:hover {
+    background-color: #666;
+}
+
+.add-film-btn {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.add-film-btn:hover {
+    background-color: #e60000;
+}
+
+.film-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.film-card {
+    background-color: #3b3b3b;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.film-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+.film-poster img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid #444;
+}
+
+.film-info {
+    padding: 10px;
+    text-align: center;
+}
+
+.film-info h3 {
+    margin: 5px 0;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.film-genres {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.film-rating {
+    color: #FFD700; /* Colore giallo stella */
+    font-size: 1rem;
+}
+
+.overlay {
+    position: fixed;
+    display: none; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-content {
+    background-color: #444;
+    width: 400px;
+    max-width: 90%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    color: #fff;
+}
+
+.overlay-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.overlay-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.overlay-content label {
+    margin-top: 10px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.overlay-content input[type="text"],
+.overlay-content input[type="number"],
+.overlay-content input[type="file"] {
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #555;
+    color: #fff;
+}
+
+.overlay-content button[type="submit"] {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.overlay-content button[type="submit"]:hover {
+    background-color: #e60000;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #fff;
+}

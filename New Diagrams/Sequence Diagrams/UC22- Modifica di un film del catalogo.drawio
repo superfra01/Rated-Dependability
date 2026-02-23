@@ -1,0 +1,134 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.4 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.4">
+  <diagram name="Page-1" id="zOEEpCLVx3BSE4MT3N1Z">
+    <mxGraphModel dx="1020" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-75" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="470" y="590" width="20" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-76" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-75" vertex="1">
+          <mxGeometry x="5" y="50" width="10" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-77" value="Gestore del Catalogo" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="450" y="550" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-78" value="clickOnModifyFilm()" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;exitX=0.8;exitY=0.166;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" target="JeqI6M3YK3XUUn6Ged-Q-80" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="484" y="699.76" as="sourcePoint" />
+            <mxPoint x="640" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-79" value=":Film_Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="660" y="590" width="160" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-80" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-79" vertex="1">
+          <mxGeometry x="75" y="110" width="10" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-81" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-79" vertex="1">
+          <mxGeometry x="80" y="150" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-82" value="showForm()" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" parent="JeqI6M3YK3XUUn6Ged-Q-79" target="JeqI6M3YK3XUUn6Ged-Q-81" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="85" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="115" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-83" value="" style="shape=umlDestroy;whiteSpace=wrap;html=1;strokeWidth=3;targetShapes=umlLifeline;" parent="JeqI6M3YK3XUUn6Ged-Q-79" vertex="1">
+          <mxGeometry x="65" y="405" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-84" value=":Film_Control" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="980" y="590" width="130" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-85" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-84" vertex="1">
+          <mxGeometry x="60" y="100" width="10" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-86" value="verify(t&lt;span style=&quot;text-align: center;&quot;&gt;itolo, descrizione, anno, attori, locandina&lt;/span&gt;)" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" parent="JeqI6M3YK3XUUn6Ged-Q-84" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="70" y="230" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="100" y="260" />
+            </Array>
+            <mxPoint x="75" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-89" value="fillForm(titolo, descrizione, anno, attori, locandina)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" source="JeqI6M3YK3XUUn6Ged-Q-76" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="490" y="765" as="sourcePoint" />
+            <mxPoint x="740" y="764.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-90" value="modifyFilm(film,titolo, descrizione, anno, attori, locandina)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" target="JeqI6M3YK3XUUn6Ged-Q-85" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="750" y="799.44" as="sourcePoint" />
+            <mxPoint x="944.5" y="799.44" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-91" value="modificaFilm(titolo, descrizione, anno, attori, locandina)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1" target="JeqI6M3YK3XUUn6Ged-Q-96">
+          <mxGeometry x="0.0061" width="80" relative="1" as="geometry">
+            <mxPoint x="1050" y="870" as="sourcePoint" />
+            <mxPoint x="1365" y="870" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-92" value="submit" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="485" y="790" as="sourcePoint" />
+            <mxPoint x="740" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-93" value=":CatalogoRecensioni" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1540" y="590" width="130" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-94" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-93" vertex="1">
+          <mxGeometry x="60" y="340" width="10" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-95" value=":Catalogo" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1430" y="590" width="100" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-96" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-95" vertex="1">
+          <mxGeometry x="45" y="260" width="10" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-97" value="getFilm(idFilm)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1050" y="910" as="sourcePoint" />
+            <mxPoint x="1475" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-98" value="film" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1475" y="940" as="sourcePoint" />
+            <mxPoint x="1050" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-99" value="getRecensioni(film)" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" parent="1" target="JeqI6M3YK3XUUn6Ged-Q-94" edge="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1050" y="970" as="sourcePoint" />
+            <mxPoint x="1585" y="970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-100" value="recensioni" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" parent="1" source="JeqI6M3YK3XUUn6Ged-Q-94" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1585" y="990" as="sourcePoint" />
+            <mxPoint x="1050" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-101" value=":Film_Boundary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="1650" y="1010" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-102" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="JeqI6M3YK3XUUn6Ged-Q-101" vertex="1">
+          <mxGeometry x="45" y="50" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JeqI6M3YK3XUUn6Ged-Q-103" value="CreateFilm(film, recensioni)" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0;entryY=0.033;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="JeqI6M3YK3XUUn6Ged-Q-85" target="JeqI6M3YK3XUUn6Ged-Q-101" edge="1">
+          <mxGeometry y="10" width="160" relative="1" as="geometry">
+            <mxPoint x="995" y="1020" as="sourcePoint" />
+            <mxPoint x="1340" y="1020" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
