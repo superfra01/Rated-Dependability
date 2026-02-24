@@ -150,7 +150,7 @@ public class CatalogoServiceBenchmark {
     }
 
     @Benchmark
-    public void testAddFilmMultiGenere(Blackhole bh) {
+    public void testAddFilm(Blackhole bh) {
         // Test per valutare le performance del ciclo di inserimento generi
         service.addFilm(1999, "Keanu Reeves", 136, generiTest, new byte[0], "Matrix", "Wachowski", "Trama test");
         bh.consume(true);
