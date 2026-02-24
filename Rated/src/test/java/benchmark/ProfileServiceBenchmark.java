@@ -1,6 +1,11 @@
 package benchmark;
 
+import model.DAO.InteresseDAO;
+import model.DAO.PreferenzaDAO;
 import model.DAO.UtenteDAO;
+import model.DAO.VistoDAO;
+import model.Entity.FilmBean;
+import model.Entity.PreferenzaBean;
 import model.Entity.RecensioneBean;
 import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Utenti.service.ProfileService;
@@ -10,7 +15,6 @@ import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import utilities.PasswordUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,65 +30,108 @@ import java.util.concurrent.TimeUnit;
 public class ProfileServiceBenchmark {
 
     private ProfileService service;
-    
-    // Dati per i test
-    private List<RecensioneBean> listaRecensioni;
-    private final String EMAIL_TEST = "mario.rossi@test.com";
-    private final String USERNAME_TEST = "SuperMario";
-    private final String PASSWORD_TEST = "PasswordSicura123";
+    private List<RecensioneBean> listaRecensioniTest;
+    private String emailTest;
+    private String[] generiTest;
 
     @Setup(Level.Trial)
     public void setup() {
-        // 1. Creiamo il Mock DAO usando il costruttore "sicuro" (true)
-        final UtenteDAO mockDao = new UtenteDAO(true) { // <--- IMPORTANTE: true
+        // 1. MOCK UTENTE DAO
+        final UtenteDAO mockUtenteDao = new UtenteDAO() {
             @Override
             public UtenteBean findByEmail(String email) {
-                final UtenteBean u = new UtenteBean();
+                UtenteBean u = new UtenteBean();
                 u.setEmail(email);
                 u.setUsername("User_" + email);
-                u.setPassword("oldHash"); 
                 return u;
             }
-
             @Override
             public UtenteBean findByUsername(String username) {
-                return null; // Username libero
+                UtenteBean u = new UtenteBean();
+                u.setUsername(username);
+                return u;
             }
-
-            @Override
-            public void update(UtenteBean user) {
-                // Non fa nulla
-            }
+            @Override public void update(UtenteBean u) {}
         };
 
-        // 2. INIEZIONE TRAMITE COSTRUTTORE
-        this.service = new ProfileService(mockDao);
+        // 2. MOCK PREFERENZA DAO
+        final PreferenzaDAO mockPreferenzaDao = new PreferenzaDAO() {
+            @Override
+            public List<PreferenzaBean> findByEmail(String email) {
+                List<PreferenzaBean> list = new ArrayList<>();
+                list.add(new PreferenzaBean(email, "Azione"));
+                list.add(new PreferenzaBean(email, "Fantascienza"));
+                return list;
+            }
+            @Override public void save(PreferenzaBean p) {}
+            @Override public void deleteByEmail(String email) {}
+        };
 
-        // 3. Prepariamo la lista per testare il ciclo getUsers
-        this.listaRecensioni = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        // 3. MOCK INTERESSE DAO (Watchlist)
+        final InteresseDAO mockInteresseDao = new InteresseDAO() {
+            @Override
+            public List<FilmBean> doRetrieveFilmsByUtente(String username) {
+                List<FilmBean> list = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    list.add(new FilmBean());
+                }
+                return list;
+            }
+            @Override public void save(model.Entity.InteresseBean i) {}
+            @Override public void delete(String email, int idFilm) {}
+        };
+
+        // 4. MOCK VISTO DAO
+        final VistoDAO mockVistoDao = new VistoDAO() {
+            @Override
+            public List<FilmBean> doRetrieveFilmsByUtente(String username) {
+                List<FilmBean> list = new ArrayList<>();
+                for (int i = 0; i < 20; i++) {
+                    list.add(new FilmBean());
+                }
+                return list;
+            }
+            @Override public void save(model.Entity.VistoBean v) {}
+            @Override public void delete(String email, int idFilm) {}
+        };
+
+        // 5. INIEZIONE NEL SERVICE
+        this.service = new ProfileService(mockUtenteDao, mockPreferenzaDao, mockInteresseDao, mockVistoDao);
+
+        // 6. PREPARAZIONE DATI PER I TEST
+        this.listaRecensioniTest = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
             final RecensioneBean r = new RecensioneBean();
-            r.setEmail("user" + i + "@test.com"); // Email diverse
-            listaRecensioni.add(r);
+            r.setEmail("utente" + i + "@email.com");
+            listaRecensioniTest.add(r);
         }
+        
+        this.emailTest = "mario.rossi@email.com";
+        this.generiTest = new String[]{"Azione", "Horror", "Commedia", "Drammatico"};
     }
 
     @Benchmark
-    public void testProfileUpdate(Blackhole bh) {
-        final UtenteBean u = service.ProfileUpdate(USERNAME_TEST, EMAIL_TEST, PASSWORD_TEST, "Nuova Bio", null);
-        bh.consume(u);
+    public void testGetUsersByRecensioni(Blackhole bh) {
+        final HashMap<String, String> result = service.getUsers(listaRecensioniTest);
+        bh.consume(result);
     }
 
     @Benchmark
-    public void testPasswordUpdate(Blackhole bh) {
-        final UtenteBean u = service.PasswordUpdate(EMAIL_TEST, PASSWORD_TEST);
-        bh.consume(u);
+    public void testGetPreferenze(Blackhole bh) {
+        final List<String> result = service.getPreferenze(emailTest);
+        bh.consume(result);
     }
 
     @Benchmark
-    public void testGetUsersMap(Blackhole bh) {
-        final HashMap<String, String> map = service.getUsers(listaRecensioni);
-        bh.consume(map);
+    public void testAggiornaPreferenzeUtente(Blackhole bh) {
+        service.aggiornaPreferenzeUtente(emailTest, generiTest);
+        bh.consume(true);
+    }
+
+    @Benchmark
+    public void testRetrieveWatchedFilms(Blackhole bh) {
+        final List<FilmBean> result = service.retrieveWatchedFilms("usernameTest");
+        bh.consume(result);
     }
 
     public static void main(String[] args) throws Exception {

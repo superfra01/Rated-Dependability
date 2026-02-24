@@ -1,8 +1,12 @@
 package benchmark;
 
 import model.DAO.FilmDAO;
+import model.DAO.FilmGenereDAO;
+import model.DAO.GenereDAO;
 import model.Entity.FilmBean;
+import model.Entity.FilmGenereBean;
 import model.Entity.RecensioneBean;
+import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 
 import org.openjdk.jmh.annotations.*;
@@ -26,15 +30,15 @@ public class CatalogoServiceBenchmark {
     private CatalogoService service;
     private List<RecensioneBean> listaRecensioniTest;
     private String nomeDaCercare;
+    private UtenteBean utenteTest;
+    private String[] generiTest;
 
     @Setup(Level.Trial)
     public void setup() {
-        // 1. CREIAMO IL MOCK DI FILM DAO
-        final FilmDAO mockDao = new FilmDAO(true) {
-            
+        // 1. MOCK FILM DAO
+        final FilmDAO mockFilmDao = new FilmDAO() {
             @Override
             public List<FilmBean> findAll() {
-                // Simuliamo una lista di 100 film
                 final List<FilmBean> list = new ArrayList<>();
                 for (int i = 0; i < 100; i++) {
                     final FilmBean f = new FilmBean();
@@ -47,7 +51,6 @@ public class CatalogoServiceBenchmark {
 
             @Override
             public FilmBean findById(int id) {
-                // Ritorniamo un film finto immediato
                 final FilmBean f = new FilmBean();
                 f.setIdFilm(id);
                 f.setNome("Film Trovato " + id);
@@ -56,24 +59,57 @@ public class CatalogoServiceBenchmark {
 
             @Override
             public List<FilmBean> findByName(String name) {
-                // Simuliamo il risultato di una ricerca
                 final List<FilmBean> list = new ArrayList<>();
                 final FilmBean f = new FilmBean();
+                f.setIdFilm(1);
                 f.setNome(name);
                 list.add(f);
                 return list;
             }
 
-            // Override dei metodi di scrittura per non fare nulla
+            @Override
+            public List<FilmBean> doRetrieveConsigliati(String email) {
+                final List<FilmBean> list = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    final FilmBean f = new FilmBean();
+                    f.setIdFilm(i);
+                    list.add(f);
+                }
+                return list;
+            }
+
             @Override public void save(FilmBean f) {}
             @Override public void update(FilmBean f) {}
             @Override public void delete(int id) {}
         };
 
-        // 2. INIEZIONE DEL MOCK NEL SERVICE
-        this.service = new CatalogoService(mockDao);
+        // 2. MOCK FILMGENERE DAO
+        final FilmGenereDAO mockFilmGenereDao = new FilmGenereDAO() {
+            @Override
+            public List<FilmGenereBean> findByIdFilm(int id) {
+                final List<FilmGenereBean> list = new ArrayList<>();
+                list.add(new FilmGenereBean(id, "Azione"));
+                return list;
+            }
+            @Override public void save(FilmGenereBean fg) {}
+            @Override public void deleteByIdFilm(int id) {}
+        };
 
-        // 3. PREPARAZIONE DATI PER I TEST
+        // 3. MOCK GENERE DAO
+        final GenereDAO mockGenereDao = new GenereDAO() {
+            @Override
+            public List<String> findAllString() {
+                List<String> list = new ArrayList<>();
+                list.add("Azione");
+                list.add("Commedia");
+                return list;
+            }
+        };
+
+        // 4. INIEZIONE NEL SERVICE
+        this.service = new CatalogoService(mockFilmDao, mockFilmGenereDao, mockGenereDao);
+
+        // 5. PREPARAZIONE DATI PER I TEST
         this.listaRecensioniTest = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             final RecensioneBean r = new RecensioneBean();
@@ -82,6 +118,11 @@ public class CatalogoServiceBenchmark {
         }
 
         this.nomeDaCercare = "Matrix";
+        
+        this.utenteTest = new UtenteBean();
+        this.utenteTest.setEmail("test@email.com");
+        
+        this.generiTest = new String[]{"Azione", "Fantascienza", "Thriller"};
     }
 
     @Benchmark
@@ -100,6 +141,19 @@ public class CatalogoServiceBenchmark {
     public void testRicercaFilm(Blackhole bh) {
         final List<FilmBean> result = service.ricercaFilm(nomeDaCercare);
         bh.consume(result);
+    }
+    
+    @Benchmark
+    public void testGetFilmCompatibili(Blackhole bh) {
+        final List<FilmBean> result = service.getFilmCompatibili(utenteTest);
+        bh.consume(result);
+    }
+
+    @Benchmark
+    public void testAddFilmMultiGenere(Blackhole bh) {
+        // Test per valutare le performance del ciclo di inserimento generi
+        service.addFilm(1999, "Keanu Reeves", 136, generiTest, new byte[0], "Matrix", "Wachowski", "Trama test");
+        bh.consume(true);
     }
 
     public static void main(String[] args) throws Exception {
