@@ -6,12 +6,13 @@
   <packaging>war</packaging>
 
   <properties>
-    <maven.compiler.source>15</maven.compiler.source>
-    <maven.compiler.target>15</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
+  	
     <dependency>
         <groupId>org.openjdk.jmh</groupId>
         <artifactId>jmh-core</artifactId>
@@ -109,11 +110,42 @@
   <build>
     <finalName>rated-app</finalName>
     <plugins>
+    	<plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.15.8</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>model.*</param>
+                        <param>sottosistemi.*</param>
+                        <param>utilities.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>unit.*</param>
+                        <param>integration.*</param>
+                    </targetTests>
+                    <outputFormats>
+                        <value>HTML</value>
+                    </outputFormats>
+                    <additionalClasspathElements>
+				        <additionalClasspathElement>${project.build.outputDirectory}</additionalClasspathElement>
+				    </additionalClasspathElements>
+				    <useClasspathJar>true</useClasspathJar>
+
+                </configuration>
+            </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>15</release>
+          <release>17</release>
         </configuration>
       </plugin>
 
