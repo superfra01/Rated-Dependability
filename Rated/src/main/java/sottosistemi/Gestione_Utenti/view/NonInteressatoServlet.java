@@ -14,12 +14,21 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 @WebServlet("/NonInteressatoServlet")
 public class NonInteressatoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    
+    // VARIABILE DI ISTANZA
+    private ProfileService profileService;
 
     public NonInteressatoServlet() {
         super();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void init() {
+        // Inizializzazione spostata qui
+        profileService = new ProfileService();
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
@@ -32,7 +41,6 @@ public class NonInteressatoServlet extends HttpServlet {
             return;
         }
 
-        // 1. Recupera ID dal parametro della request (inviato dal JS)
         String filmIdStr = request.getParameter("filmId");
         int filmId = -1;
         
@@ -47,13 +55,10 @@ public class NonInteressatoServlet extends HttpServlet {
         }
 
         if (filmId != -1) {
-            ProfileService profileService = new ProfileService();
-            
+            // FIX: Usiamo la variabile di istanza
             boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
             profileService.ignoreFilm(utenteSessione.getEmail(), filmId);
-
             
-            // Successo
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -61,7 +66,7 @@ public class NonInteressatoServlet extends HttpServlet {
         }
     }
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("/WEB-INF/jsp/HomePage.jsp");
     }
 }

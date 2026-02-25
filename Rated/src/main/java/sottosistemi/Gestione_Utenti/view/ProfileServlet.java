@@ -20,47 +20,52 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private ProfileService ProfileService; 
+    private static final long serialVersionUID = 1L;
+    
+    // VARIABILI DI ISTANZA (Ora iniettabili per il Test)
+    private ProfileService profileService; 
+    private RecensioniService recensioniService;
+    private CatalogoService catalogoService;
 
     @Override
     public void init() {
-    	ProfileService = new ProfileService();
+        profileService = new ProfileService();
+        recensioniService = new RecensioniService();
+        catalogoService = new CatalogoService();
     }
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-    	final HttpSession session = request.getSession(true);
-    	final String userName = request.getParameter("visitedUser");
-    	
-    	final UtenteBean visitedUser = ProfileService.findByUsername(userName);
-        if(visitedUser!=null) {
-        	session.setAttribute("visitedUser", visitedUser);
-        	
-        	final RecensioniService RecensioniService = new RecensioniService();
-        	final List<RecensioneBean> recensioni = RecensioniService.FindRecensioni(visitedUser.getEmail());
-        	session.setAttribute("recensioni", recensioni);
-        	
-        	final CatalogoService CatalogoService = new CatalogoService();
-        	final HashMap<Integer, FilmBean> FilmMap = CatalogoService.getFilms(recensioni);
-        	session.setAttribute("films", FilmMap);
+        final HttpSession session = request.getSession(true);
+        final String userName = request.getParameter("visitedUser");
         
-        	CatalogoService catalogoService = new CatalogoService();
-        	List<String> generi = catalogoService.getAllGeneri();
-        	session.setAttribute("allGenres", generi);
-        	
-        	List<String> userGenres = ProfileService.getPreferenze(visitedUser.getEmail());
-        	session.setAttribute("userGenres", userGenres);
-        	request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);	
+        final UtenteBean visitedUser = profileService.findByUsername(userName);
+        
+        if(visitedUser != null) {
+            session.setAttribute("visitedUser", visitedUser);
+            
+            // FIX: Usiamo le variabili di istanza al posto di "new ..."
+            final List<RecensioneBean> recensioni = recensioniService.FindRecensioni(visitedUser.getEmail());
+            session.setAttribute("recensioni", recensioni);
+            
+            final HashMap<Integer, FilmBean> FilmMap = catalogoService.getFilms(recensioni);
+            session.setAttribute("films", FilmMap);
+        
+            List<String> generi = catalogoService.getAllGeneri();
+            session.setAttribute("allGenres", generi);
+            
+            List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
+            session.setAttribute("userGenres", userGenres);
+            
+            request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
         } else {
-        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("You can't access the profile page if visitedUser is not set");
         }
     }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-    	
+        
     }
 }

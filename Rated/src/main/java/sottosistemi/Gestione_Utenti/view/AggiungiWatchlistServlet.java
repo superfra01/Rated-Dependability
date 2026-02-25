@@ -15,11 +15,18 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class AggiungiWatchlistServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private ProfileService profileService;
+
     public AggiungiWatchlistServlet() {
         super();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void init() {
+        profileService = new ProfileService();
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
@@ -48,9 +55,6 @@ public class AggiungiWatchlistServlet extends HttpServlet {
         }
 
         if (filmId != -1) {
-            ProfileService profileService = new ProfileService();
-            
-            try {
                 // Logica di toggle (aggiungi/rimuovi)
                 boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
                 
@@ -64,21 +68,14 @@ public class AggiungiWatchlistServlet extends HttpServlet {
                 
                 response.setStatus(HttpServletResponse.SC_OK); // 200
                 
-            } catch (Exception e) {
-                // Log dell'errore lato server (utile per l'amministratore/sviluppatore)
-                e.printStackTrace();
-                
-                // Risposta generica per l'utente (sicurezza)
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
-                response.getWriter().write("Errore interno del server. Riprova più tardi.");
-            }
+            
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
             response.getWriter().write("Impossibile identificare il film.");
         }
     }
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("catalogo.jsp");
     }
 }

@@ -17,11 +17,22 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class SegnaComeVistoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    // VARIABILI DI ISTANZA
+    private ProfileService profileService;
+    private RecensioniService recensioniService;
+
     public SegnaComeVistoServlet() {
         super();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void init() {
+        // Inizializzazione spostata qui
+        profileService = new ProfileService();
+        recensioniService = new RecensioniService();
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
@@ -47,9 +58,7 @@ public class SegnaComeVistoServlet extends HttpServlet {
         }
 
         if (filmId != -1) {
-            ProfileService profileService = new ProfileService();
-            RecensioniService recensioniService = new RecensioniService();
-            
+            // FIX: Usiamo le variabili di istanza, non creiamo nuovi oggetti locali
             boolean giaVisto = profileService.isFilmVisto(utenteSessione.getEmail(), filmId);
             
             if (giaVisto) {
@@ -76,7 +85,7 @@ public class SegnaComeVistoServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("catalogo.jsp");
     }
 }

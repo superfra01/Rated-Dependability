@@ -18,12 +18,13 @@ import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 @WebServlet("")
 public class HomePageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    CatalogoService catalogoService;
     public HomePageServlet() {
-        super();
+    	super();
+    	catalogoService = new CatalogoService();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         
         // Recupera l'utente dalla sessione
@@ -33,9 +34,9 @@ public class HomePageServlet extends HttpServlet {
         
         // Se l'utente è loggato, calcola i consigliati
         if (utente != null) {
-            CatalogoService service = new CatalogoService();
+            
             // La Servlet interagisce SOLO con il Service, mai con il DAO direttamente
-            filmConsigliati = service.getFilmCompatibili(utente);
+            filmConsigliati = catalogoService.getFilmCompatibili(utente);
         } else {
             // Opzionale: Se l'utente non è loggato, potresti voler mostrare i film più popolari generici
             // o lasciare la lista vuota. Qui la lasciamo vuota o gestiamo diversamente.
@@ -48,7 +49,7 @@ public class HomePageServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/HomePage.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

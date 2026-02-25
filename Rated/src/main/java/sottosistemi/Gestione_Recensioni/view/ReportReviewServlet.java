@@ -37,7 +37,6 @@ public class ReportReviewServlet extends HttpServlet {
 		final String emailRecensore = request.getParameter("reviewerEmail");
 		final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
 		
-		final RecensioniService RecensioniService = new RecensioniService(); // Variabile locale final
 		RecensioniService.report(email, emailRecensore, idFilm);
 		response.sendRedirect(request.getContextPath() + "/film?idFilm=" + idFilm);
 	}

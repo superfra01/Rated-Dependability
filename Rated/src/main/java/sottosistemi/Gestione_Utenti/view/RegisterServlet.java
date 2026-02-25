@@ -25,40 +25,44 @@ import javax.servlet.http.Part;
 @WebServlet("/register")
 @MultipartConfig(maxFileSize = 16177215)
 public class RegisterServlet extends HttpServlet {
-	private static final long serialVersionUID = 1879879L;
-	private AutenticationService authService;
-	private ProfileService profService;
+    private static final long serialVersionUID = 1879879L;
+    
+    // Variabili di istanza
+    private AutenticationService authService;
+    private ProfileService profService;
+    private CatalogoService catalogoService; // Aggiunto per il refactoring
 
     @Override
     public void init() {
         authService = new AutenticationService();
         profService = new ProfileService();
+        catalogoService = new CatalogoService(); // Inizializzazione spostata qui
     }
 
     @Override
     public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-    	final HttpSession session = req.getSession(true);
-    	CatalogoService catalogoService = new CatalogoService();
-    	List<String> generi = catalogoService.getAllGeneri();
-    	session.setAttribute("genres", generi);
-    	req.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(req, resp);
+        final HttpSession session = req.getSession(true);
         
+        // FIX: Rimosso "new CatalogoService()" locale. Usiamo la variabile di istanza.
+        List<String> generi = catalogoService.getAllGeneri();
+        session.setAttribute("genres", generi);
+        req.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(req, resp);
     }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-    	final String username = request.getParameter("username");
-    	final String email = request.getParameter("email");
-    	final String password = request.getParameter("password");
-    	final String confirmPassword = request.getParameter("confirm_password");
-    	final String biography = request.getParameter("biography");
-    	
-    	final String[] generi= request.getParameterValues("genres");
-    	
-    	byte[] icon = null; // Riassegnata
-    	
-    	final Part filePart = request.getPart("profile_icon");
+        final String username = request.getParameter("username");
+        final String email = request.getParameter("email");
+        final String password = request.getParameter("password");
+        final String confirmPassword = request.getParameter("confirm_password");
+        final String biography = request.getParameter("biography");
+        
+        final String[] generi= request.getParameterValues("genres");
+        
+        byte[] icon = null;
+        
+        final Part filePart = request.getPart("profile_icon");
         if (filePart != null && filePart.getSize() > 0) {
              try (final InputStream inputStream = filePart.getInputStream()) {
                  icon = inputStream.readAllBytes();
@@ -72,13 +76,15 @@ public class RegisterServlet extends HttpServlet {
 
             final UtenteBean utente = authService.register(username, email, password, biography, icon);
             
-            for(String genere : generi) {
-            	profService.addPreferenza(email, genere);
-            	
+            // Assicuriamoci che i generi non siano nulli prima di iterare (buona pratica)
+            if (generi != null) {
+                for(String genere : generi) {
+                    profService.addPreferenza(email, genere);
+                }
             }
 
             if (utente != null) {
-                response.sendRedirect(request.getContextPath() + "/login"); // Redirect to login after successful registration
+                response.sendRedirect(request.getContextPath() + "/login");
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("Registration failed. User may already exist.");

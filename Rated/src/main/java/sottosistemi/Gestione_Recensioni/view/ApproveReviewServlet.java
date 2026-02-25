@@ -36,9 +36,6 @@ public class ApproveReviewServlet extends HttpServlet {
 			final String userEmail = request.getParameter("ReviewUserEmail");
 			final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
 			
-			// Nota: qui veniva creata una nuova istanza locale che nascondeva il campo della classe.
-			// Ho mantenuto la logica originale ma reso la variabile final.
-			final RecensioniService RecensioniService = new RecensioniService(); 
 			RecensioniService.deleteReports(userEmail, idFilm);
 
 			response.sendRedirect(request.getContextPath() + "/moderator");

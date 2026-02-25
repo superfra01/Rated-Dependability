@@ -15,29 +15,33 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/DeleteReview")
 public class DeleteReviewServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ProfileService ProfileService;
+    private static final long serialVersionUID = 1L;
+    
+    // Variabili di istanza
+    private ProfileService ProfileService;
+    private RecensioniService RecensioniService;
 
-	@Override
-	public void init() {
-		ProfileService = new ProfileService();
-	}
+    @Override
+    public void init() {
+        ProfileService = new ProfileService();
+        RecensioniService = new RecensioniService();
+    }
 
-	@Override
-	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-	}
+    }
 
-	@Override
-	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-		final HttpSession session = request.getSession(true);
-		final String email = ((UtenteBean) session.getAttribute("user")).getEmail();
-		final int ID_Film = Integer.parseInt(request.getParameter("DeleteFilmID"));
+        final HttpSession session = request.getSession(true);
+        final UtenteBean user = (UtenteBean) session.getAttribute("user");
+        final String email = user.getEmail();
+        final int ID_Film = Integer.parseInt(request.getParameter("DeleteFilmID"));
 
-		final RecensioniService RecensioniService = new RecensioniService();
-		RecensioniService.deleteRecensione(email, ID_Film);
+        RecensioniService.deleteRecensione(email, ID_Film);
 
-		response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + ((UtenteBean) session.getAttribute("user")).getUsername());
-	}
+        response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + user.getUsername());
+    }
 }
