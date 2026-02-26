@@ -105,7 +105,6 @@ CREATE TABLE Film_Genere (
     FOREIGN KEY (Nome_Genere) REFERENCES Genere(Nome) ON DELETE CASCADE
 );
 
-
 -- INSERIMENTO DATI
 
 -- 1. Generi
