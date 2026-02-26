@@ -8,129 +8,131 @@
 # Timeout: 10 min per iteration
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
-# Benchmark: benchmark.AutenticationServiceBenchmark.testLoginSuccess
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkLoginSuccess
 
-# Run progress: 0,00% complete, ETA 00:09:10
+# Run progress: 0,00% complete, ETA 00:12:50
 # Fork: 1 of 2
-# Warmup Iteration   1: 777,320 ns/op
-# Warmup Iteration   2: 682,122 ns/op
-# Warmup Iteration   3: 689,462 ns/op
-# Warmup Iteration   4: 677,673 ns/op
-# Warmup Iteration   5: 667,189 ns/op
-# Warmup Iteration   6: 687,779 ns/op
-# Warmup Iteration   7: 701,452 ns/op
-# Warmup Iteration   8: 691,143 ns/op
-# Warmup Iteration   9: 690,978 ns/op
-# Warmup Iteration  10: 690,287 ns/op
-# Warmup Iteration  11: 665,625 ns/op
-# Warmup Iteration  12: 688,546 ns/op
-# Warmup Iteration  13: 685,870 ns/op
-# Warmup Iteration  14: 684,804 ns/op
-# Warmup Iteration  15: 684,878 ns/op
-Iteration   1: 782,262 ns/op
-Iteration   2: 716,539 ns/op
-Iteration   3: 732,784 ns/op
-Iteration   4: 714,552 ns/op
-Iteration   5: 716,220 ns/op
-Iteration   6: 686,262 ns/op
-Iteration   7: 681,151 ns/op
-Iteration   8: 681,381 ns/op
-Iteration   9: 705,495 ns/op
-Iteration  10: 697,955 ns/op
-Iteration  11: 671,037 ns/op
-Iteration  12: 672,075 ns/op
-Iteration  13: 676,776 ns/op
-Iteration  14: 689,405 ns/op
-Iteration  15: 680,728 ns/op
-Iteration  16: 675,923 ns/op
-Iteration  17: 692,718 ns/op
-Iteration  18: 688,871 ns/op
-Iteration  19: 687,997 ns/op
-Iteration  20: 689,443 ns/op
-Iteration  21: 696,825 ns/op
-Iteration  22: 686,285 ns/op
-Iteration  23: 802,025 ns/op
-Iteration  24: 759,401 ns/op
-Iteration  25: 936,823 ns/op
-Iteration  26: 788,210 ns/op
-Iteration  27: 659,003 ns/op
-Iteration  28: 672,358 ns/op
-Iteration  29: 678,757 ns/op
-Iteration  30: 656,945 ns/op
-Iteration  31: 642,315 ns/op
-Iteration  32: 654,599 ns/op
-Iteration  33: 659,392 ns/op
-Iteration  34: 640,412 ns/op
-Iteration  35: 641,797 ns/op
-Iteration  36: 638,623 ns/op
-Iteration  37: 638,942 ns/op
-Iteration  38: 638,396 ns/op
-Iteration  39: 637,655 ns/op
-Iteration  40: 641,607 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+8053,280 ns/op
+# Warmup Iteration   2: 5081,789 ns/op
+# Warmup Iteration   3: 4957,118 ns/op
+# Warmup Iteration   4: 4991,029 ns/op
+# Warmup Iteration   5: 4969,356 ns/op
+# Warmup Iteration   6: 4984,605 ns/op
+# Warmup Iteration   7: 4945,962 ns/op
+# Warmup Iteration   8: 4965,444 ns/op
+# Warmup Iteration   9: 4967,942 ns/op
+# Warmup Iteration  10: 4984,723 ns/op
+# Warmup Iteration  11: 4989,320 ns/op
+# Warmup Iteration  12: 4968,642 ns/op
+# Warmup Iteration  13: 4962,411 ns/op
+# Warmup Iteration  14: 5018,502 ns/op
+# Warmup Iteration  15: 4993,989 ns/op
+Iteration   1: 4966,255 ns/op
+Iteration   2: 4952,584 ns/op
+Iteration   3: 4952,805 ns/op
+Iteration   4: 4994,291 ns/op
+Iteration   5: 4987,389 ns/op
+Iteration   6: 4961,429 ns/op
+Iteration   7: 4987,419 ns/op
+Iteration   8: 4977,276 ns/op
+Iteration   9: 5001,063 ns/op
+Iteration  10: 4963,262 ns/op
+Iteration  11: 4957,912 ns/op
+Iteration  12: 4986,072 ns/op
+Iteration  13: 4979,990 ns/op
+Iteration  14: 4960,654 ns/op
+Iteration  15: 4955,010 ns/op
+Iteration  16: 4944,424 ns/op
+Iteration  17: 4983,961 ns/op
+Iteration  18: 4982,724 ns/op
+Iteration  19: 4988,644 ns/op
+Iteration  20: 4961,929 ns/op
+Iteration  21: 4967,622 ns/op
+Iteration  22: 4958,013 ns/op
+Iteration  23: 4977,262 ns/op
+Iteration  24: 4962,701 ns/op
+Iteration  25: 4938,036 ns/op
+Iteration  26: 4973,317 ns/op
+Iteration  27: 4977,080 ns/op
+Iteration  28: 4969,176 ns/op
+Iteration  29: 4975,249 ns/op
+Iteration  30: 4982,655 ns/op
+Iteration  31: 4965,911 ns/op
+Iteration  32: 4980,583 ns/op
+Iteration  33: 4972,154 ns/op
+Iteration  34: 4999,747 ns/op
+Iteration  35: 5079,999 ns/op
+Iteration  36: 4960,565 ns/op
+Iteration  37: 4992,147 ns/op
+Iteration  38: 4960,418 ns/op
+Iteration  39: 4994,596 ns/op
+Iteration  40: 4983,862 ns/op
 
-# Run progress: 10,00% complete, ETA 00:08:24
+# Run progress: 7,14% complete, ETA 00:12:23
 # Fork: 2 of 2
-# Warmup Iteration   1: 743,335 ns/op
-# Warmup Iteration   2: 664,890 ns/op
-# Warmup Iteration   3: 644,175 ns/op
-# Warmup Iteration   4: 642,247 ns/op
-# Warmup Iteration   5: 644,530 ns/op
-# Warmup Iteration   6: 644,644 ns/op
-# Warmup Iteration   7: 644,280 ns/op
-# Warmup Iteration   8: 641,151 ns/op
-# Warmup Iteration   9: 645,206 ns/op
-# Warmup Iteration  10: 644,529 ns/op
-# Warmup Iteration  11: 645,036 ns/op
-# Warmup Iteration  12: 645,050 ns/op
-# Warmup Iteration  13: 653,309 ns/op
-# Warmup Iteration  14: 642,605 ns/op
-# Warmup Iteration  15: 644,250 ns/op
-Iteration   1: 658,345 ns/op
-Iteration   2: 638,138 ns/op
-Iteration   3: 637,398 ns/op
-Iteration   4: 638,791 ns/op
-Iteration   5: 636,953 ns/op
-Iteration   6: 632,588 ns/op
-Iteration   7: 635,293 ns/op
-Iteration   8: 634,206 ns/op
-Iteration   9: 635,483 ns/op
-Iteration  10: 633,678 ns/op
-Iteration  11: 640,069 ns/op
-Iteration  12: 637,614 ns/op
-Iteration  13: 639,116 ns/op
-Iteration  14: 638,986 ns/op
-Iteration  15: 635,770 ns/op
-Iteration  16: 639,006 ns/op
-Iteration  17: 661,895 ns/op
-Iteration  18: 650,677 ns/op
-Iteration  19: 689,887 ns/op
-Iteration  20: 657,642 ns/op
-Iteration  21: 654,496 ns/op
-Iteration  22: 684,922 ns/op
-Iteration  23: 665,744 ns/op
-Iteration  24: 686,217 ns/op
-Iteration  25: 674,960 ns/op
-Iteration  26: 657,867 ns/op
-Iteration  27: 670,362 ns/op
-Iteration  28: 687,358 ns/op
-Iteration  29: 654,877 ns/op
-Iteration  30: 655,991 ns/op
-Iteration  31: 655,846 ns/op
-Iteration  32: 676,476 ns/op
-Iteration  33: 656,954 ns/op
-Iteration  34: 658,165 ns/op
-Iteration  35: 659,284 ns/op
-Iteration  36: 657,754 ns/op
-Iteration  37: 673,879 ns/op
-Iteration  38: 659,675 ns/op
-Iteration  39: 657,945 ns/op
-Iteration  40: 654,396 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+7959,393 ns/op
+# Warmup Iteration   2: 5141,293 ns/op
+# Warmup Iteration   3: 5080,656 ns/op
+# Warmup Iteration   4: 5087,938 ns/op
+# Warmup Iteration   5: 5113,988 ns/op
+# Warmup Iteration   6: 5089,214 ns/op
+# Warmup Iteration   7: 5072,781 ns/op
+# Warmup Iteration   8: 5104,590 ns/op
+# Warmup Iteration   9: 5119,602 ns/op
+# Warmup Iteration  10: 5111,508 ns/op
+# Warmup Iteration  11: 5097,050 ns/op
+# Warmup Iteration  12: 5278,137 ns/op
+# Warmup Iteration  13: 5115,944 ns/op
+# Warmup Iteration  14: 5096,086 ns/op
+# Warmup Iteration  15: 5095,812 ns/op
+Iteration   1: 5082,507 ns/op
+Iteration   2: 5110,802 ns/op
+Iteration   3: 5065,731 ns/op
+Iteration   4: 5084,743 ns/op
+Iteration   5: 5052,312 ns/op
+Iteration   6: 5055,982 ns/op
+Iteration   7: 5094,604 ns/op
+Iteration   8: 5091,928 ns/op
+Iteration   9: 5059,268 ns/op
+Iteration  10: 5067,203 ns/op
+Iteration  11: 5073,110 ns/op
+Iteration  12: 5086,775 ns/op
+Iteration  13: 5101,148 ns/op
+Iteration  14: 5095,406 ns/op
+Iteration  15: 5123,438 ns/op
+Iteration  16: 5122,220 ns/op
+Iteration  17: 5081,888 ns/op
+Iteration  18: 5070,825 ns/op
+Iteration  19: 5063,555 ns/op
+Iteration  20: 5061,659 ns/op
+Iteration  21: 5057,928 ns/op
+Iteration  22: 5086,763 ns/op
+Iteration  23: 5066,492 ns/op
+Iteration  24: 5044,206 ns/op
+Iteration  25: 5088,771 ns/op
+Iteration  26: 5112,862 ns/op
+Iteration  27: 5078,675 ns/op
+Iteration  28: 5079,895 ns/op
+Iteration  29: 5088,821 ns/op
+Iteration  30: 5065,100 ns/op
+Iteration  31: 5105,516 ns/op
+Iteration  32: 5076,361 ns/op
+Iteration  33: 5089,866 ns/op
+Iteration  34: 5076,308 ns/op
+Iteration  35: 5073,341 ns/op
+Iteration  36: 5069,837 ns/op
+Iteration  37: 5087,572 ns/op
+Iteration  38: 5067,174 ns/op
+Iteration  39: 5098,121 ns/op
+Iteration  40: 5070,838 ns/op
 
 
-Result "benchmark.AutenticationServiceBenchmark.testLoginSuccess":
-  673,558 ±(99.9%) 17,554 ns/op [Average]
-  (min, avg, max) = (632,588, 673,558, 936,823), stdev = 45,935
-  CI (99.9%): [656,004, 691,112] (assumes normal distribution)
+Result "benchmark.AutenticationServiceBenchmark.benchmarkLoginSuccess":
+  5028,072 ±(99.9%) 21,738 ns/op [Average]
+  (min, avg, max) = (4938,036, 5028,072, 5123,438), stdev = 56,886
+  CI (99.9%): [5006,333, 5049,810] (assumes normal distribution)
 
 
 # JMH version: 1.37
@@ -143,129 +145,131 @@ Result "benchmark.AutenticationServiceBenchmark.testLoginSuccess":
 # Timeout: 10 min per iteration
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
-# Benchmark: benchmark.AutenticationServiceBenchmark.testLoginUserNotFound
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkLoginUserNotFound
 
-# Run progress: 20,00% complete, ETA 00:07:28
+# Run progress: 14,29% complete, ETA 00:11:26
 # Fork: 1 of 2
-# Warmup Iteration   1: 0,716 ns/op
-# Warmup Iteration   2: 0,711 ns/op
-# Warmup Iteration   3: 0,701 ns/op
-# Warmup Iteration   4: 0,693 ns/op
-# Warmup Iteration   5: 0,700 ns/op
-# Warmup Iteration   6: 0,699 ns/op
-# Warmup Iteration   7: 0,703 ns/op
-# Warmup Iteration   8: 0,698 ns/op
-# Warmup Iteration   9: 0,696 ns/op
-# Warmup Iteration  10: 0,701 ns/op
-# Warmup Iteration  11: 0,703 ns/op
-# Warmup Iteration  12: 0,709 ns/op
-# Warmup Iteration  13: 0,701 ns/op
-# Warmup Iteration  14: 0,697 ns/op
-# Warmup Iteration  15: 0,697 ns/op
-Iteration   1: 0,691 ns/op
-Iteration   2: 0,694 ns/op
-Iteration   3: 0,700 ns/op
-Iteration   4: 0,703 ns/op
-Iteration   5: 0,697 ns/op
-Iteration   6: 0,700 ns/op
-Iteration   7: 0,700 ns/op
-Iteration   8: 0,690 ns/op
-Iteration   9: 0,693 ns/op
-Iteration  10: 0,692 ns/op
-Iteration  11: 0,718 ns/op
-Iteration  12: 0,690 ns/op
-Iteration  13: 0,693 ns/op
-Iteration  14: 0,691 ns/op
-Iteration  15: 0,696 ns/op
-Iteration  16: 0,700 ns/op
-Iteration  17: 0,696 ns/op
-Iteration  18: 0,693 ns/op
-Iteration  19: 0,696 ns/op
-Iteration  20: 0,701 ns/op
-Iteration  21: 0,694 ns/op
-Iteration  22: 0,694 ns/op
-Iteration  23: 0,702 ns/op
-Iteration  24: 0,695 ns/op
-Iteration  25: 0,695 ns/op
-Iteration  26: 0,704 ns/op
-Iteration  27: 0,699 ns/op
-Iteration  28: 0,695 ns/op
-Iteration  29: 0,695 ns/op
-Iteration  30: 0,702 ns/op
-Iteration  31: 0,720 ns/op
-Iteration  32: 0,733 ns/op
-Iteration  33: 0,695 ns/op
-Iteration  34: 0,701 ns/op
-Iteration  35: 0,726 ns/op
-Iteration  36: 0,697 ns/op
-Iteration  37: 0,715 ns/op
-Iteration  38: 0,700 ns/op
-Iteration  39: 0,701 ns/op
-Iteration  40: 0,697 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+6027,784 ns/op
+# Warmup Iteration   2: 4688,479 ns/op
+# Warmup Iteration   3: 4689,673 ns/op
+# Warmup Iteration   4: 4588,179 ns/op
+# Warmup Iteration   5: 4574,409 ns/op
+# Warmup Iteration   6: 4621,533 ns/op
+# Warmup Iteration   7: 4576,040 ns/op
+# Warmup Iteration   8: 4632,358 ns/op
+# Warmup Iteration   9: 4613,639 ns/op
+# Warmup Iteration  10: 4593,649 ns/op
+# Warmup Iteration  11: 4584,227 ns/op
+# Warmup Iteration  12: 4596,377 ns/op
+# Warmup Iteration  13: 4598,215 ns/op
+# Warmup Iteration  14: 4597,352 ns/op
+# Warmup Iteration  15: 4588,927 ns/op
+Iteration   1: 4606,877 ns/op
+Iteration   2: 4603,698 ns/op
+Iteration   3: 4588,004 ns/op
+Iteration   4: 4581,749 ns/op
+Iteration   5: 4571,205 ns/op
+Iteration   6: 4561,544 ns/op
+Iteration   7: 4611,914 ns/op
+Iteration   8: 4561,824 ns/op
+Iteration   9: 4570,998 ns/op
+Iteration  10: 4570,723 ns/op
+Iteration  11: 4604,091 ns/op
+Iteration  12: 4592,349 ns/op
+Iteration  13: 4575,729 ns/op
+Iteration  14: 4613,496 ns/op
+Iteration  15: 4590,172 ns/op
+Iteration  16: 4590,097 ns/op
+Iteration  17: 4605,186 ns/op
+Iteration  18: 4578,791 ns/op
+Iteration  19: 4578,505 ns/op
+Iteration  20: 4555,008 ns/op
+Iteration  21: 4559,156 ns/op
+Iteration  22: 4574,776 ns/op
+Iteration  23: 4598,064 ns/op
+Iteration  24: 4565,266 ns/op
+Iteration  25: 4542,633 ns/op
+Iteration  26: 4547,738 ns/op
+Iteration  27: 4615,171 ns/op
+Iteration  28: 4561,586 ns/op
+Iteration  29: 4563,482 ns/op
+Iteration  30: 4574,601 ns/op
+Iteration  31: 4579,199 ns/op
+Iteration  32: 4554,515 ns/op
+Iteration  33: 4552,492 ns/op
+Iteration  34: 4562,736 ns/op
+Iteration  35: 4579,446 ns/op
+Iteration  36: 4561,937 ns/op
+Iteration  37: 4573,995 ns/op
+Iteration  38: 4572,704 ns/op
+Iteration  39: 4587,276 ns/op
+Iteration  40: 4552,991 ns/op
 
-# Run progress: 30,00% complete, ETA 00:06:32
+# Run progress: 21,43% complete, ETA 00:10:30
 # Fork: 2 of 2
-# Warmup Iteration   1: 0,710 ns/op
-# Warmup Iteration   2: 0,701 ns/op
-# Warmup Iteration   3: 0,709 ns/op
-# Warmup Iteration   4: 0,705 ns/op
-# Warmup Iteration   5: 0,700 ns/op
-# Warmup Iteration   6: 0,698 ns/op
-# Warmup Iteration   7: 0,726 ns/op
-# Warmup Iteration   8: 0,723 ns/op
-# Warmup Iteration   9: 0,720 ns/op
-# Warmup Iteration  10: 0,723 ns/op
-# Warmup Iteration  11: 0,726 ns/op
-# Warmup Iteration  12: 0,710 ns/op
-# Warmup Iteration  13: 0,704 ns/op
-# Warmup Iteration  14: 0,719 ns/op
-# Warmup Iteration  15: 0,730 ns/op
-Iteration   1: 0,731 ns/op
-Iteration   2: 0,734 ns/op
-Iteration   3: 0,737 ns/op
-Iteration   4: 0,879 ns/op
-Iteration   5: 0,759 ns/op
-Iteration   6: 0,861 ns/op
-Iteration   7: 0,775 ns/op
-Iteration   8: 0,794 ns/op
-Iteration   9: 0,740 ns/op
-Iteration  10: 0,754 ns/op
-Iteration  11: 0,717 ns/op
-Iteration  12: 0,720 ns/op
-Iteration  13: 0,717 ns/op
-Iteration  14: 0,745 ns/op
-Iteration  15: 0,730 ns/op
-Iteration  16: 0,727 ns/op
-Iteration  17: 0,719 ns/op
-Iteration  18: 0,728 ns/op
-Iteration  19: 0,725 ns/op
-Iteration  20: 0,719 ns/op
-Iteration  21: 0,712 ns/op
-Iteration  22: 0,730 ns/op
-Iteration  23: 0,723 ns/op
-Iteration  24: 0,724 ns/op
-Iteration  25: 0,718 ns/op
-Iteration  26: 0,725 ns/op
-Iteration  27: 0,720 ns/op
-Iteration  28: 0,724 ns/op
-Iteration  29: 0,731 ns/op
-Iteration  30: 0,732 ns/op
-Iteration  31: 0,729 ns/op
-Iteration  32: 0,721 ns/op
-Iteration  33: 0,716 ns/op
-Iteration  34: 0,712 ns/op
-Iteration  35: 0,714 ns/op
-Iteration  36: 0,712 ns/op
-Iteration  37: 0,737 ns/op
-Iteration  38: 0,715 ns/op
-Iteration  39: 0,717 ns/op
-Iteration  40: 0,719 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+6013,197 ns/op
+# Warmup Iteration   2: 4659,930 ns/op
+# Warmup Iteration   3: 4613,629 ns/op
+# Warmup Iteration   4: 4612,676 ns/op
+# Warmup Iteration   5: 4610,557 ns/op
+# Warmup Iteration   6: 4588,913 ns/op
+# Warmup Iteration   7: 4596,624 ns/op
+# Warmup Iteration   8: 4581,075 ns/op
+# Warmup Iteration   9: 4593,661 ns/op
+# Warmup Iteration  10: 4599,908 ns/op
+# Warmup Iteration  11: 4597,985 ns/op
+# Warmup Iteration  12: 4597,132 ns/op
+# Warmup Iteration  13: 4587,375 ns/op
+# Warmup Iteration  14: 4603,195 ns/op
+# Warmup Iteration  15: 4585,266 ns/op
+Iteration   1: 4572,325 ns/op
+Iteration   2: 4579,846 ns/op
+Iteration   3: 4585,935 ns/op
+Iteration   4: 4563,799 ns/op
+Iteration   5: 4569,901 ns/op
+Iteration   6: 4571,095 ns/op
+Iteration   7: 4560,140 ns/op
+Iteration   8: 4579,089 ns/op
+Iteration   9: 4550,823 ns/op
+Iteration  10: 4546,901 ns/op
+Iteration  11: 4583,628 ns/op
+Iteration  12: 4594,745 ns/op
+Iteration  13: 4558,690 ns/op
+Iteration  14: 4539,648 ns/op
+Iteration  15: 4560,266 ns/op
+Iteration  16: 4555,963 ns/op
+Iteration  17: 4578,989 ns/op
+Iteration  18: 4574,358 ns/op
+Iteration  19: 4566,161 ns/op
+Iteration  20: 4572,198 ns/op
+Iteration  21: 4551,738 ns/op
+Iteration  22: 4570,332 ns/op
+Iteration  23: 4570,255 ns/op
+Iteration  24: 4540,417 ns/op
+Iteration  25: 4592,773 ns/op
+Iteration  26: 4589,100 ns/op
+Iteration  27: 4564,030 ns/op
+Iteration  28: 4556,369 ns/op
+Iteration  29: 4594,957 ns/op
+Iteration  30: 4565,483 ns/op
+Iteration  31: 4576,267 ns/op
+Iteration  32: 4556,769 ns/op
+Iteration  33: 4568,774 ns/op
+Iteration  34: 4550,223 ns/op
+Iteration  35: 4560,816 ns/op
+Iteration  36: 4538,350 ns/op
+Iteration  37: 4581,099 ns/op
+Iteration  38: 4551,523 ns/op
+Iteration  39: 4655,932 ns/op
+Iteration  40: 4602,645 ns/op
 
 
-Result "benchmark.AutenticationServiceBenchmark.testLoginUserNotFound":
-  0,718 ±(99.9%) 0,012 ns/op [Average]
-  (min, avg, max) = (0,690, 0,718, 0,879), stdev = 0,032
-  CI (99.9%): [0,706, 0,730] (assumes normal distribution)
+Result "benchmark.AutenticationServiceBenchmark.benchmarkLoginUserNotFound":
+  4573,676 ±(99.9%) 7,799 ns/op [Average]
+  (min, avg, max) = (4538,350, 4573,676, 4655,932), stdev = 20,408
+  CI (99.9%): [4565,877, 4581,475] (assumes normal distribution)
 
 
 # JMH version: 1.37
@@ -278,129 +282,131 @@ Result "benchmark.AutenticationServiceBenchmark.testLoginUserNotFound":
 # Timeout: 10 min per iteration
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
-# Benchmark: benchmark.AutenticationServiceBenchmark.testLoginWrongPassword
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkLoginWrongPassword
 
-# Run progress: 40,00% complete, ETA 00:05:35
+# Run progress: 28,57% complete, ETA 00:09:32
 # Fork: 1 of 2
-# Warmup Iteration   1: 789,170 ns/op
-# Warmup Iteration   2: 687,322 ns/op
-# Warmup Iteration   3: 704,684 ns/op
-# Warmup Iteration   4: 713,092 ns/op
-# Warmup Iteration   5: 666,609 ns/op
-# Warmup Iteration   6: 664,702 ns/op
-# Warmup Iteration   7: 667,310 ns/op
-# Warmup Iteration   8: 665,933 ns/op
-# Warmup Iteration   9: 665,266 ns/op
-# Warmup Iteration  10: 658,631 ns/op
-# Warmup Iteration  11: 668,807 ns/op
-# Warmup Iteration  12: 661,782 ns/op
-# Warmup Iteration  13: 660,068 ns/op
-# Warmup Iteration  14: 656,592 ns/op
-# Warmup Iteration  15: 658,670 ns/op
-Iteration   1: 662,148 ns/op
-Iteration   2: 660,843 ns/op
-Iteration   3: 667,939 ns/op
-Iteration   4: 660,682 ns/op
-Iteration   5: 663,974 ns/op
-Iteration   6: 660,306 ns/op
-Iteration   7: 668,438 ns/op
-Iteration   8: 658,151 ns/op
-Iteration   9: 671,152 ns/op
-Iteration  10: 694,877 ns/op
-Iteration  11: 667,109 ns/op
-Iteration  12: 684,998 ns/op
-Iteration  13: 665,624 ns/op
-Iteration  14: 666,602 ns/op
-Iteration  15: 660,541 ns/op
-Iteration  16: 668,402 ns/op
-Iteration  17: 685,849 ns/op
-Iteration  18: 753,162 ns/op
-Iteration  19: 899,803 ns/op
-Iteration  20: 706,157 ns/op
-Iteration  21: 711,710 ns/op
-Iteration  22: 689,169 ns/op
-Iteration  23: 693,832 ns/op
-Iteration  24: 697,522 ns/op
-Iteration  25: 679,853 ns/op
-Iteration  26: 678,016 ns/op
-Iteration  27: 681,897 ns/op
-Iteration  28: 680,128 ns/op
-Iteration  29: 679,525 ns/op
-Iteration  30: 678,067 ns/op
-Iteration  31: 679,114 ns/op
-Iteration  32: 676,452 ns/op
-Iteration  33: 687,204 ns/op
-Iteration  34: 685,257 ns/op
-Iteration  35: 684,619 ns/op
-Iteration  36: 687,523 ns/op
-Iteration  37: 683,505 ns/op
-Iteration  38: 687,297 ns/op
-Iteration  39: 671,726 ns/op
-Iteration  40: 687,477 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+8022,331 ns/op
+# Warmup Iteration   2: 5123,103 ns/op
+# Warmup Iteration   3: 5056,102 ns/op
+# Warmup Iteration   4: 5081,528 ns/op
+# Warmup Iteration   5: 5040,093 ns/op
+# Warmup Iteration   6: 5046,002 ns/op
+# Warmup Iteration   7: 5029,858 ns/op
+# Warmup Iteration   8: 5054,336 ns/op
+# Warmup Iteration   9: 5044,014 ns/op
+# Warmup Iteration  10: 5039,726 ns/op
+# Warmup Iteration  11: 5059,761 ns/op
+# Warmup Iteration  12: 5153,786 ns/op
+# Warmup Iteration  13: 5029,471 ns/op
+# Warmup Iteration  14: 5086,585 ns/op
+# Warmup Iteration  15: 5025,064 ns/op
+Iteration   1: 5029,186 ns/op
+Iteration   2: 5009,374 ns/op
+Iteration   3: 5002,711 ns/op
+Iteration   4: 5015,848 ns/op
+Iteration   5: 5007,910 ns/op
+Iteration   6: 4989,835 ns/op
+Iteration   7: 5012,371 ns/op
+Iteration   8: 4986,272 ns/op
+Iteration   9: 5008,661 ns/op
+Iteration  10: 4987,865 ns/op
+Iteration  11: 5363,378 ns/op
+Iteration  12: 5019,295 ns/op
+Iteration  13: 4994,875 ns/op
+Iteration  14: 5025,447 ns/op
+Iteration  15: 5005,398 ns/op
+Iteration  16: 5006,276 ns/op
+Iteration  17: 4991,267 ns/op
+Iteration  18: 5002,982 ns/op
+Iteration  19: 5021,730 ns/op
+Iteration  20: 5009,418 ns/op
+Iteration  21: 5005,788 ns/op
+Iteration  22: 4995,451 ns/op
+Iteration  23: 5002,796 ns/op
+Iteration  24: 5009,855 ns/op
+Iteration  25: 5004,387 ns/op
+Iteration  26: 5008,967 ns/op
+Iteration  27: 5009,004 ns/op
+Iteration  28: 4994,405 ns/op
+Iteration  29: 5001,085 ns/op
+Iteration  30: 4986,717 ns/op
+Iteration  31: 4999,686 ns/op
+Iteration  32: 4992,818 ns/op
+Iteration  33: 5010,332 ns/op
+Iteration  34: 5005,921 ns/op
+Iteration  35: 4997,368 ns/op
+Iteration  36: 4990,985 ns/op
+Iteration  37: 4977,604 ns/op
+Iteration  38: 5015,911 ns/op
+Iteration  39: 4991,883 ns/op
+Iteration  40: 5020,873 ns/op
 
-# Run progress: 50,00% complete, ETA 00:04:39
+# Run progress: 35,71% complete, ETA 00:08:35
 # Fork: 2 of 2
-# Warmup Iteration   1: 758,202 ns/op
-# Warmup Iteration   2: 674,404 ns/op
-# Warmup Iteration   3: 673,354 ns/op
-# Warmup Iteration   4: 672,140 ns/op
-# Warmup Iteration   5: 674,729 ns/op
-# Warmup Iteration   6: 671,794 ns/op
-# Warmup Iteration   7: 670,183 ns/op
-# Warmup Iteration   8: 681,252 ns/op
-# Warmup Iteration   9: 686,467 ns/op
-# Warmup Iteration  10: 681,878 ns/op
-# Warmup Iteration  11: 684,663 ns/op
-# Warmup Iteration  12: 676,620 ns/op
-# Warmup Iteration  13: 684,309 ns/op
-# Warmup Iteration  14: 670,481 ns/op
-# Warmup Iteration  15: 669,896 ns/op
-Iteration   1: 667,284 ns/op
-Iteration   2: 668,123 ns/op
-Iteration   3: 673,622 ns/op
-Iteration   4: 672,044 ns/op
-Iteration   5: 683,604 ns/op
-Iteration   6: 677,860 ns/op
-Iteration   7: 680,755 ns/op
-Iteration   8: 679,615 ns/op
-Iteration   9: 680,425 ns/op
-Iteration  10: 680,460 ns/op
-Iteration  11: 679,118 ns/op
-Iteration  12: 672,853 ns/op
-Iteration  13: 667,184 ns/op
-Iteration  14: 666,392 ns/op
-Iteration  15: 673,998 ns/op
-Iteration  16: 665,797 ns/op
-Iteration  17: 666,578 ns/op
-Iteration  18: 668,705 ns/op
-Iteration  19: 672,792 ns/op
-Iteration  20: 683,251 ns/op
-Iteration  21: 682,765 ns/op
-Iteration  22: 678,535 ns/op
-Iteration  23: 685,875 ns/op
-Iteration  24: 682,149 ns/op
-Iteration  25: 674,347 ns/op
-Iteration  26: 666,618 ns/op
-Iteration  27: 665,291 ns/op
-Iteration  28: 669,092 ns/op
-Iteration  29: 665,937 ns/op
-Iteration  30: 669,454 ns/op
-Iteration  31: 665,502 ns/op
-Iteration  32: 670,311 ns/op
-Iteration  33: 675,311 ns/op
-Iteration  34: 675,908 ns/op
-Iteration  35: 681,853 ns/op
-Iteration  36: 680,645 ns/op
-Iteration  37: 678,871 ns/op
-Iteration  38: 677,749 ns/op
-Iteration  39: 680,403 ns/op
-Iteration  40: 669,006 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+7449,961 ns/op
+# Warmup Iteration   2: 5175,203 ns/op
+# Warmup Iteration   3: 5076,217 ns/op
+# Warmup Iteration   4: 5044,809 ns/op
+# Warmup Iteration   5: 5007,646 ns/op
+# Warmup Iteration   6: 5029,984 ns/op
+# Warmup Iteration   7: 5070,002 ns/op
+# Warmup Iteration   8: 5057,731 ns/op
+# Warmup Iteration   9: 5009,851 ns/op
+# Warmup Iteration  10: 5029,655 ns/op
+# Warmup Iteration  11: 5030,019 ns/op
+# Warmup Iteration  12: 5032,059 ns/op
+# Warmup Iteration  13: 5003,149 ns/op
+# Warmup Iteration  14: 5028,570 ns/op
+# Warmup Iteration  15: 5020,304 ns/op
+Iteration   1: 5032,033 ns/op
+Iteration   2: 5053,243 ns/op
+Iteration   3: 5004,836 ns/op
+Iteration   4: 5022,884 ns/op
+Iteration   5: 5016,894 ns/op
+Iteration   6: 5033,818 ns/op
+Iteration   7: 4977,002 ns/op
+Iteration   8: 5006,283 ns/op
+Iteration   9: 5009,222 ns/op
+Iteration  10: 4997,948 ns/op
+Iteration  11: 4997,718 ns/op
+Iteration  12: 5012,308 ns/op
+Iteration  13: 4992,534 ns/op
+Iteration  14: 5018,969 ns/op
+Iteration  15: 4994,376 ns/op
+Iteration  16: 5009,690 ns/op
+Iteration  17: 5005,402 ns/op
+Iteration  18: 5032,053 ns/op
+Iteration  19: 5000,136 ns/op
+Iteration  20: 5017,946 ns/op
+Iteration  21: 5105,390 ns/op
+Iteration  22: 5002,773 ns/op
+Iteration  23: 5084,239 ns/op
+Iteration  24: 5022,051 ns/op
+Iteration  25: 5002,630 ns/op
+Iteration  26: 4984,533 ns/op
+Iteration  27: 5016,730 ns/op
+Iteration  28: 5000,286 ns/op
+Iteration  29: 5005,877 ns/op
+Iteration  30: 4997,359 ns/op
+Iteration  31: 5004,804 ns/op
+Iteration  32: 5009,409 ns/op
+Iteration  33: 5019,706 ns/op
+Iteration  34: 5042,101 ns/op
+Iteration  35: 5066,387 ns/op
+Iteration  36: 5101,148 ns/op
+Iteration  37: 4953,592 ns/op
+Iteration  38: 4971,400 ns/op
+Iteration  39: 4947,333 ns/op
+Iteration  40: 4950,858 ns/op
 
 
-Result "benchmark.AutenticationServiceBenchmark.testLoginWrongPassword":
-  680,034 ±(99.9%) 10,792 ns/op [Average]
-  (min, avg, max) = (658,151, 680,034, 899,803), stdev = 28,241
-  CI (99.9%): [669,242, 690,826] (assumes normal distribution)
+Result "benchmark.AutenticationServiceBenchmark.benchmarkLoginWrongPassword":
+  5012,948 ±(99.9%) 18,104 ns/op [Average]
+  (min, avg, max) = (4947,333, 5012,948, 5363,378), stdev = 47,376
+  CI (99.9%): [4994,844, 5031,052] (assumes normal distribution)
 
 
 # JMH version: 1.37
@@ -413,129 +419,131 @@ Result "benchmark.AutenticationServiceBenchmark.testLoginWrongPassword":
 # Timeout: 10 min per iteration
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
-# Benchmark: benchmark.AutenticationServiceBenchmark.testLogout
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkLogout
 
-# Run progress: 60,00% complete, ETA 00:03:44
+# Run progress: 42,86% complete, ETA 00:07:37
 # Fork: 1 of 2
-# Warmup Iteration   1: 0,701 ns/op
-# Warmup Iteration   2: 0,705 ns/op
-# Warmup Iteration   3: 0,723 ns/op
-# Warmup Iteration   4: 0,722 ns/op
-# Warmup Iteration   5: 0,691 ns/op
-# Warmup Iteration   6: 0,703 ns/op
-# Warmup Iteration   7: 0,704 ns/op
-# Warmup Iteration   8: 0,691 ns/op
-# Warmup Iteration   9: 0,697 ns/op
-# Warmup Iteration  10: 0,694 ns/op
-# Warmup Iteration  11: 0,695 ns/op
-# Warmup Iteration  12: 0,698 ns/op
-# Warmup Iteration  13: 0,691 ns/op
-# Warmup Iteration  14: 0,698 ns/op
-# Warmup Iteration  15: 0,691 ns/op
-Iteration   1: 0,702 ns/op
-Iteration   2: 0,702 ns/op
-Iteration   3: 0,701 ns/op
-Iteration   4: 0,702 ns/op
-Iteration   5: 0,699 ns/op
-Iteration   6: 0,692 ns/op
-Iteration   7: 0,704 ns/op
-Iteration   8: 0,693 ns/op
-Iteration   9: 0,692 ns/op
-Iteration  10: 0,692 ns/op
-Iteration  11: 0,693 ns/op
-Iteration  12: 0,692 ns/op
-Iteration  13: 0,701 ns/op
-Iteration  14: 0,700 ns/op
-Iteration  15: 0,697 ns/op
-Iteration  16: 0,699 ns/op
-Iteration  17: 0,699 ns/op
-Iteration  18: 0,699 ns/op
-Iteration  19: 0,691 ns/op
-Iteration  20: 0,694 ns/op
-Iteration  21: 0,704 ns/op
-Iteration  22: 0,699 ns/op
-Iteration  23: 0,694 ns/op
-Iteration  24: 0,699 ns/op
-Iteration  25: 0,697 ns/op
-Iteration  26: 0,693 ns/op
-Iteration  27: 0,700 ns/op
-Iteration  28: 0,698 ns/op
-Iteration  29: 0,700 ns/op
-Iteration  30: 0,700 ns/op
-Iteration  31: 0,704 ns/op
-Iteration  32: 0,693 ns/op
-Iteration  33: 0,692 ns/op
-Iteration  34: 0,693 ns/op
-Iteration  35: 0,692 ns/op
-Iteration  36: 0,693 ns/op
-Iteration  37: 0,693 ns/op
-Iteration  38: 0,695 ns/op
-Iteration  39: 0,698 ns/op
-Iteration  40: 0,696 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+4253,548 ns/op
+# Warmup Iteration   2: 3768,439 ns/op
+# Warmup Iteration   3: 3815,966 ns/op
+# Warmup Iteration   4: 3731,229 ns/op
+# Warmup Iteration   5: 3740,923 ns/op
+# Warmup Iteration   6: 3717,237 ns/op
+# Warmup Iteration   7: 3732,153 ns/op
+# Warmup Iteration   8: 3723,053 ns/op
+# Warmup Iteration   9: 3710,386 ns/op
+# Warmup Iteration  10: 3699,737 ns/op
+# Warmup Iteration  11: 3727,539 ns/op
+# Warmup Iteration  12: 3744,513 ns/op
+# Warmup Iteration  13: 3704,694 ns/op
+# Warmup Iteration  14: 3708,135 ns/op
+# Warmup Iteration  15: 3710,886 ns/op
+Iteration   1: 3703,138 ns/op
+Iteration   2: 3670,649 ns/op
+Iteration   3: 3672,406 ns/op
+Iteration   4: 3696,827 ns/op
+Iteration   5: 3698,386 ns/op
+Iteration   6: 3697,621 ns/op
+Iteration   7: 3669,070 ns/op
+Iteration   8: 3681,505 ns/op
+Iteration   9: 3675,273 ns/op
+Iteration  10: 3692,441 ns/op
+Iteration  11: 3689,290 ns/op
+Iteration  12: 3693,845 ns/op
+Iteration  13: 3680,142 ns/op
+Iteration  14: 3687,396 ns/op
+Iteration  15: 3690,023 ns/op
+Iteration  16: 3674,203 ns/op
+Iteration  17: 3703,916 ns/op
+Iteration  18: 3701,067 ns/op
+Iteration  19: 3721,409 ns/op
+Iteration  20: 3693,625 ns/op
+Iteration  21: 3697,331 ns/op
+Iteration  22: 3670,702 ns/op
+Iteration  23: 3705,966 ns/op
+Iteration  24: 3698,267 ns/op
+Iteration  25: 3696,681 ns/op
+Iteration  26: 3696,783 ns/op
+Iteration  27: 3690,815 ns/op
+Iteration  28: 3695,240 ns/op
+Iteration  29: 3707,477 ns/op
+Iteration  30: 3686,276 ns/op
+Iteration  31: 3659,291 ns/op
+Iteration  32: 3698,558 ns/op
+Iteration  33: 3692,014 ns/op
+Iteration  34: 3665,119 ns/op
+Iteration  35: 3714,951 ns/op
+Iteration  36: 3674,686 ns/op
+Iteration  37: 3675,359 ns/op
+Iteration  38: 3707,773 ns/op
+Iteration  39: 3710,772 ns/op
+Iteration  40: 3677,393 ns/op
 
-# Run progress: 70,00% complete, ETA 00:02:48
+# Run progress: 50,00% complete, ETA 00:06:40
 # Fork: 2 of 2
-# Warmup Iteration   1: 0,689 ns/op
-# Warmup Iteration   2: 0,690 ns/op
-# Warmup Iteration   3: 0,687 ns/op
-# Warmup Iteration   4: 0,687 ns/op
-# Warmup Iteration   5: 0,686 ns/op
-# Warmup Iteration   6: 0,687 ns/op
-# Warmup Iteration   7: 0,688 ns/op
-# Warmup Iteration   8: 0,695 ns/op
-# Warmup Iteration   9: 0,698 ns/op
-# Warmup Iteration  10: 0,697 ns/op
-# Warmup Iteration  11: 0,701 ns/op
-# Warmup Iteration  12: 0,697 ns/op
-# Warmup Iteration  13: 0,688 ns/op
-# Warmup Iteration  14: 0,698 ns/op
-# Warmup Iteration  15: 0,687 ns/op
-Iteration   1: 0,687 ns/op
-Iteration   2: 0,687 ns/op
-Iteration   3: 0,688 ns/op
-Iteration   4: 0,688 ns/op
-Iteration   5: 0,688 ns/op
-Iteration   6: 0,696 ns/op
-Iteration   7: 0,697 ns/op
-Iteration   8: 0,696 ns/op
-Iteration   9: 0,696 ns/op
-Iteration  10: 0,695 ns/op
-Iteration  11: 0,694 ns/op
-Iteration  12: 0,693 ns/op
-Iteration  13: 0,695 ns/op
-Iteration  14: 0,691 ns/op
-Iteration  15: 0,687 ns/op
-Iteration  16: 0,688 ns/op
-Iteration  17: 0,687 ns/op
-Iteration  18: 0,688 ns/op
-Iteration  19: 0,689 ns/op
-Iteration  20: 0,694 ns/op
-Iteration  21: 0,695 ns/op
-Iteration  22: 0,690 ns/op
-Iteration  23: 0,695 ns/op
-Iteration  24: 0,692 ns/op
-Iteration  25: 0,688 ns/op
-Iteration  26: 0,696 ns/op
-Iteration  27: 0,689 ns/op
-Iteration  28: 0,688 ns/op
-Iteration  29: 0,688 ns/op
-Iteration  30: 0,690 ns/op
-Iteration  31: 0,689 ns/op
-Iteration  32: 0,702 ns/op
-Iteration  33: 0,689 ns/op
-Iteration  34: 0,695 ns/op
-Iteration  35: 0,693 ns/op
-Iteration  36: 0,693 ns/op
-Iteration  37: 0,695 ns/op
-Iteration  38: 0,694 ns/op
-Iteration  39: 0,689 ns/op
-Iteration  40: 0,691 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+4484,549 ns/op
+# Warmup Iteration   2: 3898,881 ns/op
+# Warmup Iteration   3: 3864,747 ns/op
+# Warmup Iteration   4: 3877,585 ns/op
+# Warmup Iteration   5: 3872,639 ns/op
+# Warmup Iteration   6: 3876,451 ns/op
+# Warmup Iteration   7: 3876,102 ns/op
+# Warmup Iteration   8: 3859,734 ns/op
+# Warmup Iteration   9: 3845,796 ns/op
+# Warmup Iteration  10: 3858,360 ns/op
+# Warmup Iteration  11: 3863,199 ns/op
+# Warmup Iteration  12: 3888,922 ns/op
+# Warmup Iteration  13: 3884,282 ns/op
+# Warmup Iteration  14: 3869,474 ns/op
+# Warmup Iteration  15: 3867,659 ns/op
+Iteration   1: 3855,776 ns/op
+Iteration   2: 3811,124 ns/op
+Iteration   3: 3803,179 ns/op
+Iteration   4: 3787,655 ns/op
+Iteration   5: 3802,944 ns/op
+Iteration   6: 3785,165 ns/op
+Iteration   7: 3813,938 ns/op
+Iteration   8: 3782,161 ns/op
+Iteration   9: 3809,363 ns/op
+Iteration  10: 3793,604 ns/op
+Iteration  11: 3809,144 ns/op
+Iteration  12: 3794,593 ns/op
+Iteration  13: 3809,531 ns/op
+Iteration  14: 3811,385 ns/op
+Iteration  15: 3797,557 ns/op
+Iteration  16: 3784,058 ns/op
+Iteration  17: 3790,796 ns/op
+Iteration  18: 3813,366 ns/op
+Iteration  19: 3850,234 ns/op
+Iteration  20: 3852,567 ns/op
+Iteration  21: 3815,103 ns/op
+Iteration  22: 3789,722 ns/op
+Iteration  23: 3791,024 ns/op
+Iteration  24: 3802,556 ns/op
+Iteration  25: 3793,026 ns/op
+Iteration  26: 3799,482 ns/op
+Iteration  27: 3815,287 ns/op
+Iteration  28: 3809,722 ns/op
+Iteration  29: 3817,721 ns/op
+Iteration  30: 3789,435 ns/op
+Iteration  31: 3779,807 ns/op
+Iteration  32: 3794,705 ns/op
+Iteration  33: 3831,383 ns/op
+Iteration  34: 3847,793 ns/op
+Iteration  35: 3794,668 ns/op
+Iteration  36: 3776,545 ns/op
+Iteration  37: 3801,144 ns/op
+Iteration  38: 3814,996 ns/op
+Iteration  39: 3805,102 ns/op
+Iteration  40: 3822,000 ns/op
 
 
-Result "benchmark.AutenticationServiceBenchmark.testLogout":
-  0,694 ±(99.9%) 0,002 ns/op [Average]
-  (min, avg, max) = (0,687, 0,694, 0,704), stdev = 0,005
-  CI (99.9%): [0,692, 0,696] (assumes normal distribution)
+Result "benchmark.AutenticationServiceBenchmark.benchmarkLogout":
+  3748,288 ±(99.9%) 23,232 ns/op [Average]
+  (min, avg, max) = (3659,291, 3748,288, 3855,776), stdev = 60,793
+  CI (99.9%): [3725,056, 3771,520] (assumes normal distribution)
 
 
 # JMH version: 1.37
@@ -548,132 +556,408 @@ Result "benchmark.AutenticationServiceBenchmark.testLogout":
 # Timeout: 10 min per iteration
 # Threads: 1 thread, will synchronize iterations
 # Benchmark mode: Average time, time/op
-# Benchmark: benchmark.AutenticationServiceBenchmark.testRegister
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkRegisterEmailAlreadyExists
 
-# Run progress: 80,00% complete, ETA 00:01:52
+# Run progress: 57,14% complete, ETA 00:05:43
 # Fork: 1 of 2
-# Warmup Iteration   1: 384,963 ns/op
-# Warmup Iteration   2: 343,124 ns/op
-# Warmup Iteration   3: 343,232 ns/op
-# Warmup Iteration   4: 343,607 ns/op
-# Warmup Iteration   5: 343,797 ns/op
-# Warmup Iteration   6: 341,852 ns/op
-# Warmup Iteration   7: 340,785 ns/op
-# Warmup Iteration   8: 336,910 ns/op
-# Warmup Iteration   9: 336,527 ns/op
-# Warmup Iteration  10: 337,742 ns/op
-# Warmup Iteration  11: 340,398 ns/op
-# Warmup Iteration  12: 337,911 ns/op
-# Warmup Iteration  13: 338,038 ns/op
-# Warmup Iteration  14: 341,078 ns/op
-# Warmup Iteration  15: 343,339 ns/op
-Iteration   1: 343,111 ns/op
-Iteration   2: 343,935 ns/op
-Iteration   3: 343,489 ns/op
-Iteration   4: 343,581 ns/op
-Iteration   5: 343,408 ns/op
-Iteration   6: 337,968 ns/op
-Iteration   7: 343,880 ns/op
-Iteration   8: 342,588 ns/op
-Iteration   9: 338,615 ns/op
-Iteration  10: 338,276 ns/op
-Iteration  11: 340,615 ns/op
-Iteration  12: 339,815 ns/op
-Iteration  13: 344,560 ns/op
-Iteration  14: 343,965 ns/op
-Iteration  15: 343,663 ns/op
-Iteration  16: 344,877 ns/op
-Iteration  17: 342,954 ns/op
-Iteration  18: 344,601 ns/op
-Iteration  19: 335,848 ns/op
-Iteration  20: 336,210 ns/op
-Iteration  21: 339,632 ns/op
-Iteration  22: 339,268 ns/op
-Iteration  23: 339,034 ns/op
-Iteration  24: 337,079 ns/op
-Iteration  25: 338,353 ns/op
-Iteration  26: 343,710 ns/op
-Iteration  27: 343,754 ns/op
-Iteration  28: 343,819 ns/op
-Iteration  29: 344,915 ns/op
-Iteration  30: 341,810 ns/op
-Iteration  31: 343,466 ns/op
-Iteration  32: 339,470 ns/op
-Iteration  33: 337,720 ns/op
-Iteration  34: 337,302 ns/op
-Iteration  35: 337,996 ns/op
-Iteration  36: 338,928 ns/op
-Iteration  37: 339,197 ns/op
-Iteration  38: 350,196 ns/op
-Iteration  39: 366,253 ns/op
-Iteration  40: 352,307 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+7478,732 ns/op
+# Warmup Iteration   2: 4977,713 ns/op
+# Warmup Iteration   3: 4886,215 ns/op
+# Warmup Iteration   4: 4867,788 ns/op
+# Warmup Iteration   5: 4847,635 ns/op
+# Warmup Iteration   6: 4830,858 ns/op
+# Warmup Iteration   7: 4880,310 ns/op
+# Warmup Iteration   8: 4833,231 ns/op
+# Warmup Iteration   9: 4822,501 ns/op
+# Warmup Iteration  10: 4806,018 ns/op
+# Warmup Iteration  11: 4861,023 ns/op
+# Warmup Iteration  12: 4834,045 ns/op
+# Warmup Iteration  13: 4822,809 ns/op
+# Warmup Iteration  14: 4844,278 ns/op
+# Warmup Iteration  15: 4851,027 ns/op
+Iteration   1: 4823,554 ns/op
+Iteration   2: 4822,407 ns/op
+Iteration   3: 4831,347 ns/op
+Iteration   4: 4815,616 ns/op
+Iteration   5: 4828,412 ns/op
+Iteration   6: 4840,235 ns/op
+Iteration   7: 4821,691 ns/op
+Iteration   8: 4817,109 ns/op
+Iteration   9: 4824,032 ns/op
+Iteration  10: 4825,440 ns/op
+Iteration  11: 4836,632 ns/op
+Iteration  12: 4793,405 ns/op
+Iteration  13: 4841,169 ns/op
+Iteration  14: 4825,988 ns/op
+Iteration  15: 4831,831 ns/op
+Iteration  16: 4814,745 ns/op
+Iteration  17: 4822,296 ns/op
+Iteration  18: 4839,832 ns/op
+Iteration  19: 4836,734 ns/op
+Iteration  20: 4805,714 ns/op
+Iteration  21: 4807,259 ns/op
+Iteration  22: 4818,544 ns/op
+Iteration  23: 4839,693 ns/op
+Iteration  24: 4846,053 ns/op
+Iteration  25: 4819,375 ns/op
+Iteration  26: 4834,067 ns/op
+Iteration  27: 4825,492 ns/op
+Iteration  28: 4837,764 ns/op
+Iteration  29: 4811,393 ns/op
+Iteration  30: 4830,261 ns/op
+Iteration  31: 4831,750 ns/op
+Iteration  32: 4804,193 ns/op
+Iteration  33: 4797,992 ns/op
+Iteration  34: 4812,285 ns/op
+Iteration  35: 4828,358 ns/op
+Iteration  36: 4813,830 ns/op
+Iteration  37: 4812,194 ns/op
+Iteration  38: 4808,365 ns/op
+Iteration  39: 4841,329 ns/op
+Iteration  40: 4844,643 ns/op
 
-# Run progress: 90,00% complete, ETA 00:00:56
+# Run progress: 64,29% complete, ETA 00:04:46
 # Fork: 2 of 2
-# Warmup Iteration   1: 389,065 ns/op
-# Warmup Iteration   2: 434,931 ns/op
-# Warmup Iteration   3: 471,765 ns/op
-# Warmup Iteration   4: 364,817 ns/op
-# Warmup Iteration   5: 353,080 ns/op
-# Warmup Iteration   6: 362,591 ns/op
-# Warmup Iteration   7: 359,841 ns/op
-# Warmup Iteration   8: 362,826 ns/op
-# Warmup Iteration   9: 358,811 ns/op
-# Warmup Iteration  10: 354,590 ns/op
-# Warmup Iteration  11: 357,888 ns/op
-# Warmup Iteration  12: 358,714 ns/op
-# Warmup Iteration  13: 355,715 ns/op
-# Warmup Iteration  14: 356,883 ns/op
-# Warmup Iteration  15: 363,939 ns/op
-Iteration   1: 362,221 ns/op
-Iteration   2: 369,231 ns/op
-Iteration   3: 367,296 ns/op
-Iteration   4: 370,652 ns/op
-Iteration   5: 364,079 ns/op
-Iteration   6: 361,538 ns/op
-Iteration   7: 358,491 ns/op
-Iteration   8: 363,894 ns/op
-Iteration   9: 367,634 ns/op
-Iteration  10: 368,612 ns/op
-Iteration  11: 369,459 ns/op
-Iteration  12: 365,386 ns/op
-Iteration  13: 356,397 ns/op
-Iteration  14: 354,682 ns/op
-Iteration  15: 355,196 ns/op
-Iteration  16: 356,455 ns/op
-Iteration  17: 354,575 ns/op
-Iteration  18: 352,357 ns/op
-Iteration  19: 356,630 ns/op
-Iteration  20: 356,438 ns/op
-Iteration  21: 355,969 ns/op
-Iteration  22: 361,532 ns/op
-Iteration  23: 366,938 ns/op
-Iteration  24: 371,183 ns/op
-Iteration  25: 359,764 ns/op
-Iteration  26: 352,393 ns/op
-Iteration  27: 354,181 ns/op
-Iteration  28: 358,581 ns/op
-Iteration  29: 357,679 ns/op
-Iteration  30: 355,378 ns/op
-Iteration  31: 355,555 ns/op
-Iteration  32: 355,120 ns/op
-Iteration  33: 357,406 ns/op
-Iteration  34: 359,860 ns/op
-Iteration  35: 360,811 ns/op
-Iteration  36: 360,683 ns/op
-Iteration  37: 358,574 ns/op
-Iteration  38: 359,502 ns/op
-Iteration  39: 353,747 ns/op
-Iteration  40: 356,432 ns/op
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+6777,335 ns/op
+# Warmup Iteration   2: 4861,535 ns/op
+# Warmup Iteration   3: 4725,132 ns/op
+# Warmup Iteration   4: 4753,083 ns/op
+# Warmup Iteration   5: 4721,814 ns/op
+# Warmup Iteration   6: 4707,848 ns/op
+# Warmup Iteration   7: 4685,140 ns/op
+# Warmup Iteration   8: 4722,890 ns/op
+# Warmup Iteration   9: 4706,413 ns/op
+# Warmup Iteration  10: 4709,634 ns/op
+# Warmup Iteration  11: 4699,452 ns/op
+# Warmup Iteration  12: 4724,217 ns/op
+# Warmup Iteration  13: 4711,777 ns/op
+# Warmup Iteration  14: 4704,984 ns/op
+# Warmup Iteration  15: 4691,234 ns/op
+Iteration   1: 4696,035 ns/op
+Iteration   2: 4676,362 ns/op
+Iteration   3: 4658,638 ns/op
+Iteration   4: 4700,580 ns/op
+Iteration   5: 4682,635 ns/op
+Iteration   6: 4675,549 ns/op
+Iteration   7: 4694,916 ns/op
+Iteration   8: 4667,285 ns/op
+Iteration   9: 4694,611 ns/op
+Iteration  10: 4704,295 ns/op
+Iteration  11: 4652,398 ns/op
+Iteration  12: 4681,449 ns/op
+Iteration  13: 4699,830 ns/op
+Iteration  14: 4671,388 ns/op
+Iteration  15: 4677,499 ns/op
+Iteration  16: 4686,363 ns/op
+Iteration  17: 4664,985 ns/op
+Iteration  18: 4698,601 ns/op
+Iteration  19: 4684,878 ns/op
+Iteration  20: 4695,562 ns/op
+Iteration  21: 4674,408 ns/op
+Iteration  22: 4720,196 ns/op
+Iteration  23: 4696,476 ns/op
+Iteration  24: 4674,818 ns/op
+Iteration  25: 4675,576 ns/op
+Iteration  26: 4980,863 ns/op
+Iteration  27: 4673,102 ns/op
+Iteration  28: 4679,024 ns/op
+Iteration  29: 4671,127 ns/op
+Iteration  30: 4695,128 ns/op
+Iteration  31: 4667,870 ns/op
+Iteration  32: 4707,187 ns/op
+Iteration  33: 4686,516 ns/op
+Iteration  34: 4672,344 ns/op
+Iteration  35: 4684,519 ns/op
+Iteration  36: 4692,635 ns/op
+Iteration  37: 4694,204 ns/op
+Iteration  38: 4685,123 ns/op
+Iteration  39: 4684,771 ns/op
+Iteration  40: 4675,921 ns/op
 
 
-Result "benchmark.AutenticationServiceBenchmark.testRegister":
-  351,159 ±(99.9%) 3,982 ns/op [Average]
-  (min, avg, max) = (335,848, 351,159, 371,183), stdev = 10,419
-  CI (99.9%): [347,177, 355,140] (assumes normal distribution)
+Result "benchmark.AutenticationServiceBenchmark.benchmarkRegisterEmailAlreadyExists":
+  4757,734 ±(99.9%) 28,921 ns/op [Average]
+  (min, avg, max) = (4652,398, 4757,734, 4980,863), stdev = 75,680
+  CI (99.9%): [4728,813, 4786,654] (assumes normal distribution)
 
 
-# Run complete. Total time: 00:09:20
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkRegisterSuccess
+
+# Run progress: 71,43% complete, ETA 00:03:48
+# Fork: 1 of 2
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+23659,316 ns/op
+# Warmup Iteration   2: 15401,845 ns/op
+# Warmup Iteration   3: 14831,076 ns/op
+# Warmup Iteration   4: 14763,425 ns/op
+# Warmup Iteration   5: 14708,301 ns/op
+# Warmup Iteration   6: 14707,325 ns/op
+# Warmup Iteration   7: 14709,779 ns/op
+# Warmup Iteration   8: 14698,098 ns/op
+# Warmup Iteration   9: 14681,552 ns/op
+# Warmup Iteration  10: 14736,980 ns/op
+# Warmup Iteration  11: 14732,672 ns/op
+# Warmup Iteration  12: 14730,633 ns/op
+# Warmup Iteration  13: 14789,255 ns/op
+# Warmup Iteration  14: 14725,101 ns/op
+# Warmup Iteration  15: 14751,598 ns/op
+Iteration   1: 14768,999 ns/op
+Iteration   2: 14667,784 ns/op
+Iteration   3: 14686,204 ns/op
+Iteration   4: 14644,284 ns/op
+Iteration   5: 14631,752 ns/op
+Iteration   6: 14564,874 ns/op
+Iteration   7: 14663,525 ns/op
+Iteration   8: 14678,572 ns/op
+Iteration   9: 14618,788 ns/op
+Iteration  10: 14602,864 ns/op
+Iteration  11: 14658,761 ns/op
+Iteration  12: 14792,723 ns/op
+Iteration  13: 14766,729 ns/op
+Iteration  14: 14696,229 ns/op
+Iteration  15: 14622,710 ns/op
+Iteration  16: 14621,984 ns/op
+Iteration  17: 14613,110 ns/op
+Iteration  18: 14648,168 ns/op
+Iteration  19: 14637,252 ns/op
+Iteration  20: 14645,546 ns/op
+Iteration  21: 14627,002 ns/op
+Iteration  22: 14639,210 ns/op
+Iteration  23: 14668,719 ns/op
+Iteration  24: 14590,256 ns/op
+Iteration  25: 14675,983 ns/op
+Iteration  26: 14640,149 ns/op
+Iteration  27: 14607,249 ns/op
+Iteration  28: 14668,934 ns/op
+Iteration  29: 14630,141 ns/op
+Iteration  30: 14585,913 ns/op
+Iteration  31: 14755,713 ns/op
+Iteration  32: 14643,393 ns/op
+Iteration  33: 14674,060 ns/op
+Iteration  34: 14672,188 ns/op
+Iteration  35: 14663,671 ns/op
+Iteration  36: 14609,440 ns/op
+Iteration  37: 14694,467 ns/op
+Iteration  38: 14640,315 ns/op
+Iteration  39: 14618,168 ns/op
+Iteration  40: 14644,197 ns/op
+
+# Run progress: 78,57% complete, ETA 00:02:51
+# Fork: 2 of 2
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+23146,122 ns/op
+# Warmup Iteration   2: 15210,055 ns/op
+# Warmup Iteration   3: 14895,499 ns/op
+# Warmup Iteration   4: 14840,254 ns/op
+# Warmup Iteration   5: 14734,840 ns/op
+# Warmup Iteration   6: 14759,272 ns/op
+# Warmup Iteration   7: 14799,859 ns/op
+# Warmup Iteration   8: 14760,959 ns/op
+# Warmup Iteration   9: 14721,895 ns/op
+# Warmup Iteration  10: 14757,202 ns/op
+# Warmup Iteration  11: 14867,100 ns/op
+# Warmup Iteration  12: 14761,057 ns/op
+# Warmup Iteration  13: 14793,654 ns/op
+# Warmup Iteration  14: 14781,515 ns/op
+# Warmup Iteration  15: 14791,748 ns/op
+Iteration   1: 14738,325 ns/op
+Iteration   2: 14672,978 ns/op
+Iteration   3: 14659,778 ns/op
+Iteration   4: 14660,895 ns/op
+Iteration   5: 14655,671 ns/op
+Iteration   6: 14702,951 ns/op
+Iteration   7: 14708,180 ns/op
+Iteration   8: 14666,357 ns/op
+Iteration   9: 14653,871 ns/op
+Iteration  10: 14665,010 ns/op
+Iteration  11: 14665,822 ns/op
+Iteration  12: 14667,133 ns/op
+Iteration  13: 14685,246 ns/op
+Iteration  14: 14687,980 ns/op
+Iteration  15: 14677,569 ns/op
+Iteration  16: 14656,597 ns/op
+Iteration  17: 14734,392 ns/op
+Iteration  18: 14667,505 ns/op
+Iteration  19: 14756,003 ns/op
+Iteration  20: 14639,868 ns/op
+Iteration  21: 14682,011 ns/op
+Iteration  22: 14656,651 ns/op
+Iteration  23: 14637,207 ns/op
+Iteration  24: 14633,366 ns/op
+Iteration  25: 14660,241 ns/op
+Iteration  26: 14698,832 ns/op
+Iteration  27: 14671,785 ns/op
+Iteration  28: 14645,959 ns/op
+Iteration  29: 14690,494 ns/op
+Iteration  30: 14684,403 ns/op
+Iteration  31: 14752,556 ns/op
+Iteration  32: 14694,260 ns/op
+Iteration  33: 14683,616 ns/op
+Iteration  34: 14658,477 ns/op
+Iteration  35: 14718,227 ns/op
+Iteration  36: 14701,216 ns/op
+Iteration  37: 14684,108 ns/op
+Iteration  38: 14634,013 ns/op
+Iteration  39: 14663,744 ns/op
+Iteration  40: 14694,612 ns/op
+
+
+Result "benchmark.AutenticationServiceBenchmark.benchmarkRegisterSuccess":
+  14666,849 ±(99.9%) 16,280 ns/op [Average]
+  (min, avg, max) = (14564,874, 14666,849, 14792,723), stdev = 42,601
+  CI (99.9%): [14650,569, 14683,129] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.AutenticationServiceBenchmark.benchmarkRegisterUsernameAlreadyExists
+
+# Run progress: 85,71% complete, ETA 00:01:54
+# Fork: 1 of 2
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+12853,581 ns/op
+# Warmup Iteration   2: 9640,315 ns/op
+# Warmup Iteration   3: 9433,138 ns/op
+# Warmup Iteration   4: 9435,023 ns/op
+# Warmup Iteration   5: 9475,600 ns/op
+# Warmup Iteration   6: 9411,100 ns/op
+# Warmup Iteration   7: 9377,027 ns/op
+# Warmup Iteration   8: 9390,863 ns/op
+# Warmup Iteration   9: 9380,802 ns/op
+# Warmup Iteration  10: 9412,335 ns/op
+# Warmup Iteration  11: 9400,707 ns/op
+# Warmup Iteration  12: 9460,598 ns/op
+# Warmup Iteration  13: 9439,311 ns/op
+# Warmup Iteration  14: 9410,364 ns/op
+# Warmup Iteration  15: 9432,046 ns/op
+Iteration   1: 9429,739 ns/op
+Iteration   2: 9492,504 ns/op
+Iteration   3: 9442,834 ns/op
+Iteration   4: 9429,075 ns/op
+Iteration   5: 9420,484 ns/op
+Iteration   6: 9428,081 ns/op
+Iteration   7: 9425,170 ns/op
+Iteration   8: 9435,713 ns/op
+Iteration   9: 9438,318 ns/op
+Iteration  10: 9406,111 ns/op
+Iteration  11: 9405,731 ns/op
+Iteration  12: 9459,214 ns/op
+Iteration  13: 9380,709 ns/op
+Iteration  14: 9386,303 ns/op
+Iteration  15: 9428,665 ns/op
+Iteration  16: 9387,915 ns/op
+Iteration  17: 9393,590 ns/op
+Iteration  18: 9388,177 ns/op
+Iteration  19: 9434,855 ns/op
+Iteration  20: 9413,947 ns/op
+Iteration  21: 9409,721 ns/op
+Iteration  22: 9461,923 ns/op
+Iteration  23: 9414,584 ns/op
+Iteration  24: 9400,782 ns/op
+Iteration  25: 9395,597 ns/op
+Iteration  26: 9448,812 ns/op
+Iteration  27: 9435,890 ns/op
+Iteration  28: 9358,422 ns/op
+Iteration  29: 9431,962 ns/op
+Iteration  30: 9380,589 ns/op
+Iteration  31: 9402,922 ns/op
+Iteration  32: 9385,062 ns/op
+Iteration  33: 9397,641 ns/op
+Iteration  34: 9457,404 ns/op
+Iteration  35: 9406,781 ns/op
+Iteration  36: 9381,637 ns/op
+Iteration  37: 9372,306 ns/op
+Iteration  38: 9349,989 ns/op
+Iteration  39: 9403,051 ns/op
+Iteration  40: 9381,762 ns/op
+
+# Run progress: 92,86% complete, ETA 00:00:57
+# Fork: 2 of 2
+# Warmup Iteration   1: Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+13287,548 ns/op
+# Warmup Iteration   2: 9825,060 ns/op
+# Warmup Iteration   3: 9596,458 ns/op
+# Warmup Iteration   4: 9657,795 ns/op
+# Warmup Iteration   5: 9606,609 ns/op
+# Warmup Iteration   6: 9562,232 ns/op
+# Warmup Iteration   7: 9578,198 ns/op
+# Warmup Iteration   8: 9588,340 ns/op
+# Warmup Iteration   9: 9657,977 ns/op
+# Warmup Iteration  10: 9563,307 ns/op
+# Warmup Iteration  11: 9547,911 ns/op
+# Warmup Iteration  12: 9603,560 ns/op
+# Warmup Iteration  13: 9597,548 ns/op
+# Warmup Iteration  14: 9572,533 ns/op
+# Warmup Iteration  15: 9584,684 ns/op
+Iteration   1: 9590,733 ns/op
+Iteration   2: 9582,216 ns/op
+Iteration   3: 9550,763 ns/op
+Iteration   4: 9515,549 ns/op
+Iteration   5: 9547,056 ns/op
+Iteration   6: 9573,325 ns/op
+Iteration   7: 9558,073 ns/op
+Iteration   8: 9582,690 ns/op
+Iteration   9: 9564,786 ns/op
+Iteration  10: 9543,584 ns/op
+Iteration  11: 9533,828 ns/op
+Iteration  12: 9604,824 ns/op
+Iteration  13: 9555,333 ns/op
+Iteration  14: 9530,063 ns/op
+Iteration  15: 9590,837 ns/op
+Iteration  16: 9538,577 ns/op
+Iteration  17: 9529,654 ns/op
+Iteration  18: 9558,303 ns/op
+Iteration  19: 9562,379 ns/op
+Iteration  20: 9540,920 ns/op
+Iteration  21: 9556,183 ns/op
+Iteration  22: 9552,120 ns/op
+Iteration  23: 9516,222 ns/op
+Iteration  24: 9531,940 ns/op
+Iteration  25: 9564,669 ns/op
+Iteration  26: 9561,130 ns/op
+Iteration  27: 9541,974 ns/op
+Iteration  28: 9580,231 ns/op
+Iteration  29: 9528,042 ns/op
+Iteration  30: 9555,545 ns/op
+Iteration  31: 9507,527 ns/op
+Iteration  32: 9534,372 ns/op
+Iteration  33: 9564,052 ns/op
+Iteration  34: 9531,752 ns/op
+Iteration  35: 9569,550 ns/op
+Iteration  36: 9571,315 ns/op
+Iteration  37: 9538,802 ns/op
+Iteration  38: 9565,122 ns/op
+Iteration  39: 9539,319 ns/op
+Iteration  40: 9564,792 ns/op
+
+
+Result "benchmark.AutenticationServiceBenchmark.benchmarkRegisterUsernameAlreadyExists":
+  9482,901 ±(99.9%) 28,842 ns/op [Average]
+  (min, avg, max) = (9349,989, 9482,901, 9604,824), stdev = 75,473
+  CI (99.9%): [9454,060, 9511,743] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:13:20
 
 REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
 why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
@@ -687,9 +971,11 @@ works, and factor in a small probability of new VM bugs. Additionally, while com
 different JVMs are already problematic, the performance difference caused by different Blackhole
 modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
 
-Benchmark                                             Mode  Cnt    Score    Error  Units
-AutenticationServiceBenchmark.testLoginSuccess        avgt   80  673,558 ± 17,554  ns/op
-AutenticationServiceBenchmark.testLoginUserNotFound   avgt   80    0,718 ±  0,012  ns/op
-AutenticationServiceBenchmark.testLoginWrongPassword  avgt   80  680,034 ± 10,792  ns/op
-AutenticationServiceBenchmark.testLogout              avgt   80    0,694 ±  0,002  ns/op
-AutenticationServiceBenchmark.testRegister            avgt   80  351,159 ±  3,982  ns/op
+Benchmark                                                             Mode  Cnt      Score    Error  Units
+AutenticationServiceBenchmark.benchmarkLoginSuccess                   avgt   80   5028,072 ± 21,738  ns/op
+AutenticationServiceBenchmark.benchmarkLoginUserNotFound              avgt   80   4573,676 ±  7,799  ns/op
+AutenticationServiceBenchmark.benchmarkLoginWrongPassword             avgt   80   5012,948 ± 18,104  ns/op
+AutenticationServiceBenchmark.benchmarkLogout                         avgt   80   3748,288 ± 23,232  ns/op
+AutenticationServiceBenchmark.benchmarkRegisterEmailAlreadyExists     avgt   80   4757,734 ± 28,921  ns/op
+AutenticationServiceBenchmark.benchmarkRegisterSuccess                avgt   80  14666,849 ± 16,280  ns/op
+AutenticationServiceBenchmark.benchmarkRegisterUsernameAlreadyExists  avgt   80   9482,901 ± 28,842  ns/op
