@@ -10,7 +10,7 @@ public class JmhTestRunner {
     @Test
     public void launchBenchmark() throws Exception {
         final Options opt = new OptionsBuilder()
-            .include(RecensioniServiceBenchmark.class.getSimpleName()) 
+            .include(AutenticationServiceBenchmark.class.getSimpleName()) 
             // .include(AltroServiceBenchmark.class.getSimpleName())
             .forks(2) 
             .warmupIterations(15) 

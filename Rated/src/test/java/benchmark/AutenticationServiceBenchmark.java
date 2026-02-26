@@ -1,20 +1,15 @@
 package benchmark;
 
+import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.infra.Blackhole;
+import org.mockito.Mockito;
+
 import model.DAO.UtenteDAO;
 import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Utenti.service.AutenticationService;
+import utilities.PasswordUtility;
 
-import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.infra.Blackhole;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
-import utilities.PasswordUtility; 
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
-import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Thread)
@@ -25,111 +20,92 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 40, time = 1)
 public class AutenticationServiceBenchmark {
 
-    private AutenticationService service;
-    
-    // Dati di test
-    private final String VALID_EMAIL = "user@test.com";
-    private final String VALID_PASSWORD = "PasswordSegreta123!";
-    private final String WRONG_PASSWORD = "Sbagliata";
-    private final String NEW_USER_EMAIL = "new@test.com";
-    private final String NEW_USER_NAME = "NewUser";
-
+    private AutenticationService autenticationService;
+    private UtenteDAO mockUtenteDAO;
     private HttpSession mockSession;
 
+    // Variabili di test
+    private final String testEmail = "utente@test.com";
+    private final String testEmailInesistente = "nessuno@test.com";
+    private final String testUsername = "TestUser";
+    private final String testNewUsername = "NewUser";
+    private final String testPassword = "SuperSecretPassword123";
+    private final String testWrongPassword = "WrongPassword";
+    private final String testBio = "Biografia di prova";
+    private final byte[] testIcon = new byte[0];
+
+    private UtenteBean mockUser;
+
     @Setup(Level.Trial)
-    public void setup() {
-        // --- 1. MOCK UTENTE DAO ---
-        final UtenteDAO mockDao = new UtenteDAO(true) { 
-            @Override
-            public UtenteBean findByEmail(String email) {
-                if ("user@test.com".equals(email)) { 
-                    final UtenteBean u = new UtenteBean();
-                    u.setEmail(email);
-                    u.setPassword(PasswordUtility.hashPassword("PasswordSegreta123!")); 
-                    return u;
-                }
-                return null; 
-            }
+    public void setUp() {
+        // 1. Inizializzazione mock in modalità stubOnly
+        mockUtenteDAO = Mockito.mock(UtenteDAO.class, Mockito.withSettings().stubOnly());
+        mockSession = Mockito.mock(HttpSession.class, Mockito.withSettings().stubOnly());
 
-            @Override
-            public UtenteBean findByUsername(String username) {
-                if ("ExistingUser".equals(username)) {
-                    return new UtenteBean();
-                }
-                return null; 
-            }
+        // 2. Iniezione nel Service
+        autenticationService = new AutenticationService(mockUtenteDAO);
 
-            @Override
-            public void save(UtenteBean u) {
-                // Simulazione salvataggio veloce
-            }
-        };
+        // 3. Preparazione dei dati di test
+        mockUser = new UtenteBean();
+        mockUser.setEmail(testEmail);
+        mockUser.setUsername(testUsername);
+        
+        // Attenzione: Per far sì che il login abbia successo nel test, la password nel mock 
+        // deve corrispondere all'hash che PasswordUtility genererà durante il benchmark.
+        String hashedPassword = PasswordUtility.hashPassword(testPassword);
+        mockUser.setPassword(hashedPassword);
 
-        // --- 2. MOCK SESSION ---
-        this.mockSession = new javax.servlet.http.HttpSession() {
-            @Override
-            public void invalidate() {
-            }
-
-            @Override public long getCreationTime() { return 0; }
-            @Override public String getId() { return "mockId"; }
-            @Override public long getLastAccessedTime() { return 0; }
-            @Override public javax.servlet.ServletContext getServletContext() { return null; }
-            @Override public void setMaxInactiveInterval(int interval) {}
-            @Override public int getMaxInactiveInterval() { return 0; }
-            @Override public javax.servlet.http.HttpSessionContext getSessionContext() { return null; }
-            @Override public Object getAttribute(String name) { return null; }
-            @Override public Object getValue(String name) { return null; }
-            @Override public java.util.Enumeration<String> getAttributeNames() { return null; }
-            @Override public String[] getValueNames() { return new String[0]; }
-            @Override public void setAttribute(String name, Object value) {}
-            @Override public void putValue(String name, Object value) {}
-            @Override public void removeAttribute(String name) {}
-            @Override public void removeValue(String name) {}
-            
-            @Override 
-            public boolean isNew() { 
-                return false; 
-            }
-        };
-
-        // --- 3. INIEZIONE ---
-        this.service = new AutenticationService(mockDao);
+        // 4. Configurazione dei comportamenti del mock
+        // Caso: Utente Esistente
+        Mockito.when(mockUtenteDAO.findByEmail(testEmail)).thenReturn(mockUser);
+        Mockito.when(mockUtenteDAO.findByUsername(testUsername)).thenReturn(mockUser);
+        
+        // Caso: Utente Non Esistente (per far funzionare correttamente la registrazione)
+        Mockito.when(mockUtenteDAO.findByEmail("nuovo@test.com")).thenReturn(null);
+        Mockito.when(mockUtenteDAO.findByUsername(testNewUsername)).thenReturn(null);
+        Mockito.when(mockUtenteDAO.findByEmail(testEmailInesistente)).thenReturn(null);
     }
 
     @Benchmark
-    public void testLoginSuccess(Blackhole bh) {
-        final UtenteBean u = service.login(VALID_EMAIL, VALID_PASSWORD);
-        bh.consume(u);
+    public void benchmarkLoginSuccess(Blackhole bh) {
+        // Scenario: L'utente esiste e la password è corretta
+        bh.consume(autenticationService.login(testEmail, testPassword));
     }
 
     @Benchmark
-    public void testLoginWrongPassword(Blackhole bh) {
-        final UtenteBean u = service.login(VALID_EMAIL, WRONG_PASSWORD);
-        bh.consume(u);
+    public void benchmarkLoginWrongPassword(Blackhole bh) {
+        // Scenario: L'utente esiste ma la password è errata
+        bh.consume(autenticationService.login(testEmail, testWrongPassword));
+    }
+
+    @Benchmark
+    public void benchmarkLoginUserNotFound(Blackhole bh) {
+        // Scenario: L'utente non esiste nel database (ramo più veloce)
+        bh.consume(autenticationService.login(testEmailInesistente, testPassword));
+    }
+
+    @Benchmark
+    public void benchmarkLogout(Blackhole bh) {
+        // Scenario: Invalidazione della sessione
+        autenticationService.logout(mockSession);
+        bh.consume(true);
+    }
+
+    @Benchmark
+    public void benchmarkRegisterSuccess(Blackhole bh) {
+        // Scenario: L'email e l'username non esistono, la registrazione procede
+        bh.consume(autenticationService.register(testNewUsername, "nuovo@test.com", testPassword, testBio, testIcon));
+    }
+
+    @Benchmark
+    public void benchmarkRegisterEmailAlreadyExists(Blackhole bh) {
+        // Scenario: Fallimento rapido perché l'email è già in uso
+        bh.consume(autenticationService.register(testNewUsername, testEmail, testPassword, testBio, testIcon));
     }
     
     @Benchmark
-    public void testLoginUserNotFound(Blackhole bh) {
-        final UtenteBean u = service.login("non@esiste.com", "qualcosa");
-        bh.consume(u);
-    }
-
-    @Benchmark
-    public void testRegister(Blackhole bh) {
-        final UtenteBean u = service.register(NEW_USER_NAME, NEW_USER_EMAIL, VALID_PASSWORD, "Bio", null);
-        bh.consume(u);
-    }
-
-    @Benchmark
-    public void testLogout() {
-        service.logout(mockSession);
-    }
-
-    public static void main(String[] args) throws Exception {
-        final Options opt = new OptionsBuilder()
-                .include(AutenticationServiceBenchmark.class.getSimpleName())
-                .build();
-        new Runner(opt).run();
+    public void benchmarkRegisterUsernameAlreadyExists(Blackhole bh) {
+        // Scenario: Fallimento al secondo controllo perché l'username è già in uso
+        bh.consume(autenticationService.register(testUsername, "nuovo@test.com", testPassword, testBio, testIcon));
     }
 }
