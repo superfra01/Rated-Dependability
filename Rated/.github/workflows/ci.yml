@@ -1,0 +1,89 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # --- GitGuardian  ---
+      - name: GitGuardian scan (secrets)
+        uses: GitGuardian/ggshield-action@v1
+        env:
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+      # --- Snyk (install CLI) ---
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
+      # --- Snyk Open Source (dipendenze Maven) ---
+      - name: Snyk Open Source (dependencies)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --file=Rated/pom.xml --severity-threshold=high
+
+      - name: Snyk Monitor (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk monitor --file=Rated/pom.xml
+
+      # --- Snyk Code (SAST) ---
+      # Userà le esclusioni del file .snyk
+      - name: Snyk Code (SAST)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk code test
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Modificato in 17
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build & test (Maven verify + JaCoCo)
+        run: mvn -B -ntp -f Rated/pom.xml verify
+
+      - name: Check JaCoCo XML exists
+        run: ls -la Rated/target/site/jacoco/jacoco.xml
+
+      - name: SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B -ntp -f Rated/pom.xml org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.organization=INSERISCI_LA_TUA_ORGANIZZAZIONE_SONAR \
+            -Dsonar.projectKey=INSERISCI_IL_TUO_PROJECT_KEY_SONAR \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.coverage.exclusions=**/*
+
+      - name: Mutation testing with PIT
+        run: mvn -B -ntp -f Rated/pom.xml org.pitest:pitest-maven:mutationCoverage
+
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: Rated/target/site/jacoco
+
+      - name: Upload PIT mutation testing report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pit-report
+          path: Rated/target/pit-reports
+
+      - name: Build Docker image
+        run: docker build Rated --file Rated/Dockerfile --tag rated-webapp:${{ github.sha }}
