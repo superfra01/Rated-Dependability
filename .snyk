@@ -1,0 +1,14 @@
+version: v1.25.0
+exclude:
+  global:
+    - "Rated/src/test"
+    - "Rated/target"
+    - "Rated/.settings"
+    - ".settings"
+    - "Analisi"
+    - "Deliverables"
+    - "Deliverables-ISTA"
+    - "New Diagrams"
+    - "Performance"
+    - "Raw File"
+    - "Sustainability Deliverables"
