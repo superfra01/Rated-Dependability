@@ -6,42 +6,83 @@ public class ReportBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //@ spec_public
     private String email;
+    
+    //@ spec_public
     private String emailRecensore;
+    
+    //@ spec_public
     private int idFilm;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant email != null;
+    //@ public invariant emailRecensore != null;
+    //@ public invariant idFilm >= 0;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.email.equals("");
+    //@ ensures this.emailRecensore.equals("");
+    //@ ensures this.idFilm == 0;
     public ReportBean() {
         email = "";
         emailRecensore = "";
         idFilm = 0;
     }
 
+    //@ requires email != null;
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ ensures this.email == email;
+    //@ ensures this.emailRecensore == emailRecensore;
+    //@ ensures this.idFilm == idFilm;
     public ReportBean(final String email, final String emailRecensore, final int idFilm) {
         this.email = email;
         this.emailRecensore = emailRecensore;
         this.idFilm = idFilm;
     }
 
-    public String getEmail() {
+    /* =========================================
+     * GETTER E SETTER
+     * ========================================= */
+
+    //@ ensures \result == email;
+    public /*@ pure @*/ String getEmail() {
         return email;
     }
 
+    //@ requires email != null;
+    //@ assigns this.email;
+    //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
     }
 
-    public String getEmailRecensore() {
+    //@ ensures \result == emailRecensore;
+    public /*@ pure @*/ String getEmailRecensore() {
         return emailRecensore;
     }
 
+    //@ requires emailRecensore != null;
+    //@ assigns this.emailRecensore;
+    //@ ensures this.emailRecensore == emailRecensore;
     public void setEmailRecensore(final String emailRecensore) {
         this.emailRecensore = emailRecensore;
     }
 
-    public int getIdFilm() {
+    //@ ensures \result == idFilm;
+    public /*@ pure @*/ int getIdFilm() {
         return idFilm;
     }
 
+    //@ requires idFilm >= 0;
+    //@ assigns this.idFilm;
+    //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }

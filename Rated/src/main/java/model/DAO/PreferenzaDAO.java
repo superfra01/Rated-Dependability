@@ -16,8 +16,19 @@ import model.Entity.PreferenzaBean;
 
 public class PreferenzaDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public PreferenzaDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -28,14 +39,27 @@ public class PreferenzaDAO {
         }
     }
     
+    //@ requires dataSource != null;
+    //@ ensures this.dataSource == dataSource;
     public PreferenzaDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
     
+    // Costruttore per i test, non inizializza la connessione
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
     protected PreferenzaDAO(final boolean testMode) {
         // Vuoto: non fa nulla, niente DB!
     }
 
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires preferenza != null;
+    //@ assignable \everything;
     public void save(final PreferenzaBean preferenza) {
         final String selectQuery = "SELECT 1 FROM Preferenza WHERE email = ? AND Nome_Genere = ?";
         final String insertQuery = "INSERT INTO Preferenza (email, Nome_Genere) VALUES (?, ?)";
@@ -60,6 +84,9 @@ public class PreferenzaDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<PreferenzaBean> findByEmail(final String email) {
         final String query = "SELECT * FROM Preferenza WHERE email = ?";
         final List<PreferenzaBean> preferenze = new ArrayList<>();
@@ -100,6 +127,9 @@ public class PreferenzaDAO {
         }
     }
 */
+    
+    //@ requires email != null;
+    //@ assignable \everything;
     public void deleteByEmail(final String email) {
         final String query = "DELETE FROM Preferenza WHERE email = ?";
 

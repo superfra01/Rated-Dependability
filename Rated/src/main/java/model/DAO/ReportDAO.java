@@ -12,8 +12,19 @@ import model.Entity.ReportBean;
 
 public class ReportDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public ReportDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -24,14 +35,27 @@ public class ReportDAO {
         }
     }
     
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
     public ReportDAO(final DataSource testDataSource) { // Parametro final
-    	dataSource = testDataSource;
-	}
-
-    protected ReportDAO(final boolean testMode) { // Parametro final
-    	
+        dataSource = testDataSource;
     }
 
+    // Costruttore per i test, non inizializza la connessione
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
+    protected ReportDAO(final boolean testMode) { // Parametro final
+        
+    }
+
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires report != null;
+    //@ assignable \everything;
     public void save(final ReportBean report) { // Parametro final
         final String query = "INSERT INTO Report (email, email_Recensore, ID_Film) VALUES (?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
@@ -45,6 +69,11 @@ public class ReportDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getEmailRecensore().equals(emailRecensore) && \result.getIdFilm() == idFilm);
     public ReportBean findById(final String email, final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "SELECT * FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -66,7 +95,12 @@ public class ReportDAO {
         }
         return null;
     }
+
 /*
+    //@ requires email != null;
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void delete(final String email, final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "DELETE FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -80,6 +114,10 @@ public class ReportDAO {
         }
     }
 */
+
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void deleteReports(final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "DELETE FROM Report WHERE email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();

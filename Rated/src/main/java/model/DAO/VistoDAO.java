@@ -17,8 +17,19 @@ import model.Entity.VistoBean;
 
 public class VistoDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public VistoDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -29,10 +40,18 @@ public class VistoDAO {
         }
     }
     
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
     public VistoDAO(final DataSource testDataSource) { // Parametro final
         dataSource = testDataSource;
     }
-    
+
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires visto != null;
+    //@ assignable \everything;
     public void save(final VistoBean visto) {
         final String selectQuery = "SELECT 1 FROM Visto WHERE email = ? AND ID_Film = ?";
         final String insertQuery = "INSERT INTO Visto (email, ID_Film) VALUES (?, ?)";
@@ -57,6 +76,10 @@ public class VistoDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
     public VistoBean findByEmailAndIdFilm(final String email, final int idFilm) {
         final String query = "SELECT * FROM Visto WHERE email = ? AND ID_Film = ?";
 
@@ -107,7 +130,11 @@ public class VistoDAO {
 
         return visti;
     }
-	*/
+    */
+    
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void delete(final String email, final int idFilm) {
         final String query = "DELETE FROM Visto WHERE email = ? AND ID_Film = ?";
 
@@ -137,9 +164,11 @@ public class VistoDAO {
         }
     }
     
-	*/
+    */
 
-
+    //@ requires username != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> doRetrieveFilmsByUtente(String username){
         List<FilmBean> films = new ArrayList<>();
         
@@ -174,9 +203,9 @@ public class VistoDAO {
                 }
             }
         } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return films;
     }
 }

@@ -14,8 +14,19 @@ import model.Entity.UtenteBean;
 
 public class UtenteDAO {
 
+    //@ spec_public
     private DataSource dataSource; // Non può essere final perché c'è un setter
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public UtenteDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -27,19 +38,34 @@ public class UtenteDAO {
     }
     
     // Costruttore per test (iniezione di DataSource mock)
+    //@ requires dataSource != null;
+    //@ ensures this.dataSource == dataSource;
     public UtenteDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
     
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
     protected UtenteDAO(final boolean testMode) {
         // Vuoto: non fa nulla, niente DB!
     }
 
     // Metodo setter per cambiare il DataSource
+    //@ requires dataSource != null;
+    //@ assigns this.dataSource;
+    //@ ensures this.dataSource == dataSource;
     public void setDataSource(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires utente != null;
+    //@ assignable \everything;
     public void save(final UtenteBean utente) {
         final String query = "INSERT INTO Utente_Registrato (email, icona, username, password, Tipo_Utente, N_Warning, Biografia) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
@@ -57,6 +83,9 @@ public class UtenteDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> \result.getEmail().equals(email);
     public UtenteBean findByEmail(final String email) {
         final String query = "SELECT * FROM Utente_Registrato WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -81,6 +110,9 @@ public class UtenteDAO {
         return null;
     }
 
+    //@ requires username != null;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> \result.getUsername().equals(username);
     public UtenteBean findByUsername(final String username) {
         final String query = "SELECT * FROM Utente_Registrato WHERE username = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -128,6 +160,9 @@ public class UtenteDAO {
         return utenti;
     }
 */
+
+    //@ requires utente != null;
+    //@ assignable \everything;
     public void update(final UtenteBean utente) {
         final String query = "UPDATE Utente_Registrato SET icona = ?, username = ?, password = ?, Tipo_Utente = ?, N_Warning = ?, Biografia = ? WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();

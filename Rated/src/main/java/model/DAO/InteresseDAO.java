@@ -17,8 +17,19 @@ import model.Entity.InteresseBean;
 
 public class InteresseDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public InteresseDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -29,10 +40,18 @@ public class InteresseDAO {
         }
     }
     
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
     public InteresseDAO(final DataSource testDataSource) { // Parametro final
         dataSource = testDataSource;
     }
 
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires interesseBean != null;
+    //@ assignable \everything;
     public void save(final InteresseBean interesseBean) {
         final String selectQuery = "SELECT 1 FROM Interesse WHERE email = ? AND ID_Film = ?";
         final String insertQuery = "INSERT INTO Interesse (email, ID_Film, interesse) VALUES (?, ?, ?)";
@@ -65,6 +84,10 @@ public class InteresseDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
     public InteresseBean findByEmailAndIdFilm(final String email, final int idFilm) {
         final String query = "SELECT * FROM Interesse WHERE email = ? AND ID_Film = ?";
 
@@ -90,7 +113,8 @@ public class InteresseDAO {
 
         return null;
     }
-/*         Metodo non usato
+
+/* Metodo non usato
     public List<InteresseBean> findByEmail(final String email) {
         final String query = "SELECT * FROM Interesse WHERE email = ?";
         final List<InteresseBean> interessi = new ArrayList<>();
@@ -144,6 +168,10 @@ public class InteresseDAO {
         return interessi;
     }
 */
+
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void delete(final String email, final int idFilm) {
         final String query = "DELETE FROM Interesse WHERE email = ? AND ID_Film = ?";
 
@@ -158,7 +186,8 @@ public class InteresseDAO {
             e.printStackTrace();
         }
     }
-/*    Metodo non usato
+
+/* Metodo non usato
     public void deleteByEmail(final String email) {
         final String query = "DELETE FROM Interesse WHERE email = ?";
 
@@ -174,6 +203,10 @@ public class InteresseDAO {
     }
     
 */
+
+    //@ requires username != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> doRetrieveFilmsByUtente(String username){
         List<FilmBean> films = new ArrayList<>();
         
@@ -210,9 +243,9 @@ public class InteresseDAO {
                 }
             }
         } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return films;
     }
 }

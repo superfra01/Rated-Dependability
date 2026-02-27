@@ -13,8 +13,19 @@ import model.Entity.ValutazioneBean;
 
 public class ValutazioneDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public ValutazioneDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -24,16 +35,29 @@ public class ValutazioneDAO {
             throw new RuntimeException("Error initializing DataSource: " + e.getMessage());
         }
     }
-    //test
-    public ValutazioneDAO(final DataSource testDataSource) { // Parametro final
-    	dataSource = testDataSource;
-	}
     
+    //test
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
+    public ValutazioneDAO(final DataSource testDataSource) { // Parametro final
+        dataSource = testDataSource;
+    }
+    
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
     protected ValutazioneDAO(final boolean testMode) { // Parametro final
-    	
+        
     }
 
-	public void save(final ValutazioneBean valutazione) { // Parametro final
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires valutazione != null;
+    //@ assignable \everything;
+    public void save(final ValutazioneBean valutazione) { // Parametro final
         final String selectQuery = "SELECT * FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         final String insertQuery = "INSERT INTO Valutazione (Like_Dislike, email, email_Recensore, ID_Film) VALUES (?, ?, ?, ?)";
         final String updateQuery = "UPDATE Valutazione SET Like_Dislike = ? WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
@@ -83,6 +107,11 @@ public class ValutazioneDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getEmailRecensore().equals(emailRecensore) && \result.getIdFilm() == idFilm);
     public ValutazioneBean findById(final String email, final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "SELECT * FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -106,6 +135,10 @@ public class ValutazioneDAO {
         return null;
     }
     
+    //@ requires idFilm >= 0;
+    //@ requires email != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public HashMap<String, ValutazioneBean> findByIdFilmAndEmail(final int idFilm, final String email) { // Parametri final
         final String query = "SELECT * FROM Valutazione WHERE ID_Film = ? AND email = ?";
         final HashMap<String, ValutazioneBean> valutazioni = new HashMap<>();
@@ -129,6 +162,10 @@ public class ValutazioneDAO {
         return valutazioni;
     }
     
+    //@ requires email != null;
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void delete(final String email, final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "DELETE FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -141,7 +178,11 @@ public class ValutazioneDAO {
             e.printStackTrace();
         }
     }
+
     //cancella le valutazioni di un recensione
+    //@ requires emailRecensore != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void deleteValutazioni(final String emailRecensore, final int idFilm) { // Parametri final
         final String query = "DELETE FROM Valutazione WHERE email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
