@@ -1,4 +1,4 @@
-FROM tomcat:9.0-jdk17-openjdk
+FROM tomcat:9.0.79-jdk21-openjdk-slim-bookworm
 
 # Rimuove le app di default per pulizia
 RUN rm -rf /usr/local/tomcat/webapps/*
