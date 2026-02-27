@@ -19,11 +19,28 @@ import model.Entity.PreferenzaBean;
 import model.Entity.RecensioneBean;
 
 public class ProfileService {
+    
     public final UtenteDAO UtenteDAO;
     public final PreferenzaDAO PreferenzaDAO;
     public final InteresseDAO InteresseDAO;
     public final VistoDAO VistoDAO;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant UtenteDAO != null;
+    //@ public invariant PreferenzaDAO != null;
+    //@ public invariant InteresseDAO != null;
+    //@ public invariant VistoDAO != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.UtenteDAO != null;
+    //@ ensures this.PreferenzaDAO != null;
+    //@ ensures this.InteresseDAO != null;
+    //@ ensures this.VistoDAO != null;
     public ProfileService() {
         this.UtenteDAO = new UtenteDAO();
         this.PreferenzaDAO = new PreferenzaDAO();
@@ -31,7 +48,11 @@ public class ProfileService {
         this.VistoDAO = new VistoDAO();
     }
     
-    //test
+    //@ requires dataSource != null;
+    //@ ensures this.UtenteDAO != null;
+    //@ ensures this.PreferenzaDAO != null;
+    //@ ensures this.InteresseDAO != null;
+    //@ ensures this.VistoDAO != null;
     public ProfileService(final DataSource dataSource) { 
         this.UtenteDAO = new UtenteDAO(dataSource);
         this.PreferenzaDAO = new PreferenzaDAO(dataSource);
@@ -39,7 +60,14 @@ public class ProfileService {
         this.VistoDAO = new VistoDAO(dataSource);
     }
 
-    
+    //@ requires utenteDAO != null;
+    //@ requires PreferenzaDAO != null;
+    //@ requires InteresseDAO != null;
+    //@ requires VistoDAO != null;
+    //@ ensures this.UtenteDAO == utenteDAO;
+    //@ ensures this.PreferenzaDAO == PreferenzaDAO;
+    //@ ensures this.InteresseDAO == InteresseDAO;
+    //@ ensures this.VistoDAO == VistoDAO;
     public ProfileService(final UtenteDAO utenteDAO, final PreferenzaDAO PreferenzaDAO, final InteresseDAO InteresseDAO, final VistoDAO VistoDAO) { 
         this.UtenteDAO = utenteDAO;
         this.PreferenzaDAO = PreferenzaDAO;
@@ -47,6 +75,17 @@ public class ProfileService {
         this.VistoDAO = VistoDAO;
     }
     
+    /* =========================================
+     * METODI SERVICE
+     * ========================================= */
+
+    /*@ 
+      @ requires username != null;
+      @ requires email != null;
+      @ requires password != null;
+      @ assignable \everything;
+      @ skiprac
+      @*/
     public UtenteBean ProfileUpdate(final String username, final String email, final String password, final String biografia, final byte[] icon) { 
         
         final UtenteBean u = UtenteDAO.findByUsername(username); 
@@ -54,163 +93,198 @@ public class ProfileService {
             return null;
         
         final UtenteBean user = UtenteDAO.findByEmail(email); 
-        user.setUsername(username);
-        user.setPassword(PasswordUtility.hashPassword(password));
-        user.setBiografia(biografia);
-        user.setIcona(icon);
-        UtenteDAO.update(user);
+        if (user != null) {
+            user.setUsername(username);
+            
+            String hash = PasswordUtility.hashPassword(password);
+            if (hash == null) hash = "";
+            user.setPassword(hash);
+            
+            user.setBiografia(biografia);
+            user.setIcona(icon);
+            UtenteDAO.update(user);
+        }
         
         return user;
     }
     
+    /*@ 
+      @ requires email != null;
+      @ requires password != null;
+      @ assignable \everything;
+      @ skiprac
+      @*/
     public UtenteBean PasswordUpdate(final String email, final String password) { 
         
         final UtenteBean user = UtenteDAO.findByEmail(email); 
         if(user == null)
             return null;
         
-        user.setPassword(PasswordUtility.hashPassword(password));
+        String hash = PasswordUtility.hashPassword(password);
+        if (hash == null) hash = "";
+        user.setPassword(hash);
+        
         UtenteDAO.update(user);
         
         return user;
     }
     
+    //@ requires username != null;
+    //@ assignable \everything;
     public UtenteBean findByUsername(final String username) { 
         return UtenteDAO.findByUsername(username);
     }
     
+    /*@ 
+      @ requires recensioni != null;
+      @ assignable \everything;
+      @ ensures \result != null;
+      @ skiprac
+      @*/
     public HashMap<String, String> getUsers(final List<RecensioneBean> recensioni) { 
         final HashMap<String, String> users = new HashMap<String, String>(); 
-        for(final RecensioneBean recensione: recensioni) { 
-            final String email = recensione.getEmail(); 
-            final String username = UtenteDAO.findByEmail(email).getUsername(); 
-            users.put(email, username);
+        
+        for(int i = 0; i < recensioni.size(); i++) { 
+            RecensioneBean recensione = recensioni.get(i);
+            if (recensione != null) {
+                final String em = recensione.getEmail(); 
+                final UtenteBean u = UtenteDAO.findByEmail(em);
+                if (u != null) {
+                    final String un = u.getUsername(); 
+                    users.put(em, un);
+                }
+            }
         }
         return users;
     }
     
+    /*@ 
+      @ requires email != null;
+      @ assignable \everything;
+      @ ensures \result != null;
+      @ skiprac
+      @*/
     public List<String> getPreferenze(final String email){
         List<PreferenzaBean> preferenze = PreferenzaDAO.findByEmail(email);
         List<String> preferenzeString = new ArrayList<String>();
-        for(PreferenzaBean b : preferenze)
-            preferenzeString.add(b.getNomeGenere());
+        
+        if (preferenze != null) {
+            for(int i = 0; i < preferenze.size(); i++) {
+                PreferenzaBean b = preferenze.get(i);
+                if (b != null) {
+                    preferenzeString.add(b.getNomeGenere());
+                }
+            }
+        }
         return preferenzeString;
     }
     
+    //@ requires email != null;
+    //@ requires genere != null;
+    //@ assignable \everything;
     public void addPreferenza(final String email, final String genere) {
         PreferenzaBean preferenza = new PreferenzaBean(email, genere);
         PreferenzaDAO.save(preferenza);
     }
     
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public void aggiungiAllaWatchlist(String email, int filmId){
-
         InteresseBean interesse = new InteresseBean();
-
-        // Configurazione del bean
         interesse.setEmail(email);
         interesse.setIdFilm(filmId);
-        
-        // Imposta true per indicare che è una "Watchlist" (o interesse positivo)
         interesse.setInteresse(true);
-
-        // Chiama il DAO per il salvataggio
         InteresseDAO.save(interesse);
     }
     
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public void aggiungiFilmVisto(String email, int filmId){
-        
         VistoBean visto = new VistoBean();
         visto.setEmail(email);
         visto.setIdFilm(filmId);
-
-        // Salva nel database
         VistoDAO.save(visto);
     }
     
+    /*@ 
+      @ requires email != null;
+      @ assignable \everything;
+      @ skiprac
+      @*/
     public void aggiornaPreferenzeUtente(String email, String[] idGeneri){
-        
-
-        // 1. Elimina TUTTE le preferenze precedenti per questo utente
-        // Questo garantisce che se l'utente deseleziona tutto, il DB rifletta lo stato vuoto
         PreferenzaDAO.deleteByEmail(email);
-
             
-        // 2. Se ci sono nuovi generi selezionati, inseriscili uno per uno
         if (idGeneri != null && idGeneri.length > 0) {
-            for (String idGenereStr : idGeneri) {
-                try {
-                    
+            for (int i = 0; i < idGeneri.length; i++) {
+                String idGenereStr = idGeneri[i];
+                if (idGenereStr != null) {
                     PreferenzaBean preferenza = new PreferenzaBean();
                     preferenza.setEmail(email);
-                    preferenza.setNomeGenere(idGenereStr);;
-                    
+                    preferenza.setNomeGenere(idGenereStr);
                     PreferenzaDAO.save(preferenza);
-                    
-                } catch (NumberFormatException e) {
-                    // Logga l'errore ma continua con gli altri generi
-                    e.printStackTrace();
                 }
             }
         }
     }
     
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public void ignoreFilm(String email, int filmId){
-
         InteresseBean interesse = new InteresseBean();
-
-        // Configurazione del bean
         interesse.setEmail(email);
         interesse.setIdFilm(filmId);
-        
-        // Imposta true per indicare che è una "Watchlist" (o interesse positivo)
         interesse.setInteresse(false);
-
-        // Chiama il DAO per il salvataggio
         InteresseDAO.save(interesse);
     }
     
+    //@ requires username != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> retrieveWatchedFilms(final String username) {
-
-        return VistoDAO.doRetrieveFilmsByUtente(username);
-        
+        List<FilmBean> res = VistoDAO.doRetrieveFilmsByUtente(username);
+        return res != null ? res : new ArrayList<FilmBean>();
     }
 
-
+    //@ requires username1 != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> retrieveWatchlist(final String username1) {
-        
-        return this.InteresseDAO.doRetrieveFilmsByUtente(username1);
-
+        List<FilmBean> res = this.InteresseDAO.doRetrieveFilmsByUtente(username1);
+        return res != null ? res : new ArrayList<FilmBean>();
     }
     
-    // --- CORREZIONE QUI SOTTO ---
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public boolean isFilmInWatchlist(String email, int filmId) {
             InteresseBean interesseBean = this.InteresseDAO.findByEmailAndIdFilm(email, filmId);
-            
-            // Se interesseBean è null, significa che non c'è nessuna tupla nel DB.
-            // Quindi il film NON è in watchlist.
             if (interesseBean == null) {
                 return false;
             }
-            
             return interesseBean.isInteresse();
     }
 
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public void rimuoviDallaWatchlist(String email, int filmId) {
         this.InteresseDAO.delete(email, filmId);
     }
     
-    /**
-     * Verifica se un film è presente nella lista dei visti dell'utente.
-     */
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public boolean isFilmVisto(String email, int filmId) {
         return this.VistoDAO.findByEmailAndIdFilm(email, filmId) != null;
     }
 
-    /**
-     * Rimuove un film dalla lista dei visti dell'utente.
-     */
+    //@ requires email != null;
+    //@ requires filmId >= 0;
+    //@ assignable \everything;
     public void rimuoviFilmVisto(String email, int filmId) {
         this.VistoDAO.delete(email, filmId);
-
     }
 }

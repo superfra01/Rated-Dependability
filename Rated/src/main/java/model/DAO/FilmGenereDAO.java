@@ -16,8 +16,19 @@ import model.Entity.FilmGenereBean;
 
 public class FilmGenereDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public FilmGenereDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -28,10 +39,18 @@ public class FilmGenereDAO {
         }
     }
     
+    //@ requires dataSource != null;
+    //@ ensures this.dataSource == dataSource;
     public FilmGenereDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires filmGenere != null;
+    //@ assignable \everything;
     public void save(final FilmGenereBean filmGenere) {
         final String selectQuery = "SELECT 1 FROM Film_Genere WHERE ID_Film = ? AND Nome_Genere = ?";
         final String insertQuery = "INSERT INTO Film_Genere (ID_Film, Nome_Genere) VALUES (?, ?)";
@@ -56,6 +75,9 @@ public class FilmGenereDAO {
         }
     }
 
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmGenereBean> findByIdFilm(final int idFilm) {
         final String query = "SELECT * FROM Film_Genere WHERE ID_Film = ?";
         final List<FilmGenereBean> generi = new ArrayList<>();
@@ -80,23 +102,9 @@ public class FilmGenereDAO {
 
         return generi;
     }
-/*
-    public void delete(final int idFilm, final String nomeGenere) {
-        final String query = "DELETE FROM Film_Genere WHERE ID_Film = ? AND Nome_Genere = ?";
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, idFilm);
-            ps.setString(2, nomeGenere);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void deleteByIdFilm(final int idFilm) {
         final String query = "DELETE FROM Film_Genere WHERE ID_Film = ?";
 

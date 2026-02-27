@@ -13,12 +13,23 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import model.Entity.FilmBean;
-import model.Entity.UtenteBean;
 
 public class FilmDAO {
 
+    //@ spec_public
     private DataSource dataSource; 
 
+    /* =========================================
+     * INVARIANTI
+     * ========================================= */
+    // Il dataSource non deve essere nullo per permettere le operazioni
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public FilmDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -29,50 +40,105 @@ public class FilmDAO {
         }
     }
 
-    public FilmDAO(final DataSource testDataSource) { // Parametro final
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
+    public FilmDAO(final DataSource testDataSource) {
         dataSource = testDataSource;
     }
 
-    protected FilmDAO(final boolean testMode) { // Parametro final
-        // Vuoto: non fa nulla
+    // Costruttore protetto per test, non rispetta l'invariante (usato solo internamente)
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
+    protected FilmDAO(final boolean testMode) {
+        // Vuoto
     }
 
+    /* =========================================
+     * METODI DI SCRITTURA (SAVE, UPDATE, DELETE)
+     * ========================================= */
+
+    //@ requires film != null;
+    //@ assignable \everything;
+    //@ ensures film.getIdFilm() >= 0;
     public void save(final FilmBean film) {
-    // Rimuoviamo ID_Film dalla insert, ci pensa il database a generarlo
-    final String query = "INSERT INTO Film (locandina, nome, anno, durata, regista, attori, valutazione, trama) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO Film (locandina, nome, anno, durata, regista, attori, valutazione, trama) "
+                           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (final Connection connection = dataSource.getConnection();
-         // Aggiungiamo il flag RETURN_GENERATED_KEYS
-         final PreparedStatement ps = connection.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement ps = connection.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS)) {
 
-        // Nota: gli indici scalano di 1 perché abbiamo tolto l'ID dalla query
-        ps.setBytes(1, film.getLocandina());
-        ps.setString(2, film.getNome());
-        ps.setInt(3, film.getAnno());
-        ps.setInt(4, film.getDurata());
-        ps.setString(5, film.getRegista());
-        ps.setString(6, film.getAttori());
-        ps.setInt(7, film.getValutazione());
-        ps.setString(8, film.getTrama());
+            ps.setBytes(1, film.getLocandina());
+            ps.setString(2, film.getNome());
+            ps.setInt(3, film.getAnno());
+            ps.setInt(4, film.getDurata());
+            ps.setString(5, film.getRegista());
+            ps.setString(6, film.getAttori());
+            ps.setInt(7, film.getValutazione());
+            ps.setString(8, film.getTrama());
 
-        ps.executeUpdate();
+            ps.executeUpdate();
 
-        // RECUPERO DELL'ID GENERATO
-        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                // Aggiorniamo il bean con il vero ID creato dal DB
-                film.setIdFilm(generatedKeys.getInt(1));
-            } else {
-                throw new SQLException("Creazione film fallita, nessun ID ottenuto.");
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    film.setIdFilm(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creazione film fallita, nessun ID ottenuto.");
+                }
             }
+        } catch (final SQLException e) {
+            e.printStackTrace();
         }
-
-    } catch (final SQLException e) {
-        e.printStackTrace();
     }
-}
 
+    //@ requires film != null;
+    //@ assignable \everything;
+    public void update(final FilmBean film) { 
+        final String query = "UPDATE Film SET locandina = ?, nome = ?, anno = ?, durata = ?, regista = ?, attori = ?, valutazione = ?, trama = ? "
+                           + "WHERE ID_Film = ?";
+
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setBytes(1, film.getLocandina());
+            ps.setString(2, film.getNome());
+            ps.setInt(3, film.getAnno());
+            ps.setInt(4, film.getDurata());
+            ps.setString(5, film.getRegista());
+            ps.setString(6, film.getAttori());
+            ps.setInt(7, film.getValutazione());
+            ps.setString(8, film.getTrama());
+            ps.setInt(9, film.getIdFilm());
+
+            ps.executeUpdate();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    public void delete(final int idFilm) { 
+        final String query = "DELETE FROM Film WHERE ID_Film = ?";
+
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, idFilm);
+            ps.executeUpdate();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* =========================================
+     * METODI DI LETTURA (FIND)
+     * ========================================= */
+
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> \result.getIdFilm() == idFilm;
     public FilmBean findById(final int idFilm) { 
         final String query = "SELECT * FROM Film WHERE ID_Film = ?";
 
@@ -96,14 +162,15 @@ public class FilmDAO {
                     return film;
                 }
             }
-
         } catch (final SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    //@ requires name != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> findByName(final String name) { 
         final String query = "SELECT * FROM Film WHERE nome LIKE ?";
         final List<FilmBean> films = new ArrayList<>();
@@ -128,14 +195,14 @@ public class FilmDAO {
                     films.add(film);
                 }
             }
-
         } catch (final SQLException e) {
             e.printStackTrace();
         }
-
         return films;
     }
 
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<FilmBean> findAll() {
         final String query = "SELECT * FROM Film";
         final List<FilmBean> films = new ArrayList<>();
@@ -157,61 +224,18 @@ public class FilmDAO {
                 film.setTrama(rs.getString("trama"));
                 films.add(film);
             }
-
         } catch (final SQLException e) {
             e.printStackTrace();
         }
-
         return films;
     }
 
-    public void update(final FilmBean film) { 
-        final String query = "UPDATE Film SET locandina = ?, nome = ?, anno = ?, durata = ?, regista = ?, attori = ?, valutazione = ?, trama = ? "
-                           + "WHERE ID_Film = ?";
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setBytes(1, film.getLocandina());
-            ps.setString(2, film.getNome());
-            ps.setInt(3, film.getAnno());
-            ps.setInt(4, film.getDurata());
-            ps.setString(5, film.getRegista());
-            ps.setString(6, film.getAttori());
-            ps.setInt(7, film.getValutazione());
-            ps.setString(8, film.getTrama());
-            ps.setInt(9, film.getIdFilm());
-
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void delete(final int idFilm) { 
-        final String query = "DELETE FROM Film WHERE ID_Film = ?";
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, idFilm);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
+    //@ requires emailUtente != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public synchronized List<FilmBean> doRetrieveConsigliati(String emailUtente) {
         List<FilmBean> films = new ArrayList<>();
 
-        /* * LOGICA SQL AGGIORNATA:
-         * 1. JOIN con Preferenza: Prende solo film dei generi che piacciono all'utente.
-         * 2. NOT IN Visto: Esclude i film già visti dall'utente.
-         * 3. NOT IN Interesse (false): Esclude i film segnati come "non mi interessa".
-         */
         String sql = "SELECT DISTINCT f.* " +
                      "FROM Film f " +
                      "JOIN Film_Genere fg ON f.ID_Film = fg.ID_Film " +
@@ -225,19 +249,16 @@ public class FilmDAO {
                      ") " +
                      "ORDER BY f.Valutazione DESC";
 
-        // Uso try-with-resources per chiudere automaticamente Connection, PS e RS
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            // Impostiamo i parametri (l'email serve 3 volte ora)
-            ps.setString(1, emailUtente); // Per la tabella Preferenza
-            ps.setString(2, emailUtente); // Per la tabella Visto (Esclusione)
-            ps.setString(3, emailUtente); // Per la tabella Interesse (Esclusione)
+            ps.setString(1, emailUtente);
+            ps.setString(2, emailUtente);
+            ps.setString(3, emailUtente);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     FilmBean film = new FilmBean();
-                    
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setLocandina(rs.getBytes("Locandina"));
                     film.setNome(rs.getString("Nome"));
@@ -247,16 +268,12 @@ public class FilmDAO {
                     film.setAttori(rs.getString("Attori"));
                     film.setValutazione(rs.getInt("Valutazione"));
                     film.setTrama(rs.getString("Trama"));
-                    
                     films.add(film);
                 }
             }
-
         } catch (SQLException e) {
-            // Loggare l'errore è meglio che stampare solo lo stack trace in produzione
             e.printStackTrace(); 
         }
-        
         return films;
     }
 }

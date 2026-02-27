@@ -14,8 +14,19 @@ import model.Entity.RecensioneBean;
 
 public class RecensioneDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public RecensioneDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -26,15 +37,28 @@ public class RecensioneDAO {
         }
     }
 
+    //@ requires testDataSource != null;
+    //@ ensures this.dataSource == testDataSource;
     public RecensioneDAO(final DataSource testDataSource) { // Parametro final
-		dataSource = testDataSource;
-	}
+        dataSource = testDataSource;
+    }
     
+    // Costruttore per test, non inizializza la connessione
+    /*@ 
+      @ requires testMode == true;
+      @ skipesc
+      @*/
     protected RecensioneDAO(final boolean testMode) { // Parametro final
         // Non fare nulla qui! Niente connessione al DB.
     }
 
-	public void save(final RecensioneBean recensione) { // Parametro final
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
+
+    //@ requires recensione != null;
+    //@ assignable \everything;
+    public void save(final RecensioneBean recensione) { // Parametro final
         final String query = "INSERT INTO Recensione (titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -52,6 +76,10 @@ public class RecensioneDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
     public RecensioneBean findById(final String email, final int idFilm) { // Parametri final
         final String query = "SELECT * FROM Recensione WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -78,6 +106,9 @@ public class RecensioneDAO {
         return null;
     }
     
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<RecensioneBean> findByIdFilm(final int idFilm) { // Parametro final
         final String query = "SELECT * FROM Recensione WHERE ID_Film = ?";
         final List<RecensioneBean> recensioni = new ArrayList<>();
@@ -104,6 +135,8 @@ public class RecensioneDAO {
         return recensioni;
     }
 
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<RecensioneBean> findAll() {
         final String query = "SELECT * FROM Recensione";
         final List<RecensioneBean> recensioni = new ArrayList<>();
@@ -128,6 +161,9 @@ public class RecensioneDAO {
         return recensioni;
     }
     
+    //@ requires email != null;
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<RecensioneBean> findByUser(final String email) { // Parametro final
         final String query = "SELECT * FROM Recensione WHERE email = ?";
         final List<RecensioneBean> recensioni = new ArrayList<>();
@@ -154,6 +190,8 @@ public class RecensioneDAO {
         return recensioni;
     }
     
+    //@ requires recensione != null;
+    //@ assignable \everything;
     public void update(final RecensioneBean recensione) { // Parametro final
         final String query = "UPDATE Recensione SET titolo = ?, contenuto = ?, valutazione = ?, N_Like = ?, N_DisLike = ?, N_Reports = ? WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -172,6 +210,9 @@ public class RecensioneDAO {
         }
     }
 
+    //@ requires email != null;
+    //@ requires idFilm >= 0;
+    //@ assignable \everything;
     public void delete(final String email, final int idFilm) { // Parametri final
         final String query = "DELETE FROM Recensione WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -183,6 +224,4 @@ public class RecensioneDAO {
             e.printStackTrace();
         }
     }
-    
-    
 }

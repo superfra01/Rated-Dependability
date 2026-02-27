@@ -16,8 +16,19 @@ import model.Entity.GenereBean;
 
 public class GenereDAO {
 
+    //@ spec_public
     private DataSource dataSource;
 
+    /* =========================================
+     * INVARIANTI DI CLASSE
+     * ========================================= */
+    //@ public invariant dataSource != null;
+
+    /* =========================================
+     * COSTRUTTORI
+     * ========================================= */
+
+    //@ ensures this.dataSource != null;
     public GenereDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -28,11 +39,18 @@ public class GenereDAO {
         }
     }
     
-    // Costruttore aggiunto per i Test
+    //@ requires dataSource != null;
+    //@ ensures this.dataSource == dataSource;
     public GenereDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+    /* =========================================
+     * METODI CRUD
+     * ========================================= */
     
+    //@ requires genere != null;
+    //@ assignable \everything;
     public void save(final GenereBean genere) {
         final String selectQuery = "SELECT 1 FROM Genere WHERE Nome = ?";
         final String insertQuery = "INSERT INTO Genere (Nome) VALUES (?)";
@@ -54,52 +72,9 @@ public class GenereDAO {
             e.printStackTrace();
         }
     }
-/*
-    public GenereBean findByNome(final String nome) {
-        final String query = "SELECT * FROM Genere WHERE Nome = ?";
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, nome);
-
-            try (final ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    final GenereBean genere = new GenereBean();
-                    genere.setNome(rs.getString("Nome"));
-                    return genere;
-                }
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-*/
-    /*
-    public List<GenereBean> findAll() {
-        final String query = "SELECT * FROM Genere ORDER BY Nome";
-        final List<GenereBean> generi = new ArrayList<>();
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query);
-             final ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                final GenereBean genere = new GenereBean();
-                genere.setNome(rs.getString("Nome"));
-                generi.add(genere);
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return generi;
-    }
-    */
+    //@ assignable \everything;
+    //@ ensures \result != null;
     public List<String> findAllString() {
         final String query = "SELECT * FROM Genere ORDER BY Nome";
         final List<String> generi = new ArrayList<String>();
@@ -118,19 +93,4 @@ public class GenereDAO {
 
         return generi;
     }
-    /*
-    public void delete(final String nome) {
-        final String query = "DELETE FROM Genere WHERE Nome = ?";
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, nome);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 }
