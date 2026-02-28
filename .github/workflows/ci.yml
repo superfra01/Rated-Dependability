@@ -65,8 +65,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -B -ntp -f Rated/pom.xml org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.organization=INSERISCI_LA_TUA_ORGANIZZAZIONE_SONAR \
-            -Dsonar.projectKey=INSERISCI_IL_TUO_PROJECT_KEY_SONAR \
+            -Dsonar.organization=rated \
+            -Dsonar.projectKey=superfra01_Rated-Dependability \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.coverage.exclusions=**/*
 
