@@ -20,47 +20,49 @@ import javax.servlet.http.Part;
 @MultipartConfig(maxFileSize = 16177215)
 public class ProfileModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ProfileService ProfileService;
+	
+	// Risolto: Campo reso final e inizializzato direttamente per eliminare init()
+	// Naming mantenuto identico per non rompere i test di integrazione
+	private final ProfileService ProfileService = new ProfileService();
 
-    @Override
-    public void init() {
-        ProfileService = new ProfileService();
-    }
+	@Override
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		// Metodo vuoto
+	}
 
-    @Override
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        
-    }
-
-    @Override
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-    	
-    		final String username = request.getParameter("username");
-            final String email = request.getParameter("email");
-            final String password = request.getParameter("password");
-            final String biography = request.getParameter("biography");
-            
-            byte[] icon = null; // Non può essere final perché riassegnata
-            
-            final Part filePart = request.getPart("icon");
-            if (filePart != null && filePart.getSize() > 0) {
-                try (final InputStream inputStream = filePart.getInputStream()) {
-                    icon = inputStream.readAllBytes();
-                }
-            }
-            if (FieldValidator.validateUsername(username) &&
-                FieldValidator.validatePassword(password)) {
-            	
-            	final UtenteBean utente = ProfileService.ProfileUpdate(username, email, password, biography, icon);
-            	
-            	final HttpSession session = request.getSession(true);
-            	if(utente==null)
-            		System.out.println(utente);
-            	
-            	session.setAttribute("user", utente);
-            	session.setAttribute("visitedUser", utente);
-            	
-                response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + ((UtenteBean)session.getAttribute("user")).getUsername());
-            }
-    }
+	@Override
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	    
+	    final String username = request.getParameter("username");
+	    final String email = request.getParameter("email");
+	    final String password = request.getParameter("password");
+	    final String biography = request.getParameter("biography");
+	    
+	    byte[] icon = null; // Non può essere final perché viene riassegnata nell'if
+	    
+	    final Part filePart = request.getPart("icon");
+	    if (filePart != null && filePart.getSize() > 0) {
+	        try (final InputStream inputStream = filePart.getInputStream()) {
+	            icon = inputStream.readAllBytes();
+	        }
+	    }
+	    
+	    // Validazione e aggiornamento
+	    if (FieldValidator.validateUsername(username) && FieldValidator.validatePassword(password)) {
+	    	
+	    	final UtenteBean utente = ProfileService.ProfileUpdate(username, email, password, biography, icon);
+	    	
+	    	final HttpSession session = request.getSession(true);
+	    	
+	    	// Pulizia: gestiamo l'eventuale utente null in modo sicuro
+	    	if (utente != null) {
+	    	    session.setAttribute("user", utente);
+	    	    session.setAttribute("visitedUser", utente);
+	    	    response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
+	    	} else {
+	    	    // Se l'update fallisce, gestiamo l'errore (es. redirect alla home o messaggio)
+	    	    response.sendRedirect(request.getContextPath() + "/");
+	    	}
+	    }
+	}
 }

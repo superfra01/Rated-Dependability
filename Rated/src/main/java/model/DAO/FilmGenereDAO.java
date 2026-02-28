@@ -17,7 +17,7 @@ import model.Entity.FilmGenereBean;
 public class FilmGenereDAO {
 
     //@ spec_public
-    private DataSource dataSource;
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI DI CLASSE

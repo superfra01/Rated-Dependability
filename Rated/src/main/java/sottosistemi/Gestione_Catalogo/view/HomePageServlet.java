@@ -18,38 +18,38 @@ import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 @WebServlet("")
 public class HomePageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    CatalogoService catalogoService;
+    
+    // Risolto: il service può essere final se inizializzato subito
+    private final CatalogoService catalogoService = new CatalogoService();
+
     public HomePageServlet() {
-    	super();
-    	catalogoService = new CatalogoService();
+        super();
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final HttpSession session = request.getSession(); // Locale final
         
         // Recupera l'utente dalla sessione
-        UtenteBean utente = (UtenteBean) session.getAttribute("user");
+        final UtenteBean utente = (UtenteBean) session.getAttribute("user"); // Locale final
         
-        List<FilmBean> filmConsigliati = null;
+        List<FilmBean> filmConsigliati = null; // Non può essere final perché viene riassegnata nell'if
         
         // Se l'utente è loggato, calcola i consigliati
         if (utente != null) {
-            
-            // La Servlet interagisce SOLO con il Service, mai con il DAO direttamente
+            // La Servlet interagisce SOLO con il Service
             filmConsigliati = catalogoService.getFilmCompatibili(utente);
-        } else {
-            // Opzionale: Se l'utente non è loggato, potresti voler mostrare i film più popolari generici
-            // o lasciare la lista vuota. Qui la lasciamo vuota o gestiamo diversamente.
         }
 
-        // Carica la lista in sessione come richiesto
+        // Carica la lista in sessione
         session.setAttribute("filmConsigliati", filmConsigliati);
 
-        // Forward alla HomePage (il percorso corrisponde alla tua struttura file)
+        // Forward alla HomePage
         request.getRequestDispatcher("/WEB-INF/jsp/HomePage.jsp").forward(request, response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

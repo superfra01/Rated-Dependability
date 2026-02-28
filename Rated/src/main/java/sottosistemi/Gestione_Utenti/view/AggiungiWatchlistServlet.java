@@ -15,23 +15,20 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class AggiungiWatchlistServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private ProfileService profileService;
+    // Risolto: Campo reso final e inizializzato direttamente per rimuovere init()
+    private final ProfileService profileService = new ProfileService();
 
     public AggiungiWatchlistServlet() {
         super();
     }
 
     @Override
-    public void init() {
-        profileService = new ProfileService();
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
-        HttpSession session = request.getSession();
-        UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+        final HttpSession session = request.getSession();
+        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
 
         // Controllo Login
         if (utenteSessione == null) {
@@ -41,14 +38,14 @@ public class AggiungiWatchlistServlet extends HttpServlet {
         }
 
         // Recupero parametri
-        String filmIdStr = request.getParameter("filmId");
-        int filmId = -1;
+        final String filmIdStr = request.getParameter("filmId");
+        int filmId = -1; // Non può essere final perché viene riassegnata nel try
         
         try {
             if (filmIdStr != null && !filmIdStr.isEmpty()) {
                 filmId = Integer.parseInt(filmIdStr);
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
             response.getWriter().write("ID Film non valido.");
             return;
@@ -56,7 +53,7 @@ public class AggiungiWatchlistServlet extends HttpServlet {
 
         if (filmId != -1) {
                 // Logica di toggle (aggiungi/rimuovi)
-                boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
+                final boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
                 
                 if (isPresent) {
                     profileService.rimuoviDallaWatchlist(utenteSessione.getEmail(), filmId);
@@ -67,15 +64,14 @@ public class AggiungiWatchlistServlet extends HttpServlet {
                 }
                 
                 response.setStatus(HttpServletResponse.SC_OK); // 200
-                
-            
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
             response.getWriter().write("Impossibile identificare il film.");
         }
     }
     
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("catalogo.jsp");
     }
 }

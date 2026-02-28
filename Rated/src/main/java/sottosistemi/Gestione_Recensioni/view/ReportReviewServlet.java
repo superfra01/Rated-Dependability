@@ -15,16 +15,13 @@ import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 @WebServlet("/ReportReview")
 public class ReportReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RecensioniService RecensioniService;
-
-	@Override
-	public void init() {
-		RecensioniService = new RecensioniService();
-	}
+	
+	// Risolto: Campo reso final e inizializzato direttamente
+	private final RecensioniService RecensioniService = new RecensioniService();
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+		// Metodo vuoto
 	}
 
 	@Override
@@ -33,6 +30,7 @@ public class ReportReviewServlet extends HttpServlet {
 		final HttpSession session = request.getSession(true);
 		final UtenteBean user = (UtenteBean) session.getAttribute("user");
 
+		// Risolto: Variabili locali rese final
 		final String email = user.getEmail();
 		final String emailRecensore = request.getParameter("reviewerEmail");
 		final int idFilm = Integer.parseInt(request.getParameter("idFilm"));

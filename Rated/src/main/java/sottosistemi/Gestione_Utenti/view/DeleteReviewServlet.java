@@ -17,19 +17,14 @@ import javax.servlet.http.HttpSession;
 public class DeleteReviewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // Variabili di istanza
-    private ProfileService ProfileService;
-    private RecensioniService RecensioniService;
-
-    @Override
-    public void init() {
-        ProfileService = new ProfileService();
-        RecensioniService = new RecensioniService();
-    }
+    // Risolto: Campi resi final e inizializzati immediatamente per eliminare lo smell
+    // Naming mantenuto identico per non rompere i test di integrazione
+    private final ProfileService ProfileService = new ProfileService();
+    private final RecensioniService RecensioniService = new RecensioniService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+        // Metodo vuoto
     }
 
     @Override
@@ -37,11 +32,17 @@ public class DeleteReviewServlet extends HttpServlet {
 
         final HttpSession session = request.getSession(true);
         final UtenteBean user = (UtenteBean) session.getAttribute("user");
-        final String email = user.getEmail();
-        final int ID_Film = Integer.parseInt(request.getParameter("DeleteFilmID"));
+        
+        // Buona pratica: verifica che l'utente sia loggato prima di procedere
+        if (user != null) {
+            final String email = user.getEmail();
+            final int ID_Film = Integer.parseInt(request.getParameter("DeleteFilmID"));
 
-        RecensioniService.deleteRecensione(email, ID_Film);
+            RecensioniService.deleteRecensione(email, ID_Film);
 
-        response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + user.getUsername());
+            response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + user.getUsername());
+        } else {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
     }
 }

@@ -55,7 +55,7 @@ public class VisualizzaCatalogoServletIntegrationTest {
         // 3. Iniezione del Service tramite Reflection
         // N.B. Il nome del campo qui deve essere esattamente "CatalogoService" (con la C maiuscola) 
         // in base a come è dichiarato nella tua Servlet.
-        Field serviceField = VisualizzaCatalogoServlet.class.getDeclaredField("CatalogoService");
+        Field serviceField = VisualizzaCatalogoServlet.class.getDeclaredField("catalogoService");
         serviceField.setAccessible(true);
         serviceField.set(servlet, catalogoService);
 

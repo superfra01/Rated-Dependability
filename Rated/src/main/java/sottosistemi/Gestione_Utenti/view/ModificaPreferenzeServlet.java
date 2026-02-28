@@ -1,7 +1,6 @@
 package sottosistemi.Gestione_Utenti.view;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,22 +15,17 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class ModificaPreferenzeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // VARIABILE DI ISTANZA
-    private ProfileService profileService;
+    // Risolto: Campo reso final e inizializzato direttamente per eliminare init()
+    private final ProfileService profileService = new ProfileService();
 
     public ModificaPreferenzeServlet() {
         super();
     }
 
     @Override
-    public void init() {
-        // Inizializzazione spostata qui
-        profileService = new ProfileService();
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final HttpSession session = request.getSession();
+        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
 
         // 1. Controllo Autenticazione: L'utente è loggato?
         if (utenteSessione == null) {
@@ -39,28 +33,30 @@ public class ModificaPreferenzeServlet extends HttpServlet {
             return;
         }
 
-        String targetEmail = request.getParameter("email"); 
-        String[] generiSelezionati = request.getParameterValues("selectedGenres");
+        final String targetEmail = request.getParameter("email"); 
+        final String[] generiSelezionati = request.getParameterValues("selectedGenres");
 
         // 2. Controllo Autorizzazione: Chi fa la richiesta è il proprietario dell'account?
+        // Utilizziamo un approccio "safe" per il confronto delle stringhe
         if (targetEmail != null && !targetEmail.equals(utenteSessione.getEmail())) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Non sei autorizzato a modificare le preferenze di questo utente.");
             return;
         }
 
-        String email = utenteSessione.getEmail();
+        final String email = utenteSessione.getEmail();
 
-        // 3. Chiama il Service (ora usa la variabile di istanza)
+        // 3. Chiama il Service
         profileService.aggiornaPreferenzeUtente(email, generiSelezionati);
             
         // Aggiorna messaggio di successo in sessione
-        request.getSession().setAttribute("messaggioSuccesso", "Preferenze aggiornate con successo!");
+        session.setAttribute("messaggioSuccesso", "Preferenze aggiornate con successo!");
 
         // 4. Redirect al profilo
         response.sendRedirect("profile?visitedUser=" + utenteSessione.getUsername());
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("profile.jsp");
     }
 }

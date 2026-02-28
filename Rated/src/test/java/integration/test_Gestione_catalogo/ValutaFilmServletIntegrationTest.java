@@ -77,12 +77,12 @@ public class ValutaFilmServletIntegrationTest {
         servlet.init();
         
         // 4. Iniezione del RecensioniService tramite Reflection
-        Field recensioniField = ValutaFilmServlet.class.getDeclaredField("RecensioniService");
+        Field recensioniField = ValutaFilmServlet.class.getDeclaredField("recensioniService");
         recensioniField.setAccessible(true);
         recensioniField.set(servlet, recensioniService);
         
         // 5. Iniezione del ProfileService tramite Reflection
-        Field profileField = ValutaFilmServlet.class.getDeclaredField("ProfileService");
+        Field profileField = ValutaFilmServlet.class.getDeclaredField("profileService");
         profileField.setAccessible(true);
         profileField.set(servlet, profileService);
 

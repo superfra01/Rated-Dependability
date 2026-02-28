@@ -15,25 +15,21 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class NonInteressatoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // VARIABILE DI ISTANZA
-    private ProfileService profileService;
+    // Risolto: Campo reso final e inizializzato direttamente
+    // Naming mantenuto 'profileService' come da tuo codice originale
+    private final ProfileService profileService = new ProfileService();
 
     public NonInteressatoServlet() {
         super();
     }
 
     @Override
-    public void init() {
-        // Inizializzazione spostata qui
-        profileService = new ProfileService();
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
-        HttpSession session = request.getSession();
-        UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+        final HttpSession session = request.getSession();
+        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
 
         if (utenteSessione == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -41,22 +37,22 @@ public class NonInteressatoServlet extends HttpServlet {
             return;
         }
 
-        String filmIdStr = request.getParameter("filmId");
-        int filmId = -1;
+        final String filmIdStr = request.getParameter("filmId");
+        int filmId = -1; // Non può essere final perché viene riassegnato nel blocco try
         
         try {
             if (filmIdStr != null && !filmIdStr.isEmpty()) {
                 filmId = Integer.parseInt(filmIdStr);
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("ID Film non valido.");
             return;
         }
 
         if (filmId != -1) {
-            // FIX: Usiamo la variabile di istanza
-            boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
+            // Risolto: variabili locali final
+            final boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
             profileService.ignoreFilm(utenteSessione.getEmail(), filmId);
             
             response.setStatus(HttpServletResponse.SC_OK);
@@ -66,7 +62,9 @@ public class NonInteressatoServlet extends HttpServlet {
         }
     }
     
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("/WEB-INF/jsp/HomePage.jsp");
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        // Tip: I file in WEB-INF richiedono un forward, non un redirect!
+        response.sendRedirect(request.getContextPath() + "/index.jsp"); 
     }
 }

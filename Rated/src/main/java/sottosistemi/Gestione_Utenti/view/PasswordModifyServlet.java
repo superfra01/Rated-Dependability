@@ -16,30 +16,39 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/passwordModify")
 public class PasswordModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ProfileService ProfileService;
+	
+	// Risolto: Campo reso final e inizializzato direttamente per rimuovere init()
+	// Naming mantenuto identico per non rompere i test di integrazione
+	private final ProfileService ProfileService = new ProfileService();
 
-    @Override
-    public void init() {
-        ProfileService = new ProfileService();
-    }
+	@Override
+	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		// Metodo vuoto
+	}
 
-    @Override
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-    	
-    }
-
-    @Override
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		final String email = request.getParameter("email");
-        final String password = request.getParameter("password");
-        
-        if(FieldValidator.validatePassword(password)) {
-        	final UtenteBean utente = ProfileService.PasswordUpdate(email, password);
-        	
-        	final HttpSession session = request.getSession(true);
-        	session.setAttribute("user", utente);
-        	
-        	response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + ((UtenteBean)session.getAttribute("user")).getUsername());
-        }
-    }
+		final String password = request.getParameter("password");
+		
+		// Validazione della password prima dell'aggiornamento
+		if (FieldValidator.validatePassword(password)) {
+			// Risolto: variabili locali final
+			final UtenteBean utente = ProfileService.PasswordUpdate(email, password);
+			
+			final HttpSession session = request.getSession(true);
+			session.setAttribute("user", utente);
+			
+			// Pulizia: usiamo direttamente l'oggetto 'utente' appena aggiornato
+			if (utente != null) {
+				response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
+			} else {
+				// Fallback in caso di errore nell'aggiornamento
+				response.sendRedirect(request.getContextPath() + "/");
+			}
+		} else {
+			// Gestione errore validazione (opzionale: potresti aggiungere un messaggio d'errore)
+			response.sendRedirect(request.getContextPath() + "/profile?error=invalidPassword");
+		}
+	}
 }

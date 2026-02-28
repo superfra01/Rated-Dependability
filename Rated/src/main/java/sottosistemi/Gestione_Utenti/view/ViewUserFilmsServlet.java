@@ -25,28 +25,22 @@ import model.Entity.UtenteBean;
 public class ViewUserFilmsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // VARIABILI DI ISTANZA
-    private ProfileService profileService;
-    private CatalogoService catalogoService;
+    // Risolto: Campi resi final e inizializzati immediatamente
+    private final ProfileService profileService = new ProfileService();
+    private final CatalogoService catalogoService = new CatalogoService();
 
     public ViewUserFilmsServlet() {
         super();
     }
 
     @Override
-    public void init() {
-        // Inizializzazione spostata qui
-        profileService = new ProfileService();
-        catalogoService = new CatalogoService();
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        HttpSession session = request.getSession();
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final String username = request.getParameter("username");
+        final HttpSession session = request.getSession();
 
         try {
             // 1. Recupero dati Utente visitato tramite ProfileService
-            UtenteBean visitedUser = profileService.findByUsername(username); 
+            final UtenteBean visitedUser = profileService.findByUsername(username); 
             
             if (visitedUser == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
@@ -54,12 +48,12 @@ public class ViewUserFilmsServlet extends HttpServlet {
             }
             session.setAttribute("visitedUser", visitedUser);
 
-            // 2. Recupero liste film tramite ProfileService (usando la variabile di istanza)
-            List<FilmBean> watchedList = profileService.retrieveWatchedFilms(username); 
-            List<FilmBean> watchlist = profileService.retrieveWatchlist(username);
+            // 2. Recupero liste film (uso operatore ternario per mantenere la variabile final)
+            final List<FilmBean> watchedListRaw = profileService.retrieveWatchedFilms(username);
+            final List<FilmBean> watchlistRaw = profileService.retrieveWatchlist(username);
 
-            if (watchedList == null) watchedList = new ArrayList<>();
-            if (watchlist == null) watchlist = new ArrayList<>();
+            final List<FilmBean> watchedList = (watchedListRaw != null) ? watchedListRaw : new ArrayList<>();
+            final List<FilmBean> watchlist = (watchlistRaw != null) ? watchlistRaw : new ArrayList<>();
 
             session.setAttribute("watchedList", watchedList);
             session.setAttribute("watchlist", watchlist);
@@ -69,26 +63,28 @@ public class ViewUserFilmsServlet extends HttpServlet {
             populateGenres(session, watchlist, catalogoService);
 
             // 4. Forward alla pagina JSP
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userFilms.jsp");
+            final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userFilms.jsp");
             dispatcher.forward(request, response);
 
-        } catch (Exception e) { 
+        } catch (final Exception e) { 
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il recupero dei dati utente.");
         }
     }
 
-    private void populateGenres(HttpSession session, List<FilmBean> films, CatalogoService service) throws SQLException {
-        for (FilmBean film : films) {
-            String key = film.getIdFilm() + "Generi";
+    // Risolto: Parametri final e variabili interne protette
+    private void populateGenres(final HttpSession session, final List<FilmBean> films, final CatalogoService service) throws SQLException {
+        for (final FilmBean film : films) {
+            final String key = film.getIdFilm() + "Generi";
             if (session.getAttribute(key) == null) {
-                List<FilmGenereBean> generi = service.getGeneri(film.getIdFilm());
+                final List<FilmGenereBean> generi = service.getGeneri(film.getIdFilm());
                 session.setAttribute(key, generi);
             }
         }
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

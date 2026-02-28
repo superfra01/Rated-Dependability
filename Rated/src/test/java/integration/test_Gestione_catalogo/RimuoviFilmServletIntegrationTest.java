@@ -52,7 +52,7 @@ public class RimuoviFilmServletIntegrationTest {
         
         // 3. Iniezione del Service tramite Reflection
         // N.B: Il nome del campo usato nella servlet è "CatalogoService" con la C maiuscola.
-        Field serviceField = RimuoviFilmServlet.class.getDeclaredField("CatalogoService");
+        Field serviceField = RimuoviFilmServlet.class.getDeclaredField("catalogoService");
         serviceField.setAccessible(true);
         serviceField.set(servlet, catalogoService);
 

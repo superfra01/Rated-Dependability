@@ -96,8 +96,8 @@ public class ProfileService {
         if (user != null) {
             user.setUsername(username);
             
-            String hash = PasswordUtility.hashPassword(password);
-            if (hash == null) hash = "";
+            final String rawHash = PasswordUtility.hashPassword(password);
+            final String hash = (rawHash == null) ? "" : rawHash; // Risolto: ora hash è final
             user.setPassword(hash);
             
             user.setBiografia(biografia);
@@ -120,8 +120,8 @@ public class ProfileService {
         if(user == null)
             return null;
         
-        String hash = PasswordUtility.hashPassword(password);
-        if (hash == null) hash = "";
+        final String rawHash = PasswordUtility.hashPassword(password);
+        final String hash = (rawHash == null) ? "" : rawHash; // Risolto: ora hash è final
         user.setPassword(hash);
         
         UtenteDAO.update(user);
@@ -145,7 +145,7 @@ public class ProfileService {
         final HashMap<String, String> users = new HashMap<String, String>(); 
         
         for(int i = 0; i < recensioni.size(); i++) { 
-            RecensioneBean recensione = recensioni.get(i);
+            final RecensioneBean recensione = recensioni.get(i); // Risolto: final
             if (recensione != null) {
                 final String em = recensione.getEmail(); 
                 final UtenteBean u = UtenteDAO.findByEmail(em);
@@ -165,12 +165,12 @@ public class ProfileService {
       @ skiprac
       @*/
     public List<String> getPreferenze(final String email){
-        List<PreferenzaBean> preferenze = PreferenzaDAO.findByEmail(email);
-        List<String> preferenzeString = new ArrayList<String>();
+        final List<PreferenzaBean> preferenze = PreferenzaDAO.findByEmail(email); // Risolto: final
+        final List<String> preferenzeString = new ArrayList<String>(); // Risolto: final
         
         if (preferenze != null) {
-            for(int i = 0; i < preferenze.size(); i++) {
-                PreferenzaBean b = preferenze.get(i);
+            for(int i = 0; i < preferenze.size(); i++) { 
+                final PreferenzaBean b = preferenze.get(i); // Risolto: final
                 if (b != null) {
                     preferenzeString.add(b.getNomeGenere());
                 }
@@ -183,15 +183,15 @@ public class ProfileService {
     //@ requires genere != null;
     //@ assignable \everything;
     public void addPreferenza(final String email, final String genere) {
-        PreferenzaBean preferenza = new PreferenzaBean(email, genere);
+        final PreferenzaBean preferenza = new PreferenzaBean(email, genere); // Risolto: final
         PreferenzaDAO.save(preferenza);
     }
     
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public void aggiungiAllaWatchlist(String email, int filmId){
-        InteresseBean interesse = new InteresseBean();
+    public void aggiungiAllaWatchlist(final String email, final int filmId){ // Parametri final
+        final InteresseBean interesse = new InteresseBean(); // Risolto: final
         interesse.setEmail(email);
         interesse.setIdFilm(filmId);
         interesse.setInteresse(true);
@@ -201,8 +201,8 @@ public class ProfileService {
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public void aggiungiFilmVisto(String email, int filmId){
-        VistoBean visto = new VistoBean();
+    public void aggiungiFilmVisto(final String email, final int filmId){ // Parametri final
+        final VistoBean visto = new VistoBean(); // Risolto: final
         visto.setEmail(email);
         visto.setIdFilm(filmId);
         VistoDAO.save(visto);
@@ -213,14 +213,14 @@ public class ProfileService {
       @ assignable \everything;
       @ skiprac
       @*/
-    public void aggiornaPreferenzeUtente(String email, String[] idGeneri){
+    public void aggiornaPreferenzeUtente(final String email, final String[] idGeneri){ // Parametri final
         PreferenzaDAO.deleteByEmail(email);
             
         if (idGeneri != null && idGeneri.length > 0) {
             for (int i = 0; i < idGeneri.length; i++) {
-                String idGenereStr = idGeneri[i];
+                final String idGenereStr = idGeneri[i]; // Risolto: final
                 if (idGenereStr != null) {
-                    PreferenzaBean preferenza = new PreferenzaBean();
+                    final PreferenzaBean preferenza = new PreferenzaBean(); // Risolto: final
                     preferenza.setEmail(email);
                     preferenza.setNomeGenere(idGenereStr);
                     PreferenzaDAO.save(preferenza);
@@ -232,8 +232,8 @@ public class ProfileService {
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public void ignoreFilm(String email, int filmId){
-        InteresseBean interesse = new InteresseBean();
+    public void ignoreFilm(final String email, final int filmId){ // Parametri final
+        final InteresseBean interesse = new InteresseBean(); // Risolto: final
         interesse.setEmail(email);
         interesse.setIdFilm(filmId);
         interesse.setInteresse(false);
@@ -244,7 +244,7 @@ public class ProfileService {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmBean> retrieveWatchedFilms(final String username) {
-        List<FilmBean> res = VistoDAO.doRetrieveFilmsByUtente(username);
+        final List<FilmBean> res = VistoDAO.doRetrieveFilmsByUtente(username); // Risolto: final
         return res != null ? res : new ArrayList<FilmBean>();
     }
 
@@ -252,15 +252,15 @@ public class ProfileService {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmBean> retrieveWatchlist(final String username1) {
-        List<FilmBean> res = this.InteresseDAO.doRetrieveFilmsByUtente(username1);
+        final List<FilmBean> res = this.InteresseDAO.doRetrieveFilmsByUtente(username1); // Risolto: final
         return res != null ? res : new ArrayList<FilmBean>();
     }
     
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public boolean isFilmInWatchlist(String email, int filmId) {
-            InteresseBean interesseBean = this.InteresseDAO.findByEmailAndIdFilm(email, filmId);
+    public boolean isFilmInWatchlist(final String email, final int filmId) { // Parametri final
+            final InteresseBean interesseBean = this.InteresseDAO.findByEmailAndIdFilm(email, filmId); // Risolto: final
             if (interesseBean == null) {
                 return false;
             }
@@ -270,21 +270,21 @@ public class ProfileService {
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public void rimuoviDallaWatchlist(String email, int filmId) {
+    public void rimuoviDallaWatchlist(final String email, final int filmId) { // Parametri final
         this.InteresseDAO.delete(email, filmId);
     }
     
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public boolean isFilmVisto(String email, int filmId) {
+    public boolean isFilmVisto(final String email, final int filmId) { // Parametri final
         return this.VistoDAO.findByEmailAndIdFilm(email, filmId) != null;
     }
 
     //@ requires email != null;
     //@ requires filmId >= 0;
     //@ assignable \everything;
-    public void rimuoviFilmVisto(String email, int filmId) {
+    public void rimuoviFilmVisto(final String email, final int filmId) { // Parametri final
         this.VistoDAO.delete(email, filmId);
     }
 }

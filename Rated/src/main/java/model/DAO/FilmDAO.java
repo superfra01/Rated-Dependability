@@ -17,7 +17,7 @@ import model.Entity.FilmBean;
 public class FilmDAO {
 
     //@ spec_public
-    private DataSource dataSource; 
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI
@@ -43,16 +43,16 @@ public class FilmDAO {
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
     public FilmDAO(final DataSource testDataSource) {
-        dataSource = testDataSource;
+        this.dataSource = testDataSource;
     }
 
-    // Costruttore protetto per test, non rispetta l'invariante (usato solo internamente)
+    // Costruttore protetto per test
     /*@ 
       @ requires testMode == true;
       @ skipesc
       @*/
     protected FilmDAO(final boolean testMode) {
-        // Vuoto
+        this.dataSource = null; // Necessario per variabili final
     }
 
     /* =========================================
@@ -80,7 +80,7 @@ public class FilmDAO {
 
             ps.executeUpdate();
 
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            try (final ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     film.setIdFilm(generatedKeys.getInt(1));
                 } else {
@@ -233,10 +233,10 @@ public class FilmDAO {
     //@ requires emailUtente != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public synchronized List<FilmBean> doRetrieveConsigliati(String emailUtente) {
-        List<FilmBean> films = new ArrayList<>();
+    public synchronized List<FilmBean> doRetrieveConsigliati(final String emailUtente) { // Parametro final
+        final List<FilmBean> films = new ArrayList<>(); // Variabile locale final
 
-        String sql = "SELECT DISTINCT f.* " +
+        final String sql = "SELECT DISTINCT f.* " + // Stringa SQL final
                      "FROM Film f " +
                      "JOIN Film_Genere fg ON f.ID_Film = fg.ID_Film " +
                      "JOIN Preferenza p ON fg.Nome_Genere = p.Nome_Genere " +
@@ -249,16 +249,16 @@ public class FilmDAO {
                      ") " +
                      "ORDER BY f.Valutazione DESC";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (final Connection conn = dataSource.getConnection(); // Risorse final
+             final PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, emailUtente);
             ps.setString(2, emailUtente);
             ps.setString(3, emailUtente);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    FilmBean film = new FilmBean();
+                    final FilmBean film = new FilmBean(); // Bean final nel loop
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setLocandina(rs.getBytes("Locandina"));
                     film.setNome(rs.getString("Nome"));
@@ -271,7 +271,7 @@ public class FilmDAO {
                     films.add(film);
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             e.printStackTrace(); 
         }
         return films;

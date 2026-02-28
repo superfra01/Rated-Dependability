@@ -17,7 +17,7 @@ import model.Entity.PreferenzaBean;
 public class PreferenzaDAO {
 
     //@ spec_public
-    private DataSource dataSource;
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -51,7 +51,7 @@ public class PreferenzaDAO {
       @ skipesc
       @*/
     protected PreferenzaDAO(final boolean testMode) {
-        // Vuoto: non fa nulla, niente DB!
+        this.dataSource = null; // Risolto: obbligatorio per campi final
     }
 
     /* =========================================
@@ -98,7 +98,7 @@ public class PreferenzaDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    final PreferenzaBean p = new PreferenzaBean();
+                    final PreferenzaBean p = new PreferenzaBean(); // Final nel ciclo
                     p.setEmail(rs.getString("email"));
                     p.setNomeGenere(rs.getString("Nome_Genere"));
                     preferenze.add(p);
@@ -111,23 +111,7 @@ public class PreferenzaDAO {
 
         return preferenze;
     }
-/*
-    public void delete(final String email, final String nomeGenere) {
-        final String query = "DELETE FROM Preferenza WHERE email = ? AND Nome_Genere = ?";
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-            ps.setString(2, nomeGenere);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-    
     //@ requires email != null;
     //@ assignable \everything;
     public void deleteByEmail(final String email) {
