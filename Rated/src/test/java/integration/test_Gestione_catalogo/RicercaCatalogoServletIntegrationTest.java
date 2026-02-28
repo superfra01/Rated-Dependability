@@ -41,7 +41,10 @@ public class RicercaCatalogoServletIntegrationTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        // 1. Setup del Database finto in memoria (inizializzato con init.sql)
+        // 1. RIPRISTINA IL DATABASE PRIMA DI ESEGUIRE IL TEST!
+        DatabaseSetupForTest.resetDatabase();
+
+        // 2. Setup del Database finto in memoria
         dataSource = DatabaseSetupForTest.getH2DataSource();
         FilmDAO filmDAO = new FilmDAO(dataSource);
         FilmGenereDAO filmGenereDAO = new FilmGenereDAO(dataSource);

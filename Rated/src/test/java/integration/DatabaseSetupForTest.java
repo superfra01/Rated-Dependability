@@ -76,7 +76,24 @@ public class DatabaseSetupForTest {
         }
         return dataSource;
     }
-
+    
+    public static void resetDatabase() {
+        if (dataSource == null) {
+            configureH2();
+        } else {
+            try (Connection conn = dataSource.getConnection();
+                 Statement stmt = conn.createStatement()) {
+                // Comando specifico di H2 per radere al suolo le tabelle senza chiudere la connessione
+                stmt.execute("DROP ALL OBJECTS;");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Errore durante il reset del database", e);
+            }
+            // Riesegue l'init.sql per rimettere i dati puliti
+            initializeSchema();
+        }
+    }
+    
     private static void initializeSchema() {
         final Path initPath = resolveInitSqlPath();
         final List<String> statements = loadStatements(initPath);
