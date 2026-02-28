@@ -15,7 +15,7 @@ import model.Entity.RecensioneBean;
 public class RecensioneDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource;
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -43,13 +43,12 @@ public class RecensioneDAO {
         this.dataSource = testDataSource;
     }
     
-    // Costruttore per test, non inizializza la connessione
     /*@ 
       @ requires testMode == true;
       @ skipesc
       @*/
     protected RecensioneDAO(final boolean testMode) {
-        this.dataSource = null; // Risolto: necessario inizializzare i campi final
+        this.dataSource = null; 
     }
 
     /* =========================================
@@ -81,7 +80,8 @@ public class RecensioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
     public RecensioneBean findById(final String email, final int idFilm) {
-        final String query = "SELECT * FROM Recensione WHERE email = ? AND ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
@@ -110,7 +110,8 @@ public class RecensioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<RecensioneBean> findByIdFilm(final int idFilm) {
-        final String query = "SELECT * FROM Recensione WHERE ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE ID_Film = ?";
         final List<RecensioneBean> recensioni = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -138,7 +139,8 @@ public class RecensioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<RecensioneBean> findAll() {
-        final String query = "SELECT * FROM Recensione";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione";
         final List<RecensioneBean> recensioni = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query);
@@ -165,7 +167,8 @@ public class RecensioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<RecensioneBean> findByUser(final String email) {
-        final String query = "SELECT * FROM Recensione WHERE email = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE email = ?";
         final List<RecensioneBean> recensioni = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {

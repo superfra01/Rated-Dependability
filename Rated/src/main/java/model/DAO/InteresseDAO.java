@@ -18,7 +18,7 @@ import model.Entity.InteresseBean;
 public class InteresseDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource;
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -89,7 +89,8 @@ public class InteresseDAO {
     //@ assignable \everything;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
     public InteresseBean findByEmailAndIdFilm(final String email, final int idFilm) {
-        final String query = "SELECT * FROM Interesse WHERE email = ? AND ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT email, ID_Film, interesse FROM Interesse WHERE email = ? AND ID_Film = ?";
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -99,7 +100,7 @@ public class InteresseDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final InteresseBean interesse = new InteresseBean(); // Risolto: final
+                    final InteresseBean interesse = new InteresseBean();
                     interesse.setEmail(rs.getString("email"));
                     interesse.setIdFilm(rs.getInt("ID_Film"));
                     interesse.setInteresse(rs.getBoolean("interesse"));
@@ -135,8 +136,8 @@ public class InteresseDAO {
     //@ requires username != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public List<FilmBean> doRetrieveFilmsByUtente(final String username) { // Risolto: parametro final
-        final List<FilmBean> films = new ArrayList<>(); // Risolto: variabile locale final
+    public List<FilmBean> doRetrieveFilmsByUtente(final String username) {
+        final List<FilmBean> films = new ArrayList<>();
         
         final String query = "SELECT f.ID_Film, f.Nome, f.Anno, f.Durata, f.Regista, f.Trama, f.Valutazione, f.Attori, f.Locandina " +
                        "FROM Film f " +
@@ -144,14 +145,14 @@ public class InteresseDAO {
                        "JOIN Utente_Registrato u ON i.email = u.email " +
                        "WHERE u.username = ? AND i.interesse = true"; 
 
-        try (final Connection con = dataSource.getConnection(); // Risolto: risorse final
+        try (final Connection con = dataSource.getConnection();
              final PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, username);
 
             try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    final FilmBean film = new FilmBean(); // Risolto: bean final
+                    final FilmBean film = new FilmBean();
                     
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setNome(rs.getString("Nome"));

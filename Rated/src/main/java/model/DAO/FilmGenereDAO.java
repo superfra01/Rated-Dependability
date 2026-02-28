@@ -17,7 +17,7 @@ import model.Entity.FilmGenereBean;
 public class FilmGenereDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource; 
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -79,7 +79,8 @@ public class FilmGenereDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmGenereBean> findByIdFilm(final int idFilm) {
-        final String query = "SELECT * FROM Film_Genere WHERE ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con l'elenco esplicito delle colonne
+        final String query = "SELECT ID_Film, Nome_Genere FROM Film_Genere WHERE ID_Film = ?";
         final List<FilmGenereBean> generi = new ArrayList<>();
 
         try (final Connection connection = dataSource.getConnection();

@@ -46,7 +46,7 @@ public class AutenticationService {
         
         // Aggiungiamo un check di sicurezza per la stringa hash, utile per la static verification
         if (user != null) {
-            String hash = PasswordUtility.hashPassword(password);
+            final String hash = PasswordUtility.hashPassword(password);
             if (hash != null && hash.equals(user.getPassword())) {
                 return user; // Authentication successful
             }

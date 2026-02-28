@@ -17,12 +17,11 @@ import model.Entity.FilmBean;
 public class FilmDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource;
 
     /* =========================================
      * INVARIANTI
      * ========================================= */
-    // Il dataSource non deve essere nullo per permettere le operazioni
     //@ public invariant dataSource != null;
 
     /* =========================================
@@ -46,13 +45,12 @@ public class FilmDAO {
         this.dataSource = testDataSource;
     }
 
-    // Costruttore protetto per test
     /*@ 
       @ requires testMode == true;
       @ skipesc
       @*/
     protected FilmDAO(final boolean testMode) {
-        this.dataSource = null; // Necessario per variabili final
+        this.dataSource = null; 
     }
 
     /* =========================================
@@ -140,7 +138,8 @@ public class FilmDAO {
     //@ assignable \everything;
     //@ ensures \result != null ==> \result.getIdFilm() == idFilm;
     public FilmBean findById(final int idFilm) { 
-        final String query = "SELECT * FROM Film WHERE ID_Film = ?";
+        // Risolto: Elenco esplicito delle colonne invece di SELECT *
+        final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film WHERE ID_Film = ?";
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -172,7 +171,8 @@ public class FilmDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmBean> findByName(final String name) { 
-        final String query = "SELECT * FROM Film WHERE nome LIKE ?";
+        // Risolto: Elenco esplicito delle colonne invece di SELECT *
+        final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film WHERE nome LIKE ?";
         final List<FilmBean> films = new ArrayList<>();
 
         try (final Connection connection = dataSource.getConnection();
@@ -204,7 +204,8 @@ public class FilmDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmBean> findAll() {
-        final String query = "SELECT * FROM Film";
+        // Risolto: Elenco esplicito delle colonne invece di SELECT *
+        final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film";
         final List<FilmBean> films = new ArrayList<>();
 
         try (final Connection connection = dataSource.getConnection();
@@ -233,10 +234,11 @@ public class FilmDAO {
     //@ requires emailUtente != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public synchronized List<FilmBean> doRetrieveConsigliati(final String emailUtente) { // Parametro final
-        final List<FilmBean> films = new ArrayList<>(); // Variabile locale final
+    public synchronized List<FilmBean> doRetrieveConsigliati(final String emailUtente) {
+        final List<FilmBean> films = new ArrayList<>();
 
-        final String sql = "SELECT DISTINCT f.* " + // Stringa SQL final
+        // Risolto: Elenco esplicito delle colonne invece di SELECT f.*
+        final String sql = "SELECT DISTINCT f.ID_Film, f.locandina, f.nome, f.anno, f.durata, f.regista, f.attori, f.valutazione, f.trama " + 
                      "FROM Film f " +
                      "JOIN Film_Genere fg ON f.ID_Film = fg.ID_Film " +
                      "JOIN Preferenza p ON fg.Nome_Genere = p.Nome_Genere " +
@@ -249,7 +251,7 @@ public class FilmDAO {
                      ") " +
                      "ORDER BY f.Valutazione DESC";
 
-        try (final Connection conn = dataSource.getConnection(); // Risorse final
+        try (final Connection conn = dataSource.getConnection(); 
              final PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, emailUtente);
@@ -258,7 +260,7 @@ public class FilmDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    final FilmBean film = new FilmBean(); // Bean final nel loop
+                    final FilmBean film = new FilmBean();
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setLocandina(rs.getBytes("Locandina"));
                     film.setNome(rs.getString("Nome"));

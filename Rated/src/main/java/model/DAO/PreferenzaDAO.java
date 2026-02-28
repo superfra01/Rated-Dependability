@@ -17,7 +17,7 @@ import model.Entity.PreferenzaBean;
 public class PreferenzaDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource; 
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -45,13 +45,12 @@ public class PreferenzaDAO {
         this.dataSource = dataSource;
     }
     
-    // Costruttore per i test, non inizializza la connessione
     /*@ 
       @ requires testMode == true;
       @ skipesc
       @*/
     protected PreferenzaDAO(final boolean testMode) {
-        this.dataSource = null; // Risolto: obbligatorio per campi final
+        this.dataSource = null; 
     }
 
     /* =========================================
@@ -88,7 +87,8 @@ public class PreferenzaDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<PreferenzaBean> findByEmail(final String email) {
-        final String query = "SELECT * FROM Preferenza WHERE email = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT email, Nome_Genere FROM Preferenza WHERE email = ?";
         final List<PreferenzaBean> preferenze = new ArrayList<>();
 
         try (final Connection connection = dataSource.getConnection();
@@ -98,7 +98,7 @@ public class PreferenzaDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    final PreferenzaBean p = new PreferenzaBean(); // Final nel ciclo
+                    final PreferenzaBean p = new PreferenzaBean(); 
                     p.setEmail(rs.getString("email"));
                     p.setNomeGenere(rs.getString("Nome_Genere"));
                     preferenze.add(p);
