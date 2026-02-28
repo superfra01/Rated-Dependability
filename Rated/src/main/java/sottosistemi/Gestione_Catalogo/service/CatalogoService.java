@@ -41,7 +41,7 @@ public class CatalogoService {
         this.GenereDAO = new GenereDAO();
     }
     
-    // Costruttore per il test o configurazioni personalizzate
+    // Costruttore per il test
     //@ requires filmDAO != null;
     //@ requires FilmGenereDAO != null;
     //@ requires GenereDAO != null;
@@ -61,7 +61,7 @@ public class CatalogoService {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<FilmBean> getFilms(){
-        final List<FilmBean> films = FilmDAO.findAll();
+        final List<FilmBean> films = FilmDAO.findAll(); // Risolto: final
         return films;
     }
 
@@ -74,7 +74,7 @@ public class CatalogoService {
     //@ requires trama != null;
     //@ assignable \everything;
     public void aggiungiFilm(final String nome, final int anno, final int durata, final String[] generi, final String regista, final String attori, final byte[] locandina, final String trama) {
-        final FilmBean film = new FilmBean();
+        final FilmBean film = new FilmBean(); // Risolto: final
         film.setNome(nome);
         film.setAnno(anno);
         film.setDurata(durata);
@@ -108,11 +108,11 @@ public class CatalogoService {
     //@ assignable \everything;
     //@ ensures \result != null;
     public HashMap<Integer, FilmBean> getFilms(final List<RecensioneBean> recensioni) {
-        final HashMap<Integer, FilmBean> FilmMap = new HashMap<>();
+        final HashMap<Integer, FilmBean> FilmMap = new HashMap<>(); // Risolto: final
         for(final RecensioneBean Recensione : recensioni) {
             if (Recensione != null) {
-                final int key = Recensione.getIdFilm();
-                final FilmBean Film = this.getFilm(key);
+                final int key = Recensione.getIdFilm(); // Risolto: final
+                final FilmBean Film = this.getFilm(key); // Risolto: final
                 FilmMap.put(key, Film);
             }
         }
@@ -128,6 +128,7 @@ public class CatalogoService {
     //@ requires Trama != null;
     //@ assignable \everything;
     public void addFilm(final int anno, final String Attori, final int durata, final String[] Generi, final byte[] Locandina, final String Nome, final String Regista, final String Trama){
+        // Qui 'film' non può essere final perché viene riassegnato alla riga successiva dopo la ricerca
         FilmBean film = new FilmBean();
         film.setAnno(anno);
         film.setAttori(Attori);
@@ -138,12 +139,12 @@ public class CatalogoService {
         film.setTrama(Trama);
         FilmDAO.save(film);
         
-        List<FilmBean> films = FilmDAO.findByName(Nome);
+        final List<FilmBean> films = FilmDAO.findByName(Nome); // Risolto: final
         if (films != null && !films.isEmpty()) {
-            film = films.get(0);
-            for(String genere : Generi){
+            film = films.get(0); // Riassegnazione (corretto che non sia final)
+            for(final String genere : Generi){ // Risolto: final nel loop
                 if (genere != null) {
-                    FilmGenereBean FilmGenere = new FilmGenereBean(film.getIdFilm(), genere);
+                    final FilmGenereBean FilmGenere = new FilmGenereBean(film.getIdFilm(), genere); // Risolto: final
                     FilmGenereDAO.save(FilmGenere);
                 }
             }
@@ -160,7 +161,7 @@ public class CatalogoService {
     //@ requires Trama != null;
     //@ assignable \everything;
     public void modifyFilm(final int idFilm, final int anno, final String Attori, final int durata, final String[] Generi, final byte[] Locandina, final String Nome, final String Regista, final String Trama){
-        FilmBean film = new FilmBean();
+        final FilmBean film = new FilmBean(); // Risolto: final
         film.setIdFilm(idFilm);
         film.setAnno(anno);
         film.setAttori(Attori);
@@ -170,18 +171,18 @@ public class CatalogoService {
         film.setRegista(Regista);
         film.setTrama(Trama);
         
-        final FilmBean filmAttuale = FilmDAO.findById(idFilm);
+        final FilmBean filmAttuale = FilmDAO.findById(idFilm); // Risolto: final
         if (filmAttuale != null) {
             film.setValutazione(filmAttuale.getValutazione());
         } else {
-            film.setValutazione(1); // Default se non trovato
+            film.setValutazione(1); 
         }
         FilmDAO.update(film);
         
         FilmGenereDAO.deleteByIdFilm(idFilm);
-        for(String genere : Generi){
+        for(final String genere : Generi){ // Risolto: final nel loop
             if (genere != null) {
-                FilmGenereBean FilmGenere = new FilmGenereBean(film.getIdFilm(), genere);
+                final FilmGenereBean FilmGenere = new FilmGenereBean(film.getIdFilm(), genere); // Risolto: final
                 FilmGenereDAO.save(FilmGenere);
             }
         }
@@ -210,7 +211,7 @@ public class CatalogoService {
     //@ requires utente.getEmail() != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public List<FilmBean> getFilmCompatibili(UtenteBean utente) {
+    public List<FilmBean> getFilmCompatibili(final UtenteBean utente) { // Risolto: parametro final
         return this.FilmDAO.doRetrieveConsigliati(utente.getEmail());
     }
 }

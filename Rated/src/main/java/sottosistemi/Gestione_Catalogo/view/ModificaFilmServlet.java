@@ -18,49 +18,50 @@ import javax.servlet.http.Part;
 @WebServlet("/filmModify")
 @MultipartConfig(maxFileSize = 16177215)
 public class ModificaFilmServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private CatalogoService CatalogoService;
+    private static final long serialVersionUID = 1L;
+    
+    // Risolto: Inizializzato direttamente e reso final
+    private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
-    public void init() {
-        CatalogoService = new CatalogoService();
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        // Metodo vuoto
     }
 
     @Override
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException { // Parametri final
-      
-    }
-
-    @Override
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException { // Parametri final
-    	
-    	final HttpSession session = request.getSession(true); // Locale final
-    	final UtenteBean user = (UtenteBean) session.getAttribute("user"); // Locale final
-    	if(user.getTipoUtente().equals("GESTORE")) {
-    		
-    		final int idFilm = Integer.parseInt(request.getParameter("idFilm")); // Locale final
-    		final int anno = Integer.parseInt(request.getParameter("annoFilm")); // Locale final
-    		final String Attori = request.getParameter("attoriFilm"); // Locale final
-    		final int durata = Integer.parseInt(request.getParameter("durataFilm")); // Locale final
-    		final String[] generiSelezionati = request.getParameterValues("generiFilm");
-    		
-    		final String Nome = request.getParameter("nomeFilm"); // Locale final
-    		final String Regista = request.getParameter("registaFilm"); // Locale final
-    		final String Trama = request.getParameter("tramaFilm"); // Locale final
-    		
-    		byte[] locandina = null; // Riassegnata
-    		final Part filePart = request.getPart("locandinaFilm"); // Locale final
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        
+        final HttpSession session = request.getSession(true);
+        final UtenteBean user = (UtenteBean) session.getAttribute("user");
+        
+        if (user != null && "GESTORE".equals(user.getTipoUtente())) {
+            
+            final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
+            final int anno = Integer.parseInt(request.getParameter("annoFilm"));
+            final String attori = request.getParameter("attoriFilm");
+            final int durata = Integer.parseInt(request.getParameter("durataFilm"));
+            final String[] generiSelezionati = request.getParameterValues("generiFilm"); // Risolto: ora è final
+            
+            final String nome = request.getParameter("nomeFilm");
+            final String regista = request.getParameter("registaFilm");
+            final String trama = request.getParameter("tramaFilm");
+            
+            byte[] locandina = null; // Non può essere final perché viene riassegnata nel blocco if
+            
+            final Part filePart = request.getPart("locandinaFilm");
             if (filePart != null && filePart.getSize() > 0) {
-                try (final InputStream inputStream = filePart.getInputStream()) { // Risorsa final
+                try (final InputStream inputStream = filePart.getInputStream()) {
                     locandina = inputStream.readAllBytes();
                 }
             }
             
-    		CatalogoService.modifyFilm(idFilm, anno, Attori, durata, generiSelezionati, locandina, Nome, Regista, Trama);
-    		response.sendRedirect(request.getContextPath() + "/film?idFilm=" + idFilm);
-    	}else {
-    		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // Utilizzo del field final
+            catalogoService.modifyFilm(idFilm, anno, attori, durata, generiSelezionati, locandina, nome, regista, trama);
+            response.sendRedirect(request.getContextPath() + "/film?idFilm=" + idFilm);
+            
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-    	}
+        }
     }
 }

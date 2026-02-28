@@ -15,7 +15,7 @@ import model.Entity.UtenteBean;
 public class UtenteDAO {
 
     //@ spec_public
-    private DataSource dataSource; // Non può essere final perché c'è un setter
+    private DataSource dataSource; // Giusto: non è final causa setter
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -37,7 +37,7 @@ public class UtenteDAO {
         }
     }
     
-    // Costruttore per test (iniezione di DataSource mock)
+    // Costruttore per test
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
     public UtenteDAO(final DataSource dataSource) {
@@ -48,11 +48,11 @@ public class UtenteDAO {
       @ requires testMode == true;
       @ skipesc
       @*/
-    protected UtenteDAO(final boolean testMode) {
-        // Vuoto: non fa nulla, niente DB!
+    protected UtenteDAO(final boolean testMode) { // Aggiunto final se rimosso per errore
+        // Vuoto
     }
 
-    // Metodo setter per cambiare il DataSource
+    // Metodo setter
     //@ requires dataSource != null;
     //@ assigns this.dataSource;
     //@ ensures this.dataSource == dataSource;
@@ -66,7 +66,7 @@ public class UtenteDAO {
 
     //@ requires utente != null;
     //@ assignable \everything;
-    public void save(final UtenteBean utente) {
+    public void save(final UtenteBean utente) { // Parametro final
         final String query = "INSERT INTO Utente_Registrato (email, icona, username, password, Tipo_Utente, N_Warning, Biografia) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -86,14 +86,14 @@ public class UtenteDAO {
     //@ requires email != null;
     //@ assignable \everything;
     //@ ensures \result != null ==> \result.getEmail().equals(email);
-    public UtenteBean findByEmail(final String email) {
+    public UtenteBean findByEmail(final String email) { // Parametro final
         final String query = "SELECT * FROM Utente_Registrato WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean utente = new UtenteBean();
+                    final UtenteBean utente = new UtenteBean(); // Variabile locale final
                     utente.setEmail(rs.getString("email"));
                     utente.setIcona(rs.getBytes("icona"));
                     utente.setUsername(rs.getString("username"));
@@ -113,14 +113,14 @@ public class UtenteDAO {
     //@ requires username != null;
     //@ assignable \everything;
     //@ ensures \result != null ==> \result.getUsername().equals(username);
-    public UtenteBean findByUsername(final String username) {
+    public UtenteBean findByUsername(final String username) { // Parametro final
         final String query = "SELECT * FROM Utente_Registrato WHERE username = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean user = new UtenteBean();
+                    final UtenteBean user = new UtenteBean(); // Variabile locale final
                     user.setUsername(rs.getString("username"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -136,34 +136,10 @@ public class UtenteDAO {
         }
         return null;
     }
-/*
-    public List<UtenteBean> findAll() {
-        final String query = "SELECT * FROM Utente_Registrato";
-        final List<UtenteBean> utenti = new ArrayList<>();
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query);
-             final ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                final UtenteBean utente = new UtenteBean();
-                utente.setEmail(rs.getString("email"));
-                utente.setIcona(rs.getBytes("icona"));
-                utente.setUsername(rs.getString("username"));
-                utente.setPassword(rs.getString("password"));
-                utente.setTipoUtente(rs.getString("Tipo_Utente"));
-                utente.setNWarning(rs.getInt("N_Warning"));
-                utente.setBiografia(rs.getString("Biografia"));
-                utenti.add(utente);
-            }
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-        return utenti;
-    }
-*/
 
     //@ requires utente != null;
     //@ assignable \everything;
-    public void update(final UtenteBean utente) {
+    public void update(final UtenteBean utente) { // Parametro final
         final String query = "UPDATE Utente_Registrato SET icona = ?, username = ?, password = ?, Tipo_Utente = ?, N_Warning = ?, Biografia = ? WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -179,16 +155,4 @@ public class UtenteDAO {
             e.printStackTrace();
         }
     }
-/*
-    public void delete(final String email) {
-        final String query = "DELETE FROM Utente_Registrato WHERE email = ?";
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, email);
-            ps.executeUpdate();
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-*/
 }

@@ -1,8 +1,5 @@
 package sottosistemi.Gestione_Utenti.view;
 
-import model.DAO.GenereDAO;
-import model.Entity.InteresseBean;
-import model.Entity.PreferenzaBean;
 import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 import sottosistemi.Gestione_Utenti.service.AutenticationService;
@@ -27,24 +24,18 @@ import javax.servlet.http.Part;
 public class RegisterServlet extends HttpServlet {
     private static final long serialVersionUID = 1879879L;
     
-    // Variabili di istanza
-    private AutenticationService authService;
-    private ProfileService profService;
-    private CatalogoService catalogoService; // Aggiunto per il refactoring
-
-    @Override
-    public void init() {
-        authService = new AutenticationService();
-        profService = new ProfileService();
-        catalogoService = new CatalogoService(); // Inizializzazione spostata qui
-    }
+    // Risolto: Campi resi final e inizializzati direttamente per eliminare init()
+    // Naming mantenuto coerente con il tuo codice originale
+    private final AutenticationService authService = new AutenticationService();
+    private final ProfileService profService = new ProfileService();
+    private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
     public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         final HttpSession session = req.getSession(true);
         
-        // FIX: Rimosso "new CatalogoService()" locale. Usiamo la variabile di istanza.
-        List<String> generi = catalogoService.getAllGeneri();
+        // Risolto: variabile locale final
+        final List<String> generi = catalogoService.getAllGeneri();
         session.setAttribute("genres", generi);
         req.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(req, resp);
     }
@@ -57,10 +48,9 @@ public class RegisterServlet extends HttpServlet {
         final String password = request.getParameter("password");
         final String confirmPassword = request.getParameter("confirm_password");
         final String biography = request.getParameter("biography");
+        final String[] generi = request.getParameterValues("genres");
         
-        final String[] generi= request.getParameterValues("genres");
-        
-        byte[] icon = null;
+        byte[] icon = null; // Non final: riassegnata nell'if
         
         final Part filePart = request.getPart("profile_icon");
         if (filePart != null && filePart.getSize() > 0) {
@@ -76,9 +66,8 @@ public class RegisterServlet extends HttpServlet {
 
             final UtenteBean utente = authService.register(username, email, password, biography, icon);
             
-            // Assicuriamoci che i generi non siano nulli prima di iterare (buona pratica)
             if (generi != null) {
-                for(String genere : generi) {
+                for (final String genere : generi) { // Risolto: variabile del loop final
                     profService.addPreferenza(email, genere);
                 }
             }

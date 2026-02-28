@@ -15,16 +15,14 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/ApproveReview")
 public class ApproveReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RecensioniService RecensioniService;
-
-	@Override
-	public void init() {
-		RecensioniService = new RecensioniService();
-	}
+	
+	// Risolto: Campo reso final e inizializzato direttamente per eliminare init()
+	// Mantengo la "R" maiuscola per non rompere i tuoi test di integrazione
+	private final RecensioniService RecensioniService = new RecensioniService();
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+		// Metodo vuoto
 	}
 
 	@Override
@@ -32,7 +30,9 @@ public class ApproveReviewServlet extends HttpServlet {
 
 		final HttpSession session = request.getSession(true);
 		final UtenteBean user = (UtenteBean) session.getAttribute("user");
-		if (user.getTipoUtente().equals("MODERATORE")) {
+		
+		// Buona pratica: aggiunta verifica null per l'utente
+		if (user != null && user.getTipoUtente().equals("MODERATORE")) {
 			final String userEmail = request.getParameter("ReviewUserEmail");
 			final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
 			

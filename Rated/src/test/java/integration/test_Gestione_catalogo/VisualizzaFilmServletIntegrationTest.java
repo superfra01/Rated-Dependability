@@ -95,15 +95,15 @@ public class VisualizzaFilmServletIntegrationTest {
         servlet.init();
         
         // 4. Iniezione multipla delle dipendenze
-        Field catField = VisualizzaFilmServlet.class.getDeclaredField("CatalogoService");
+        Field catField = VisualizzaFilmServlet.class.getDeclaredField("catalogoService");
         catField.setAccessible(true);
         catField.set(servlet, catalogoService);
         
-        Field recField = VisualizzaFilmServlet.class.getDeclaredField("RecensioniService");
+        Field recField = VisualizzaFilmServlet.class.getDeclaredField("recensioniService");
         recField.setAccessible(true);
         recField.set(servlet, recensioniService);
         
-        Field profField = VisualizzaFilmServlet.class.getDeclaredField("ProfileService");
+        Field profField = VisualizzaFilmServlet.class.getDeclaredField("profileService");
         profField.setAccessible(true);
         profField.set(servlet, profileService);
 

@@ -18,7 +18,7 @@ import model.Entity.InteresseBean;
 public class InteresseDAO {
 
     //@ spec_public
-    private DataSource dataSource;
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -42,8 +42,8 @@ public class InteresseDAO {
     
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
-    public InteresseDAO(final DataSource testDataSource) { // Parametro final
-        dataSource = testDataSource;
+    public InteresseDAO(final DataSource testDataSource) {
+        this.dataSource = testDataSource;
     }
 
     /* =========================================
@@ -99,7 +99,7 @@ public class InteresseDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final InteresseBean interesse = new InteresseBean();
+                    final InteresseBean interesse = new InteresseBean(); // Risolto: final
                     interesse.setEmail(rs.getString("email"));
                     interesse.setIdFilm(rs.getInt("ID_Film"));
                     interesse.setInteresse(rs.getBoolean("interesse"));
@@ -113,61 +113,6 @@ public class InteresseDAO {
 
         return null;
     }
-
-/* Metodo non usato
-    public List<InteresseBean> findByEmail(final String email) {
-        final String query = "SELECT * FROM Interesse WHERE email = ?";
-        final List<InteresseBean> interessi = new ArrayList<>();
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-
-            try (final ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    final InteresseBean interesse = new InteresseBean();
-                    interesse.setEmail(rs.getString("email"));
-                    interesse.setIdFilm(rs.getInt("ID_Film"));
-                    interesse.setInteresse(rs.getBoolean("interesse"));
-                    interessi.add(interesse);
-                }
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return interessi;
-    }
-*/
-    /*
-    public List<InteresseBean> findInterestedByEmail(final String email) {
-        final String query = "SELECT * FROM Interesse WHERE email = ? AND interesse = TRUE";
-        final List<InteresseBean> interessi = new ArrayList<>();
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-
-            try (final ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    final InteresseBean interesse = new InteresseBean();
-                    interesse.setEmail(rs.getString("email"));
-                    interesse.setIdFilm(rs.getInt("ID_Film"));
-                    interesse.setInteresse(rs.getBoolean("interesse"));
-                    interessi.add(interesse);
-                }
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return interessi;
-    }
-*/
 
     //@ requires email != null;
     //@ requires idFilm >= 0;
@@ -187,48 +132,27 @@ public class InteresseDAO {
         }
     }
 
-/* Metodo non usato
-    public void deleteByEmail(final String email) {
-        final String query = "DELETE FROM Interesse WHERE email = ?";
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-*/
-
     //@ requires username != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public List<FilmBean> doRetrieveFilmsByUtente(String username){
-        List<FilmBean> films = new ArrayList<>();
+    public List<FilmBean> doRetrieveFilmsByUtente(final String username) { // Risolto: parametro final
+        final List<FilmBean> films = new ArrayList<>(); // Risolto: variabile locale final
         
-        // Join: Film -> Interesse -> Utente_Registrato (per filtrare via username)
-        // Nota: Assumo che tu voglia solo i film dove 'interesse' è true, 
-        // se la tabella contiene anche i "non interessato" (anche se dalla struttura sembra una tabella di associazione pura).
-        String query = "SELECT f.ID_Film, f.Nome, f.Anno, f.Durata, f.Regista, f.Trama, f.Valutazione, f.Attori, f.Locandina " +
+        final String query = "SELECT f.ID_Film, f.Nome, f.Anno, f.Durata, f.Regista, f.Trama, f.Valutazione, f.Attori, f.Locandina " +
                        "FROM Film f " +
                        "JOIN Interesse i ON f.ID_Film = i.ID_Film " +
                        "JOIN Utente_Registrato u ON i.email = u.email " +
-                       "WHERE u.username = ? AND i.interesse = true"; // Aggiunto check booleano se necessario
+                       "WHERE u.username = ? AND i.interesse = true"; 
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
+        try (final Connection con = dataSource.getConnection(); // Risolto: risorse final
+             final PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, username);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    FilmBean film = new FilmBean();
+                    final FilmBean film = new FilmBean(); // Risolto: bean final
                     
-                    // Mapping esatto
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setNome(rs.getString("Nome"));
                     film.setAnno(rs.getInt("Anno"));
@@ -242,8 +166,7 @@ public class InteresseDAO {
                     films.add(film);
                 }
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
+        } catch (final SQLException e) {
             e.printStackTrace();
         }
         return films;

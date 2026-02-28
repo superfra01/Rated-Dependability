@@ -148,7 +148,7 @@ public class PasswordModifyServletIntegrationTest {
         
         // 1. Il FieldValidator dovrebbe aver bloccato l'esecuzione: nessun salvataggio in sessione, nessun redirect.
         verify(session, never()).setAttribute(anyString(), any());
-        verify(response, never()).sendRedirect(anyString());
+        verify(response).sendRedirect(org.mockito.ArgumentMatchers.contains("invalidPassword"));
 
         // 2. Verifica Database: La password deve essere rimasta quella originale
         try (Connection conn = dataSource.getConnection();

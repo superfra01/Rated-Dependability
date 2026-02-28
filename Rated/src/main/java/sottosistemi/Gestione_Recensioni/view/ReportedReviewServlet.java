@@ -22,21 +22,18 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/moderator")
 public class ReportedReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private CatalogoService CatalogoService;
-	private RecensioniService RecensioniService;
-	private ProfileService ProfileService;
 
-	@Override
-	public void init() {
-		CatalogoService = new CatalogoService();
-		RecensioniService = new RecensioniService();
-		ProfileService = new ProfileService();
-	}
+	// Risolto: Campi resi final e inizializzati immediatamente
+	// Naming mantenuto identico all'originale per non rompere i test di integrazione
+	private final CatalogoService CatalogoService = new CatalogoService();
+	private final RecensioniService RecensioniService = new RecensioniService();
+	private final ProfileService ProfileService = new ProfileService();
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		final HttpSession session = request.getSession(true);
 		final UtenteBean user = (UtenteBean) session.getAttribute("user");
+
 		if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
 
 			final List<RecensioneBean> recensioni = RecensioniService.GetAllRecensioniSegnalate();
@@ -47,6 +44,7 @@ public class ReportedReviewServlet extends HttpServlet {
 
 			final HashMap<Integer, FilmBean> FilmMap = CatalogoService.getFilms(recensioni);
 			session.setAttribute("films", FilmMap);
+
 			request.getRequestDispatcher("/WEB-INF/jsp/moderator.jsp").forward(request, response);
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -56,6 +54,6 @@ public class ReportedReviewServlet extends HttpServlet {
 
 	@Override
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+		// Metodo vuoto
 	}
 }

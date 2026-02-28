@@ -53,7 +53,7 @@ public class AggiungiFilmServletIntegrationTest {
         // 3. Iniezione della dipendenza tramite Reflection
         // Questo permette di sovrascrivere il service creato nel metodo init() della Servlet
         // per fargli usare la connessione al database di Test invece di quella di produzione.
-        Field serviceField = AggiungiFilmServlet.class.getDeclaredField("CatalogoService");
+        Field serviceField = AggiungiFilmServlet.class.getDeclaredField("catalogoService");
         serviceField.setAccessible(true);
         serviceField.set(servlet, catalogoService);
 

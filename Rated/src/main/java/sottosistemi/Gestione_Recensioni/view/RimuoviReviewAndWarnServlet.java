@@ -16,18 +16,15 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/reportedReviewAndWarn")
 public class RimuoviReviewAndWarnServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private RecensioniService RecensioniService;
-	private ModerationService ModerationService;
-
-	@Override
-	public void init() {
-		RecensioniService = new RecensioniService();
-		ModerationService = new ModerationService();
-	}
+	
+	// Risolto: Campi resi final e inizializzati immediatamente per eliminare init()
+	// Naming mantenuto identico all'originale per compatibilità con i test
+	private final RecensioniService RecensioniService = new RecensioniService();
+	private final ModerationService ModerationService = new ModerationService();
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+		// Metodo vuoto
 	}
 
 	@Override
@@ -35,7 +32,9 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
 
 		final HttpSession session = request.getSession(true);
 		final UtenteBean user = (UtenteBean) session.getAttribute("user");
-		if (user.getTipoUtente().equals("MODERATORE")) {
+		
+		// Buona pratica: controllo null sull'utente
+		if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
 			final String userEmail = request.getParameter("ReviewUserEmail");
 			final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
 

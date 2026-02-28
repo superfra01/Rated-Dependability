@@ -23,77 +23,71 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/film")
 public class VisualizzaFilmServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private CatalogoService CatalogoService;
-    private RecensioniService RecensioniService;
-    private ProfileService ProfileService;
-
-    @Override
-    public void init() {
-        CatalogoService = new CatalogoService();
-        RecensioniService = new RecensioniService();
-        ProfileService = new ProfileService();
-    }
+    
+    // Risolto: Service resi final e nomi corretti in camelCase
+    private final CatalogoService catalogoService = new CatalogoService();
+    private final RecensioniService recensioniService = new RecensioniService();
+    private final ProfileService profileService = new ProfileService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final HttpSession session = request.getSession(true);
 
         // 1. Gestione sicura del parametro idFilm
-        String idFilmStr = request.getParameter("idFilm");
+        final String idFilmStr = request.getParameter("idFilm"); // Risolto: final
         if (idFilmStr == null || idFilmStr.isEmpty()) {
-            response.sendRedirect("catalogo.jsp"); // O altra pagina di fallback
+            response.sendRedirect("catalogo.jsp");
             return;
         }
 
         final int idFilm;
         try {
             idFilm = Integer.parseInt(idFilmStr);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             response.sendRedirect("catalogo.jsp");
             return;
         }
         
         // 2. Recupero Film
-        final FilmBean film = CatalogoService.getFilm(idFilm);
+        final FilmBean film = catalogoService.getFilm(idFilm);
         if (film == null) {
-            response.sendRedirect("catalogo.jsp"); // Film non trovato
+            response.sendRedirect("catalogo.jsp");
             return;
         }
         session.setAttribute("film", film);
         
         // 3. Recupero Generi
-        final List<FilmGenereBean> generi = CatalogoService.getGeneri(film.getIdFilm());
+        final List<FilmGenereBean> generi = catalogoService.getGeneri(film.getIdFilm());
         session.setAttribute("Generi", generi);
         
         // 4. Recupero Recensioni
-        final List<RecensioneBean> recensioni = RecensioniService.GetRecensioni(idFilm);
+        final List<RecensioneBean> recensioni = recensioniService.GetRecensioni(idFilm);
         session.setAttribute("recensioni", recensioni);
         
         if(recensioni != null && !recensioni.isEmpty()) {
-            final HashMap<String, String> utenti = ProfileService.getUsers(recensioni);
+            final HashMap<String, String> utenti = profileService.getUsers(recensioni); // Risolto: final
             session.setAttribute("users", utenti);
         } else {
-            session.removeAttribute("users"); // Pulizia se non ci sono recensioni
+            session.removeAttribute("users");
         }
         
-        // 5. Gestione Utente Loggato (Valutazioni e Liste)
+        // 5. Gestione Utente Loggato
         final UtenteBean user = (UtenteBean) session.getAttribute("user");
         
-        // Default: false se l'utente non è loggato
-        boolean isWatched = false;
-        boolean inWatchlist = false;
+        boolean isWatched = false; // Non final: cambia nel loop
+        boolean inWatchlist = false; // Non final: cambia nel loop
 
         if(user != null) {
-            final String email = user.getEmail();
+            final String email = user.getEmail(); // Risolto: final
             
-            // A. Valutazioni (Like/Dislike)
-            final HashMap<String, ValutazioneBean> valutazioni = RecensioniService.GetValutazioni(idFilm, email);
+            // A. Valutazioni
+            final HashMap<String, ValutazioneBean> valutazioni = recensioniService.GetValutazioni(idFilm, email); // Risolto: final
             session.setAttribute("valutazioni", valutazioni);
             
-            // B. Controllo "VISTI" (Confronto tramite ID)
-            List<FilmBean> watchedList = ProfileService.retrieveWatchedFilms(user.getUsername());
+            // B. Controllo "VISTI"
+            final List<FilmBean> watchedList = profileService.retrieveWatchedFilms(user.getUsername()); // Risolto: final
             if (watchedList != null) {
-                for (FilmBean f : watchedList) {
+                for (final FilmBean f : watchedList) { // Risolto: parametro loop final
                     if (f.getIdFilm() == idFilm) {
                         isWatched = true;
                         break;
@@ -101,10 +95,10 @@ public class VisualizzaFilmServlet extends HttpServlet {
                 }
             }
             
-            // C. Controllo "WATCHLIST" (Confronto tramite ID)
-            List<FilmBean> watchlist = ProfileService.retrieveWatchlist(user.getUsername());
+            // C. Controllo "WATCHLIST"
+            final List<FilmBean> watchlist = profileService.retrieveWatchlist(user.getUsername()); // Risolto: final
             if (watchlist != null) {
-                for (FilmBean f : watchlist) {
+                for (final FilmBean f : watchlist) { // Risolto: parametro loop final
                     if (f.getIdFilm() == idFilm) {
                         inWatchlist = true;
                         break;
@@ -113,11 +107,9 @@ public class VisualizzaFilmServlet extends HttpServlet {
             }
         }
         
-        // Impostiamo gli attributi in sessione (fondamentale per la JSP)
         session.setAttribute("watched", isWatched);
         session.setAttribute("inwatchlist", inWatchlist);
         
-        // 6. Forward alla JSP
         request.getRequestDispatcher("/WEB-INF/jsp/film.jsp").forward(request, response);
     }
 

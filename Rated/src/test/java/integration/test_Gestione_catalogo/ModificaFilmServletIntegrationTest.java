@@ -66,7 +66,7 @@ public class ModificaFilmServletIntegrationTest {
         servlet.init();
         
         // 3. Iniezione della dipendenza tramite Reflection
-        Field serviceField = ModificaFilmServlet.class.getDeclaredField("CatalogoService");
+        Field serviceField = ModificaFilmServlet.class.getDeclaredField("catalogoService");
         serviceField.setAccessible(true);
         serviceField.set(servlet, catalogoService);
 

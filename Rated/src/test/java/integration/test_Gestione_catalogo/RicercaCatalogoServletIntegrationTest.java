@@ -58,7 +58,7 @@ public class RicercaCatalogoServletIntegrationTest {
         // 3. Iniezione del Service tramite Reflection
         // N.B. Il nome del campo qui deve essere esattamente "CatalogoService" (con la C maiuscola) 
         // perché così è definito all'interno della tua RicercaCatalogoServlet.
-        Field serviceField = RicercaCatalogoServlet.class.getDeclaredField("CatalogoService");
+        Field serviceField = RicercaCatalogoServlet.class.getDeclaredField("catalogoService");
         serviceField.setAccessible(true);
         serviceField.set(servlet, catalogoService);
 

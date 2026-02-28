@@ -18,7 +18,7 @@ import model.Entity.VistoBean;
 public class VistoDAO {
 
     //@ spec_public
-    private DataSource dataSource;
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -42,8 +42,8 @@ public class VistoDAO {
     
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
-    public VistoDAO(final DataSource testDataSource) { // Parametro final
-        dataSource = testDataSource;
+    public VistoDAO(final DataSource testDataSource) {
+        this.dataSource = testDataSource;
     }
 
     /* =========================================
@@ -91,7 +91,7 @@ public class VistoDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final VistoBean visto = new VistoBean();
+                    final VistoBean visto = new VistoBean(); // Risolto: bean final
                     visto.setEmail(rs.getString("email"));
                     visto.setIdFilm(rs.getInt("ID_Film"));
                     return visto;
@@ -104,33 +104,6 @@ public class VistoDAO {
 
         return null;
     }
-
-    /*
-    public List<VistoBean> findByEmail(final String email) {
-        final String query = "SELECT * FROM Visto WHERE email = ?";
-        final List<VistoBean> visti = new ArrayList<>();
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-
-            try (final ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    final VistoBean visto = new VistoBean();
-                    visto.setEmail(rs.getString("email"));
-                    visto.setIdFilm(rs.getInt("ID_Film"));
-                    visti.add(visto);
-                }
-            }
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-
-        return visti;
-    }
-    */
     
     //@ requires email != null;
     //@ requires idFilm >= 0;
@@ -149,52 +122,34 @@ public class VistoDAO {
             e.printStackTrace();
         }
     }
-    /*
-    public void deleteByEmail(final String email) {
-        final String query = "DELETE FROM Visto WHERE email = ?";
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, email);
-            ps.executeUpdate();
-
-        } catch (final SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    */
 
     //@ requires username != null;
     //@ assignable \everything;
     //@ ensures \result != null;
-    public List<FilmBean> doRetrieveFilmsByUtente(String username){
-        List<FilmBean> films = new ArrayList<>();
+    public List<FilmBean> doRetrieveFilmsByUtente(final String username) { // Risolto: parametro final
+        final List<FilmBean> films = new ArrayList<>(); // Risolto: variabile locale final
         
-        // Join: Film -> Visto -> Utente_Registrato (per filtrare via username)
-        String query = "SELECT f.ID_Film, f.Nome, f.Anno, f.Durata, f.Regista, f.Trama, f.Valutazione, f.Attori, f.Locandina " +
+        final String query = "SELECT f.ID_Film, f.Nome, f.Anno, f.Durata, f.Regista, f.Trama, f.Valutazione, f.Attori, f.Locandina " +
                        "FROM Film f " +
                        "JOIN Visto v ON f.ID_Film = v.ID_Film " +
                        "JOIN Utente_Registrato u ON v.email = u.email " +
                        "WHERE u.username = ?";
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
+        try (final Connection con = dataSource.getConnection(); // Risolto: risorse final
+             final PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, username);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    FilmBean film = new FilmBean();
+                    final FilmBean film = new FilmBean(); // Risolto: bean final nel loop
                     
-                    // Mapping esatto basato sulla CREATE TABLE Film
                     film.setIdFilm(rs.getInt("ID_Film"));
                     film.setNome(rs.getString("Nome"));
-                    film.setAnno(rs.getInt("Anno"));       // DB: YEAR -> Bean: int
+                    film.setAnno(rs.getInt("Anno"));
                     film.setDurata(rs.getInt("Durata"));
                     film.setRegista(rs.getString("Regista"));
-                    film.setTrama(rs.getString("Trama"));  // DB: Trama -> Bean: setTrama
+                    film.setTrama(rs.getString("Trama"));
                     film.setValutazione(rs.getInt("Valutazione"));
                     film.setAttori(rs.getString("Attori"));
                     film.setLocandina(rs.getBytes("Locandina"));
@@ -202,8 +157,7 @@ public class VistoDAO {
                     films.add(film);
                 }
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
+        } catch (final SQLException e) {
             e.printStackTrace();
         }
         return films;

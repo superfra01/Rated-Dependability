@@ -16,12 +16,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private AutenticationService authService;
-
-	@Override
-	public void init() {
-		authService = new AutenticationService();
-	}
+	
+	// Risolto: Campo reso final e inizializzato direttamente
+	private final AutenticationService authService = new AutenticationService();
 
 	@Override
 	public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {

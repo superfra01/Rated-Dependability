@@ -16,34 +16,29 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/catalogo")
 public class VisualizzaCatalogoServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private CatalogoService CatalogoService;
+    private static final long serialVersionUID = 1L;
+    
+    // Risolto: field reso final e inizializzato subito
+    private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
-    public void init() {
-        CatalogoService = new CatalogoService();
-    }
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        final HttpSession session = request.getSession(true);
 
-    @Override
-    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException { // Parametri final
-    	final HttpSession session = request.getSession(true); // Locale final
-
-    	final List<FilmBean> films = CatalogoService.getFilms(); // Locale final
-    	session.setAttribute("films", films);
-    	for(FilmBean film: films) {
-    		final List<FilmGenereBean> generi = CatalogoService.getGeneri(film.getIdFilm()); // Locale final
-    		session.setAttribute(film.getIdFilm()+"Generi", generi);
-    	}
-    		
-    	
-    	
-    	
-    	
+        final List<FilmBean> films = catalogoService.getFilms();
+        session.setAttribute("films", films);
+        
+        // Risolto: anche la variabile del ciclo for può essere final
+        for (final FilmBean film : films) {
+            final List<FilmGenereBean> generi = catalogoService.getGeneri(film.getIdFilm());
+            session.setAttribute(film.getIdFilm() + "Generi", generi);
+        }
+            
         request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
     }
 
     @Override
-    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException { // Parametri final
-    	
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        // Metodo vuoto
     }
 }

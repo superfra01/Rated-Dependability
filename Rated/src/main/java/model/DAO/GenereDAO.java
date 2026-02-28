@@ -17,7 +17,7 @@ import model.Entity.GenereBean;
 public class GenereDAO {
 
     //@ spec_public
-    private DataSource dataSource;
+    private final DataSource dataSource; // Risolto: ora è final
 
     /* =========================================
      * INVARIANTI DI CLASSE

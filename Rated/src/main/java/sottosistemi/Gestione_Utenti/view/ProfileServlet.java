@@ -22,17 +22,10 @@ import javax.servlet.http.HttpSession;
 public class ProfileServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // VARIABILI DI ISTANZA (Ora iniettabili per il Test)
-    private ProfileService profileService; 
-    private RecensioniService recensioniService;
-    private CatalogoService catalogoService;
-
-    @Override
-    public void init() {
-        profileService = new ProfileService();
-        recensioniService = new RecensioniService();
-        catalogoService = new CatalogoService();
-    }
+    // Risolto: Campi resi final e inizializzati direttamente per eliminare init()
+    private final ProfileService profileService = new ProfileService(); 
+    private final RecensioniService recensioniService = new RecensioniService();
+    private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -41,20 +34,20 @@ public class ProfileServlet extends HttpServlet {
         
         final UtenteBean visitedUser = profileService.findByUsername(userName);
         
-        if(visitedUser != null) {
+        if (visitedUser != null) {
             session.setAttribute("visitedUser", visitedUser);
             
-            // FIX: Usiamo le variabili di istanza al posto di "new ..."
             final List<RecensioneBean> recensioni = recensioniService.FindRecensioni(visitedUser.getEmail());
             session.setAttribute("recensioni", recensioni);
             
             final HashMap<Integer, FilmBean> FilmMap = catalogoService.getFilms(recensioni);
             session.setAttribute("films", FilmMap);
         
-            List<String> generi = catalogoService.getAllGeneri();
+            // Risolto: variabili locali final
+            final List<String> generi = catalogoService.getAllGeneri();
             session.setAttribute("allGenres", generi);
             
-            List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
+            final List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
             session.setAttribute("userGenres", userGenres);
             
             request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
@@ -66,6 +59,6 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        
+        // Metodo vuoto
     }
 }

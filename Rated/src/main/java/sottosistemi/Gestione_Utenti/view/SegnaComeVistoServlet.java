@@ -17,27 +17,21 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 public class SegnaComeVistoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // VARIABILI DI ISTANZA
-    private ProfileService profileService;
-    private RecensioniService recensioniService;
+    // Risolto: Campi resi final e inizializzati direttamente
+    private final ProfileService profileService = new ProfileService();
+    private final RecensioniService recensioniService = new RecensioniService();
 
     public SegnaComeVistoServlet() {
         super();
     }
 
     @Override
-    public void init() {
-        // Inizializzazione spostata qui
-        profileService = new ProfileService();
-        recensioniService = new RecensioniService();
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
-        HttpSession session = request.getSession();
-        UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+        final HttpSession session = request.getSession();
+        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
 
         if (utenteSessione == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -45,28 +39,27 @@ public class SegnaComeVistoServlet extends HttpServlet {
             return;
         }
 
-        String filmIdStr = request.getParameter("filmId");
-        int filmId = -1;
+        final String filmIdStr = request.getParameter("filmId");
+        int filmId = -1; // Non final perché riassegnato nel try
         try {
             if (filmIdStr != null && !filmIdStr.isEmpty()) {
                 filmId = Integer.parseInt(filmIdStr);
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("ID Film non valido.");
             return;
         }
 
         if (filmId != -1) {
-            // FIX: Usiamo le variabili di istanza, non creiamo nuovi oggetti locali
-            boolean giaVisto = profileService.isFilmVisto(utenteSessione.getEmail(), filmId);
+            final boolean giaVisto = profileService.isFilmVisto(utenteSessione.getEmail(), filmId);
             
             if (giaVisto) {
                 // Controllo se esiste recensione prima di rimuovere
-                RecensioneBean recensione = recensioniService.getRecensione(filmId, utenteSessione.getEmail());
+                final RecensioneBean recensione = recensioniService.getRecensione(filmId, utenteSessione.getEmail());
                 
                 if (recensione != null) {
-                    // ERRORE: Non si può rimuovere dai visti se c'è una recensione
+                    // ERRORE: Vincolo di integrità logica
                     response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
                     response.getWriter().write("Non puoi rimuovere il film dai 'Visti' perché hai scritto una recensione. Elimina prima la recensione.");
                     return;
@@ -77,7 +70,6 @@ public class SegnaComeVistoServlet extends HttpServlet {
                 profileService.aggiungiFilmVisto(utenteSessione.getEmail(), filmId);
             }
             
-            // Successo
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -85,7 +77,8 @@ public class SegnaComeVistoServlet extends HttpServlet {
         }
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("catalogo.jsp");
     }
 }
