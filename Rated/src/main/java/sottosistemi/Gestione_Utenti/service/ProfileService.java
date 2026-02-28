@@ -144,7 +144,8 @@ public class ProfileService {
     public HashMap<String, String> getUsers(final List<RecensioneBean> recensioni) { 
         final HashMap<String, String> users = new HashMap<String, String>(); 
         
-        for(int i = 0; i < recensioni.size(); i++) { 
+        final int size = recensioni.size();
+        for(int i = 0; i < size; ++i) { 
             final RecensioneBean recensione = recensioni.get(i); // Risolto: final
             if (recensione != null) {
                 final String em = recensione.getEmail(); 
@@ -169,7 +170,8 @@ public class ProfileService {
         final List<String> preferenzeString = new ArrayList<String>(); // Risolto: final
         
         if (preferenze != null) {
-            for(int i = 0; i < preferenze.size(); i++) { 
+        	final int size = preferenze.size();
+            for(int i = 0; i < size; ++i) { 
                 final PreferenzaBean b = preferenze.get(i); // Risolto: final
                 if (b != null) {
                     preferenzeString.add(b.getNomeGenere());
@@ -217,7 +219,7 @@ public class ProfileService {
         PreferenzaDAO.deleteByEmail(email);
             
         if (idGeneri != null && idGeneri.length > 0) {
-            for (int i = 0; i < idGeneri.length; i++) {
+            for (int i = 0; i < idGeneri.length; ++i) {
                 final String idGenereStr = idGeneri[i]; // Risolto: final
                 if (idGenereStr != null) {
                     final PreferenzaBean preferenza = new PreferenzaBean(); // Risolto: final

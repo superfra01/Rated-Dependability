@@ -14,7 +14,7 @@ import model.Entity.ValutazioneBean;
 public class ValutazioneDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource; 
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -47,7 +47,7 @@ public class ValutazioneDAO {
       @ skipesc
       @*/
     protected ValutazioneDAO(final boolean testMode) {
-        this.dataSource = null; // Risolto: obbligatorio per i campi final
+        this.dataSource = null; 
     }
 
     /* =========================================
@@ -57,7 +57,8 @@ public class ValutazioneDAO {
     //@ requires valutazione != null;
     //@ assignable \everything;
     public void save(final ValutazioneBean valutazione) {
-        final String selectQuery = "SELECT * FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con la colonna specifica necessaria al controllo logico
+        final String selectQuery = "SELECT Like_Dislike FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         final String insertQuery = "INSERT INTO Valutazione (Like_Dislike, email, email_Recensore, ID_Film) VALUES (?, ?, ?, ?)";
         final String updateQuery = "UPDATE Valutazione SET Like_Dislike = ? WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         final String deleteQuery = "DELETE FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
@@ -107,7 +108,8 @@ public class ValutazioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getEmailRecensore().equals(emailRecensore) && \result.getIdFilm() == idFilm);
     public ValutazioneBean findById(final String email, final String emailRecensore, final int idFilm) {
-        final String query = "SELECT * FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT Like_Dislike, email, email_Recensore, ID_Film FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
@@ -115,7 +117,7 @@ public class ValutazioneDAO {
             ps.setInt(3, idFilm);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final ValutazioneBean valutazione = new ValutazioneBean(); // Risolto: final
+                    final ValutazioneBean valutazione = new ValutazioneBean(); 
                     valutazione.setLikeDislike(rs.getBoolean("Like_Dislike"));
                     valutazione.setEmail(rs.getString("email"));
                     valutazione.setEmailRecensore(rs.getString("email_Recensore"));
@@ -134,15 +136,16 @@ public class ValutazioneDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public HashMap<String, ValutazioneBean> findByIdFilmAndEmail(final int idFilm, final String email) {
-        final String query = "SELECT * FROM Valutazione WHERE ID_Film = ? AND email = ?";
-        final HashMap<String, ValutazioneBean> valutazioni = new HashMap<>(); // Risolto: final
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT Like_Dislike, email, email_Recensore, ID_Film FROM Valutazione WHERE ID_Film = ? AND email = ?";
+        final HashMap<String, ValutazioneBean> valutazioni = new HashMap<>(); 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idFilm);
             ps.setString(2, email);
             try (final ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    final ValutazioneBean valutazione = new ValutazioneBean(); // Risolto: bean final
+                    final ValutazioneBean valutazione = new ValutazioneBean(); 
                     valutazione.setLikeDislike(rs.getBoolean("Like_Dislike"));
                     valutazione.setEmail(rs.getString("email"));
                     valutazione.setEmailRecensore(rs.getString("email_Recensore"));

@@ -17,7 +17,7 @@ import model.Entity.GenereBean;
 public class GenereDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource;
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -52,6 +52,7 @@ public class GenereDAO {
     //@ requires genere != null;
     //@ assignable \everything;
     public void save(final GenereBean genere) {
+        // SELECT 1 è già ottimale, non recupera colonne inutili
         final String selectQuery = "SELECT 1 FROM Genere WHERE Nome = ?";
         final String insertQuery = "INSERT INTO Genere (Nome) VALUES (?)";
 
@@ -76,7 +77,8 @@ public class GenereDAO {
     //@ assignable \everything;
     //@ ensures \result != null;
     public List<String> findAllString() {
-        final String query = "SELECT * FROM Genere ORDER BY Nome";
+        // RISOLTO: Sostituito SELECT * con SELECT Nome
+        final String query = "SELECT Nome FROM Genere ORDER BY Nome";
         final List<String> generi = new ArrayList<String>();
 
         try (final Connection connection = dataSource.getConnection();

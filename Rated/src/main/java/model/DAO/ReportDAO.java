@@ -13,7 +13,7 @@ import model.Entity.ReportBean;
 public class ReportDAO {
 
     //@ spec_public
-    private final DataSource dataSource; // Risolto: ora è final
+    private final DataSource dataSource; 
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -41,13 +41,12 @@ public class ReportDAO {
         this.dataSource = testDataSource;
     }
 
-    // Costruttore per i test, non inizializza la connessione
     /*@ 
       @ requires testMode == true;
       @ skipesc
       @*/
     protected ReportDAO(final boolean testMode) {
-        this.dataSource = null; // Risolto: inizializzazione obbligatoria per campi final
+        this.dataSource = null; 
     }
 
     /* =========================================
@@ -75,7 +74,8 @@ public class ReportDAO {
     //@ assignable \everything;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getEmailRecensore().equals(emailRecensore) && \result.getIdFilm() == idFilm);
     public ReportBean findById(final String email, final String emailRecensore, final int idFilm) {
-        final String query = "SELECT * FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT email, email_Recensore, ID_Film FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
@@ -83,7 +83,7 @@ public class ReportDAO {
             ps.setInt(3, idFilm);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final ReportBean report = new ReportBean(); // Aggiunto final
+                    final ReportBean report = new ReportBean(); 
                     report.setEmail(rs.getString("email"));
                     report.setEmailRecensore(rs.getString("email_Recensore"));
                     report.setIdFilm(rs.getInt("ID_Film"));

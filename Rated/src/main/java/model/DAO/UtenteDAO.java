@@ -15,7 +15,7 @@ import model.Entity.UtenteBean;
 public class UtenteDAO {
 
     //@ spec_public
-    private DataSource dataSource; // Giusto: non è final causa setter
+    private DataSource dataSource; 
 
     /* =========================================
      * INVARIANTI DI CLASSE
@@ -37,7 +37,6 @@ public class UtenteDAO {
         }
     }
     
-    // Costruttore per test
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
     public UtenteDAO(final DataSource dataSource) {
@@ -48,11 +47,10 @@ public class UtenteDAO {
       @ requires testMode == true;
       @ skipesc
       @*/
-    protected UtenteDAO(final boolean testMode) { // Aggiunto final se rimosso per errore
+    protected UtenteDAO(final boolean testMode) {
         // Vuoto
     }
 
-    // Metodo setter
     //@ requires dataSource != null;
     //@ assigns this.dataSource;
     //@ ensures this.dataSource == dataSource;
@@ -66,7 +64,7 @@ public class UtenteDAO {
 
     //@ requires utente != null;
     //@ assignable \everything;
-    public void save(final UtenteBean utente) { // Parametro final
+    public void save(final UtenteBean utente) {
         final String query = "INSERT INTO Utente_Registrato (email, icona, username, password, Tipo_Utente, N_Warning, Biografia) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -86,14 +84,15 @@ public class UtenteDAO {
     //@ requires email != null;
     //@ assignable \everything;
     //@ ensures \result != null ==> \result.getEmail().equals(email);
-    public UtenteBean findByEmail(final String email) { // Parametro final
-        final String query = "SELECT * FROM Utente_Registrato WHERE email = ?";
+    public UtenteBean findByEmail(final String email) {
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean utente = new UtenteBean(); // Variabile locale final
+                    final UtenteBean utente = new UtenteBean();
                     utente.setEmail(rs.getString("email"));
                     utente.setIcona(rs.getBytes("icona"));
                     utente.setUsername(rs.getString("username"));
@@ -113,14 +112,15 @@ public class UtenteDAO {
     //@ requires username != null;
     //@ assignable \everything;
     //@ ensures \result != null ==> \result.getUsername().equals(username);
-    public UtenteBean findByUsername(final String username) { // Parametro final
-        final String query = "SELECT * FROM Utente_Registrato WHERE username = ?";
+    public UtenteBean findByUsername(final String username) {
+        // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
+        final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE username = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean user = new UtenteBean(); // Variabile locale final
+                    final UtenteBean user = new UtenteBean();
                     user.setUsername(rs.getString("username"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -139,7 +139,7 @@ public class UtenteDAO {
 
     //@ requires utente != null;
     //@ assignable \everything;
-    public void update(final UtenteBean utente) { // Parametro final
+    public void update(final UtenteBean utente) {
         final String query = "UPDATE Utente_Registrato SET icona = ?, username = ?, password = ?, Tipo_Utente = ?, N_Warning = ?, Biografia = ? WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
