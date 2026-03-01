@@ -1,6 +1,8 @@
 package sottosistemi.Gestione_Utenti.view;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,8 @@ public class AggiungiWatchlistServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final ProfileService profileService = new ProfileService();
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(AggiungiWatchlistServlet.class.getName());
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -31,7 +35,12 @@ public class AggiungiWatchlistServlet extends HttpServlet {
             // 2. Controllo Autenticazione (Messaggio esatto per il test Unauthorized)
             if (utenteSessione == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Devi effettuare il login per gestire la watchlist.");
+                try {
+                    // Prevenzione dello smell su getWriter()
+                    response.getWriter().write("Devi effettuare il login per gestire la watchlist.");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return;
             }
 
@@ -46,7 +55,12 @@ public class AggiungiWatchlistServlet extends HttpServlet {
             } catch (final NumberFormatException e) {
                 // FIX: Status 400 E scrittura messaggio esatto per il test BadRequest
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("ID Film non valido.");
+                try {
+                    // Prevenzione dello smell su getWriter()
+                    response.getWriter().write("ID Film non valido.");
+                } catch (IOException ioEx) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di validazione", ioEx);
+                }
                 return;
             }
 
@@ -65,7 +79,12 @@ public class AggiungiWatchlistServlet extends HttpServlet {
 
             // 5. Scrittura risposta di successo (Status 200 OK)
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(message);
+            try {
+                // Prevenzione dello smell su getWriter()
+                response.getWriter().write(message);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura della risposta di successo", e);
+            }
 
         } catch (Exception e) {
             // Gestione dependability dello smell IOException su sendError
@@ -73,7 +92,8 @@ public class AggiungiWatchlistServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante l'aggiornamento della watchlist.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Sostituzione del catch silenzioso
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }
@@ -81,6 +101,11 @@ public class AggiungiWatchlistServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/catalogo");
+        try {
+            // Isolamento dell'eccezione lanciata dal sendRedirect
+            response.sendRedirect(request.getContextPath() + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package sottosistemi.Gestione_Recensioni.view;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,11 +20,19 @@ public class VoteReviewServlet extends HttpServlet {
 
     // Naming mantenuto identico all'originale per compatibilità con i test (Reflection injection)
     private final RecensioniService RecensioniService = new RecensioniService();
+    
+    // Inizializzazione del Logger per tracciare le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(VoteReviewServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
+        }
     }
 
     @Override
@@ -39,7 +49,12 @@ public class VoteReviewServlet extends HttpServlet {
             // 1. Controllo Autenticazione
             if (user == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Devi essere autenticato per votare una recensione.");
+                try {
+                    // Prevenzione proattiva smell su getWriter()
+                    response.getWriter().write("Devi essere autenticato per votare una recensione.");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return; // Impedisce il crash o la prosecuzione senza utente
             }
 
@@ -68,7 +83,8 @@ public class VoteReviewServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Sostituito il commento "Silenzioso" con un log reale
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

@@ -3,13 +3,14 @@ package sottosistemi.Gestione_Utenti.view;
 import sottosistemi.Gestione_Utenti.service.AutenticationService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
@@ -18,23 +19,34 @@ public class LogoutServlet extends HttpServlet {
 
     // Campo final e inizializzato direttamente per garantire l'immutabilità
     private final AutenticationService authService = new AutenticationService();
+    // Aggiunta del Logger per tracciare le eccezioni silenziose
+    private static final Logger LOGGER = Logger.getLogger(LogoutServlet.class.getName());
 
     @Override
-	public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			authService.logout(req.getSession());
-			resp.sendRedirect(req.getContextPath() + "/");
-		} catch (Exception e) {
-			if (!resp.isCommitted()) resp.sendError(500, "Si è verificato un errore durante la procedura di logout.");
-		}
-	}
+    public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            authService.logout(req.getSession());
+            // UTILIZZO DELL'HELPER: Sostituito resp.sendRedirect
+            handleSafeRedirect(req, resp, "/");
+        } catch (Exception e) {
+            // UTILIZZO DELL'HELPER: Sostituito resp.sendError
+            LOGGER.log(Level.SEVERE, "Errore globale durante la procedura di logout", e);
+            handleCriticalError(resp, "Si è verificato un errore durante la procedura di logout.");
+        }
+    }
 
     /**
      * Il metodo POST delega al GET per supportare logout da form o bottoni.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        // Messa in sicurezza della delega a doGet
+        try {
+            doGet(req, resp);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            handleCriticalError(resp, "Errore interno durante il logout.");
+        }
     }
 
     /**
@@ -46,8 +58,8 @@ public class LogoutServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + path);
             }
         } catch (IOException e) {
-            // Il client ha chiuso la connessione prematuramente o buffer compromesso
-            // In un logout, il lavoro del server (invalidare sessione) è comunque fatto.
+            // Aggiunto il log. In un logout, il lavoro del server (invalidare sessione) è comunque fatto.
+            LOGGER.log(Level.WARNING, "Errore di I/O durante il redirect dopo il logout", e);
         }
     }
 
@@ -60,7 +72,8 @@ public class LogoutServlet extends HttpServlet {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
             } catch (IOException ioEx) {
-                // Stream compromesso, il thread termina in modo pulito senza lanciare altre eccezioni.
+                // Sostituzione del catch silenzioso
+                LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
             }
         }
     }

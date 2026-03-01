@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +29,9 @@ public class ProfileServlet extends HttpServlet {
     private final ProfileService profileService = new ProfileService(); 
     private final RecensioniService recensioniService = new RecensioniService();
     private final CatalogoService catalogoService = new CatalogoService();
+    
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(ProfileServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -56,6 +61,7 @@ public class ProfileServlet extends HttpServlet {
                     final HashMap<Integer, FilmBean> filmMap = catalogoService.getFilms(recensioni);
                     session.setAttribute("films", (filmMap != null) ? filmMap : new HashMap<Integer, FilmBean>());
                 } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Recupero dati correlati (recensioni/film) fallito", e);
                     // Se fallisce il recupero recensioni, inizializziamo a vuoto per non rompere la JSP
                     session.setAttribute("recensioni", new ArrayList<>());
                     session.setAttribute("films", new HashMap<Integer, FilmBean>());
@@ -68,6 +74,7 @@ public class ProfileServlet extends HttpServlet {
                     final List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
                     session.setAttribute("userGenres", (userGenres != null) ? userGenres : new ArrayList<>());
                 } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Recupero generi fallito", e);
                     session.setAttribute("allGenres", new ArrayList<>());
                     session.setAttribute("userGenres", new ArrayList<>());
                 }
@@ -76,15 +83,17 @@ public class ProfileServlet extends HttpServlet {
                 try {
                     request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
                 } catch (ServletException | IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore durante il forward a profile.jsp", e);
                     handleCriticalError(response, "Errore interno durante il caricamento della vista profilo.");
                 }
 
             } else {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("You can't access the profile page if visitedUser is not set");
+                // UTILIZZO DELL'HELPER (Risolto lo smell su getWriter())
+                handleSafeError(response, HttpServletResponse.SC_BAD_REQUEST, "You can't access the profile page if visitedUser is not set");
             }
 
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Errore critico imprevisto nel doGet", e);
             // Catch-all per prevenire crash del thread e risolvere lo smell sendError
             handleCriticalError(response, "Si è verificato un errore critico imprevisto nel sistema.");
         }
@@ -99,7 +108,8 @@ public class ProfileServlet extends HttpServlet {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
             } catch (IOException ioEx) {
-                // Stream compromesso (es. client disconnesso), non possiamo fare altro
+                // Risolto lo smell del catch silenzioso
+                LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
             }
         }
     }
@@ -111,16 +121,24 @@ public class ProfileServlet extends HttpServlet {
         try {
             if (!response.isCommitted()) {
                 response.setStatus(statusCode);
+                // Impostiamo il content type per gestire correttamente le risposte text/plain (anche ajax)
                 response.setContentType("text/plain;charset=UTF-8");
                 response.getWriter().write(message);
             }
         } catch (IOException e) {
-            // Connessione interrotta dal client
+            // Risolto lo smell del catch silenzioso
+            LOGGER.log(Level.SEVERE, "Impossibile scrivere l'errore di validazione, stream disconnesso", e);
         }
     }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        // Messa in sicurezza della delega a doGet (Risolve lo smell su ServletException e IOException)
+        try {
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            handleCriticalError(response, "Errore interno durante il caricamento del profilo.");
+        }
     }
 }

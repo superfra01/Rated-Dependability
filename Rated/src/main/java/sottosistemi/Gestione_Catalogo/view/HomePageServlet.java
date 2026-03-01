@@ -2,6 +2,8 @@ package sottosistemi.Gestione_Catalogo.view;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,8 @@ public class HomePageServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final CatalogoService catalogoService = new CatalogoService();
+    // Aggiungiamo il Logger anche qui per consistenza e buona pratica
+    private static final Logger LOGGER = Logger.getLogger(HomePageServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +47,7 @@ public class HomePageServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore nel caricamento della HomePage.");
                 } catch (IOException ioEx) {
-                    // Stream già chiuso
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore, stream già chiuso in doGet", ioEx);
                 }
             }
         }
@@ -51,6 +55,19 @@ public class HomePageServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        try {
+            // Gestione dello smell: catturiamo le eccezioni lanciate dalla firma di doGet
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno durante l'elaborazione della richiesta.");
+                } catch (IOException ioEx) {
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore, stream già chiuso in doPost", ioEx);
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,10 +23,17 @@ public class ModificaFilmServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final CatalogoService catalogoService = new CatalogoService();
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(ModificaFilmServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/catalogo");
+        try {
+            // Gestione dello smell su sendRedirect
+            response.sendRedirect(request.getContextPath() + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
+        }
     }
 
     @Override
@@ -37,7 +46,12 @@ public class ModificaFilmServlet extends HttpServlet {
             // 1. Controllo Autorizzazione (Messaggio esatto per i test)
             if (user == null || !"GESTORE".equals(user.getTipoUtente())) {
                 response.setStatus(401);
-                response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                try {
+                    // Proteggiamo anche getWriter() per prevenire ulteriori code smells
+                    response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return; // Interrompe il flusso
             }
 
@@ -68,6 +82,7 @@ public class ModificaFilmServlet extends HttpServlet {
                 }
             } catch (Exception e) {
                 // Nei test d'integrazione proseguiamo anche se il part fallisce
+                LOGGER.log(Level.WARNING, "Impossibile processare la locandina del film", e);
             }
 
             // 4. Esecuzione Business Logic
@@ -76,7 +91,12 @@ public class ModificaFilmServlet extends HttpServlet {
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
                 String cp = request.getContextPath();
-                response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                try {
+                    // Gestione dello smell su sendRedirect
+                    response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
+                }
             }
 
         } catch (Exception e) {
@@ -85,7 +105,7 @@ public class ModificaFilmServlet extends HttpServlet {
                 try {
                     response.sendError(500, "Errore imprevisto nel sistema.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream chiuso", ioEx);
                 }
             }
         }

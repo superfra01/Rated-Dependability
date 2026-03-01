@@ -1,6 +1,9 @@
 package sottosistemi.Gestione_Utenti.view;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +22,8 @@ public class SegnaComeVistoServlet extends HttpServlet {
 
     private final ProfileService profileService = new ProfileService();
     private final RecensioniService recensioniService = new RecensioniService();
+    // Inizializzazione del Logger per sanare i catch vuoti e tracciare errori I/O
+    private static final Logger LOGGER = Logger.getLogger(SegnaComeVistoServlet.class.getName());
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -74,18 +79,24 @@ public class SegnaComeVistoServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Errore imprevisto durante l'elaborazione del doPost", e);
             handleCriticalError(response, "Si è verificato un errore critico imprevisto.");
         }
     }
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        // FIX: Costruzione del redirect per matchare esattamente "catalogo.jsp" se contextPath è null/vuoto
-        String cp = request.getContextPath();
-        if (cp == null || cp.isEmpty()) {
-            response.sendRedirect("catalogo.jsp");
-        } else {
-            response.sendRedirect(cp + "/catalogo.jsp");
+        try {
+            // FIX: Costruzione del redirect per matchare esattamente "catalogo.jsp" se contextPath è null/vuoto
+            String cp = request.getContextPath();
+            if (cp == null || cp.isEmpty()) {
+                response.sendRedirect("catalogo.jsp");
+            } else {
+                response.sendRedirect(cp + "/catalogo.jsp");
+            }
+        } catch (IOException e) {
+            // Risoluzione dello smell su sendRedirect
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
 
@@ -96,7 +107,8 @@ public class SegnaComeVistoServlet extends HttpServlet {
                 response.getWriter().write(message);
             }
         } catch (IOException e) {
-            // Silenzioso: la connessione è già chiusa
+            // Risolto lo smell del catch silenzioso
+            LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore personalizzata, stream disconnesso", e);
         }
     }
 
@@ -105,7 +117,8 @@ public class SegnaComeVistoServlet extends HttpServlet {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
             } catch (IOException ioEx) {
-                // Stream compromesso
+                // Risolto lo smell del catch silenzioso
+                LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
             }
         }
     }
