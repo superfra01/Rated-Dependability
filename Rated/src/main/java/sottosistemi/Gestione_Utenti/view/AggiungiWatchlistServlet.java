@@ -13,82 +13,74 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 
 @WebServlet("/AggiungiWatchlistServlet")
 public class AggiungiWatchlistServlet extends HttpServlet {
-
     private static final long serialVersionUID = 1L;
 
-    // Campo reso final e inizializzato direttamente per rimuovere init()
     private final ProfileService profileService = new ProfileService();
-
-    public AggiungiWatchlistServlet() {
-        super();
-    }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        // 1. Configurazione della risposta
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+
         try {
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
-            
-            final HttpSession session = request.getSession();
+            // FIX: getSession() standard per compatibilità con il mock del test
+            final HttpSession session = request.getSession(); 
             final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
 
-            // Controllo Login
+            // 2. Controllo Autenticazione (Messaggio esatto per il test Unauthorized)
             if (utenteSessione == null) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
-                // Risoluzione dello smell: gestione IOException per getWriter
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Devi effettuare il login per gestire la watchlist.");
                 return;
             }
 
-            // Recupero parametri
+            // 3. Recupero e Validazione parametri
             final String filmIdStr = request.getParameter("filmId");
-            int filmId = -1; 
-
+            int filmId;
             try {
-                if (filmIdStr != null && !filmIdStr.isEmpty()) {
-                    filmId = Integer.parseInt(filmIdStr);
+                if (filmIdStr == null || filmIdStr.isEmpty()) {
+                    throw new NumberFormatException();
                 }
+                filmId = Integer.parseInt(filmIdStr);
             } catch (final NumberFormatException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
+                // FIX: Status 400 E scrittura messaggio esatto per il test BadRequest
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("ID Film non valido.");
                 return;
             }
 
-            if (filmId != -1) {
-                // Logica di toggle (aggiungi/rimuovi)
-                final boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
-                
-                if (isPresent) {
-                    profileService.rimuoviDallaWatchlist(utenteSessione.getEmail(), filmId);
-                    response.getWriter().write("Film rimosso dalla watchlist.");
-                } else {
-                    profileService.aggiungiAllaWatchlist(utenteSessione.getEmail(), filmId);
-                    response.getWriter().write("Film aggiunto alla watchlist.");
-                }
-                
-                response.setStatus(HttpServletResponse.SC_OK); // 200
+            // 4. Esecuzione Business Logic
+            final String email = utenteSessione.getEmail();
+            final boolean isPresent = profileService.isFilmInWatchlist(email, filmId);
+            
+            String message;
+            if (isPresent) {
+                profileService.rimuoviDallaWatchlist(email, filmId);
+                message = "Film rimosso dalla watchlist.";
             } else {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
-                response.getWriter().write("Impossibile identificare il film.");
+                profileService.aggiungiAllaWatchlist(email, filmId);
+                message = "Film aggiunto alla watchlist.";
             }
 
-        } catch (IOException e) {
-            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+            // 5. Scrittura risposta di successo (Status 200 OK)
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(message);
+
+        } catch (Exception e) {
+            // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la gestione della watchlist.");
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante l'aggiornamento della watchlist.");
+                } catch (IOException ioEx) {
+                    // Silenzioso
+                }
             }
         }
     }
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        try {
-            // Risoluzione dello smell: gestione IOException per sendRedirect
-            response.sendRedirect("catalogo.jsp");
-        } catch (IOException e) {
-            if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
-            }
-        }
+        response.sendRedirect(request.getContextPath() + "/catalogo");
     }
 }

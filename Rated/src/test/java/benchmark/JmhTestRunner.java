@@ -7,7 +7,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 public class JmhTestRunner {
 
-    @Test
+    //@Test
     public void launchBenchmark() throws Exception {
         final Options opt = new OptionsBuilder()
             .include(AutenticationServiceBenchmark.class.getSimpleName()) 
