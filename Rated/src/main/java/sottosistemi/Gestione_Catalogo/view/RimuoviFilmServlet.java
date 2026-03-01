@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/deleteFilm")
 public class RimuoviFilmServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
     // Risolto: Campo reso final e inizializzato direttamente
@@ -33,11 +34,19 @@ public class RimuoviFilmServlet extends HttpServlet {
         // Buona pratica: controllo null sull'utente prima di accedere al tipo
         if (user != null && "GESTORE".equals(user.getTipoUtente())) {
             
-            final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
-            
-            catalogoService.removeFilm(idFilm);
-            response.sendRedirect(request.getContextPath() + "/catalogo");
-            
+            try {
+                // Risoluzione dello smell: gestione NumberFormatException per idFilm
+                final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
+                
+                catalogoService.removeFilm(idFilm);
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+
+            } catch (NumberFormatException e) {
+                // Gestione dell'errore se l'ID film non è un numero valido
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Errore: L'ID del film deve essere un valore numerico valido.");
+            }
+
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");

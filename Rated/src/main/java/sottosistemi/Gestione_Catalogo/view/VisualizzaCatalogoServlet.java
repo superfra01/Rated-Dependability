@@ -16,25 +16,35 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/catalogo")
 public class VisualizzaCatalogoServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: field reso final e inizializzato subito
+    // Field reso final e inizializzato subito
     private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HttpSession session = request.getSession(true);
+        try {
+            final HttpSession session = request.getSession(true);
 
-        final List<FilmBean> films = catalogoService.getFilms();
-        session.setAttribute("films", films);
-        
-        // Risolto: anche la variabile del ciclo for può essere final
-        for (final FilmBean film : films) {
-            final List<FilmGenereBean> generi = catalogoService.getGeneri(film.getIdFilm());
-            session.setAttribute(film.getIdFilm() + "Generi", generi);
-        }
+            final List<FilmBean> films = catalogoService.getFilms();
+            session.setAttribute("films", films);
             
-        request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
+            // Anche la variabile del ciclo for può essere final
+            for (final FilmBean film : films) {
+                final List<FilmGenereBean> generi = catalogoService.getGeneri(film.getIdFilm());
+                session.setAttribute(film.getIdFilm() + "Generi", generi);
+            }
+
+            // Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
+            request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
+            
+        } catch (ServletException | IOException e) {
+            // Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la visualizzazione del catalogo.");
+            }
+        }
     }
 
     @Override

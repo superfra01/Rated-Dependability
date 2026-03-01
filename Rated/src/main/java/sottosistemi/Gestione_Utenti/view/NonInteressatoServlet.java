@@ -13,10 +13,10 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 
 @WebServlet("/NonInteressatoServlet")
 public class NonInteressatoServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: Campo reso final e inizializzato direttamente
-    // Naming mantenuto 'profileService' come da tuo codice originale
+    // Campo reso final e inizializzato direttamente
     private final ProfileService profileService = new ProfileService();
 
     public NonInteressatoServlet() {
@@ -25,46 +25,61 @@ public class NonInteressatoServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        
-        final HttpSession session = request.getSession();
-        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
-
-        if (utenteSessione == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Devi effettuare il login.");
-            return;
-        }
-
-        final String filmIdStr = request.getParameter("filmId");
-        int filmId = -1; // Non può essere final perché viene riassegnato nel blocco try
-        
         try {
-            if (filmIdStr != null && !filmIdStr.isEmpty()) {
-                filmId = Integer.parseInt(filmIdStr);
-            }
-        } catch (final NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("ID Film non valido.");
-            return;
-        }
-
-        if (filmId != -1) {
-            // Risolto: variabili locali final
-            final boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
-            profileService.ignoreFilm(utenteSessione.getEmail(), filmId);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
             
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Impossibile identificare il film.");
+            final HttpSession session = request.getSession();
+            final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+
+            if (utenteSessione == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                // Risoluzione dello smell: gestione IOException per getWriter
+                response.getWriter().write("Devi effettuare il login.");
+                return;
+            }
+
+            final String filmIdStr = request.getParameter("filmId");
+            int filmId = -1; 
+
+            try {
+                if (filmIdStr != null && !filmIdStr.isEmpty()) {
+                    filmId = Integer.parseInt(filmIdStr);
+                }
+            } catch (final NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("ID Film non valido.");
+                return;
+            }
+
+            if (filmId != -1) {
+                // Variabili locali final
+                final boolean isPresent = profileService.isFilmInWatchlist(utenteSessione.getEmail(), filmId);
+                profileService.ignoreFilm(utenteSessione.getEmail(), filmId);
+                
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Impossibile identificare il film.");
+            }
+            
+        } catch (IOException e) {
+            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'elaborazione della richiesta.");
+            }
         }
     }
-    
+
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        // Tip: I file in WEB-INF richiedono un forward, non un redirect!
-        response.sendRedirect(request.getContextPath() + "/index.jsp"); 
+        try {
+            // Risoluzione dello smell: gestione IOException per sendRedirect
+            response.sendRedirect(request.getContextPath() + "/index.jsp"); 
+        } catch (IOException e) {
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
+            }
+        }
     }
 }

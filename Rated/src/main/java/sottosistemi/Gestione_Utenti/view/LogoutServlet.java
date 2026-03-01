@@ -20,8 +20,18 @@ public class LogoutServlet extends HttpServlet {
 
 	@Override
 	public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-		// La logica di logout invalida la sessione tramite il service
-		authService.logout(req.getSession());
-		resp.sendRedirect(req.getContextPath() + "/");
+		try {
+			// La logica di logout invalida la sessione tramite il service
+			authService.logout(req.getSession());
+
+			// Risoluzione dello smell: gestione dell'eccezione IOException lanciata dal sendRedirect
+			resp.sendRedirect(req.getContextPath() + "/");
+			
+		} catch (IOException e) {
+			// Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+			if (!resp.isCommitted()) {
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la procedura di logout.");
+			}
+		}
 	}
 }

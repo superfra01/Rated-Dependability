@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/moderator")
 public class ReportedReviewServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 
 	// Risolto: Campi resi final e inizializzati immediatamente
@@ -31,24 +32,33 @@ public class ReportedReviewServlet extends HttpServlet {
 
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		final HttpSession session = request.getSession(true);
-		final UtenteBean user = (UtenteBean) session.getAttribute("user");
+		try {
+			final HttpSession session = request.getSession(true);
+			final UtenteBean user = (UtenteBean) session.getAttribute("user");
 
-		if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
+			if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
 
-			final List<RecensioneBean> recensioni = RecensioniService.GetAllRecensioniSegnalate();
-			session.setAttribute("recensioni", recensioni);
+				final List<RecensioneBean> recensioni = RecensioniService.GetAllRecensioniSegnalate();
+				session.setAttribute("recensioni", recensioni);
 
-			final HashMap<String, String> utenti = ProfileService.getUsers(recensioni);
-			session.setAttribute("users", utenti);
+				final HashMap<String, String> utenti = ProfileService.getUsers(recensioni);
+				session.setAttribute("users", utenti);
 
-			final HashMap<Integer, FilmBean> FilmMap = CatalogoService.getFilms(recensioni);
-			session.setAttribute("films", FilmMap);
+				final HashMap<Integer, FilmBean> FilmMap = CatalogoService.getFilms(recensioni);
+				session.setAttribute("films", FilmMap);
 
-			request.getRequestDispatcher("/WEB-INF/jsp/moderator.jsp").forward(request, response);
-		} else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().write("You can't access the profile page unless you are an authenticated moderator.");
+				// Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
+				request.getRequestDispatcher("/WEB-INF/jsp/moderator.jsp").forward(request, response);
+
+			} else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().write("You can't access the profile page unless you are an authenticated moderator.");
+			}
+		} catch (ServletException | IOException e) {
+			// Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
+			if (!response.isCommitted()) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina moderatore.");
+			}
 		}
 	}
 

@@ -23,6 +23,7 @@ import model.Entity.UtenteBean;
 
 @WebServlet("/userFilms")
 public class ViewUserFilmsServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
     // Risolto: Campi resi final e inizializzati immediatamente
@@ -35,6 +36,7 @@ public class ViewUserFilmsServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+
         final String username = request.getParameter("username");
         final HttpSession session = request.getSession();
 
@@ -43,15 +45,19 @@ public class ViewUserFilmsServlet extends HttpServlet {
             final UtenteBean visitedUser = profileService.findByUsername(username); 
             
             if (visitedUser == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
+                // Gestione specifica: se l'utente non esiste
+                if (!response.isCommitted()) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
+                }
                 return;
             }
+
             session.setAttribute("visitedUser", visitedUser);
 
             // 2. Recupero liste film (uso operatore ternario per mantenere la variabile final)
             final List<FilmBean> watchedListRaw = profileService.retrieveWatchedFilms(username);
             final List<FilmBean> watchlistRaw = profileService.retrieveWatchlist(username);
-
+            
             final List<FilmBean> watchedList = (watchedListRaw != null) ? watchedListRaw : new ArrayList<>();
             final List<FilmBean> watchlist = (watchlistRaw != null) ? watchlistRaw : new ArrayList<>();
 
@@ -67,8 +73,18 @@ public class ViewUserFilmsServlet extends HttpServlet {
             dispatcher.forward(request, response);
 
         } catch (final Exception e) { 
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il recupero dei dati utente.");
+            // Risoluzione dello smell: gestione IOException per sendError
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il recupero dei dati utente.");
+                } catch (IOException ioException) {
+                    // Log estremo se anche l'invio dell'errore fallisce
+                    e.addSuppressed(ioException);
+                    e.printStackTrace();
+                }
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
