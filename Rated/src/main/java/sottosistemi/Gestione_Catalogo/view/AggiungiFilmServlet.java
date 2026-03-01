@@ -50,7 +50,14 @@ public class AggiungiFilmServlet extends HttpServlet {
                         }
                     }
                 } catch (IOException | ServletException e) {
-                    if (!response.isCommitted()) response.sendError(500);
+                    if (!response.isCommitted()) {
+                        try {
+                            // Gestione dello smell su sendError
+                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        } catch (IOException sendException) {
+                            LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 durante la lettura della locandina", sendException);
+                        }
+                    }
                     return;
                 }
 
@@ -68,7 +75,14 @@ public class AggiungiFilmServlet extends HttpServlet {
                     }
                 }
             } catch (Exception e) {
-                if (!response.isCommitted()) response.sendError(500, "Si è verificato un errore critico imprevisto.");
+                if (!response.isCommitted()) {
+                    try {
+                        // Gestione dello smell su sendError
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
+                    } catch (IOException sendException) {
+                        LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 per un errore critico imprevisto", sendException);
+                    }
+                }
             }
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

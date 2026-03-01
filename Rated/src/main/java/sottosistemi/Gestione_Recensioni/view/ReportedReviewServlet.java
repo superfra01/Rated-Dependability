@@ -11,6 +11,8 @@ import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 import java.io.IOException;
 import java.util.List;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/moderator")
 public class ReportedReviewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    
+    // Aggiunto il logger per tracciare le eccezioni in modo sicuro
+    private static final Logger LOGGER = Logger.getLogger(ReportedReviewServlet.class.getName());
 
     // Naming con iniziale maiuscola mantenuto per compatibilità con i campi riflessi dei Test
     private final CatalogoService CatalogoService = new CatalogoService();
@@ -64,7 +69,7 @@ public class ReportedReviewServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina moderatore.");
                 } catch (IOException ioEx) {
-                    // Silenzioso: la connessione è già chiusa
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 in doGet", ioEx);
                 }
             }
         }
@@ -72,6 +77,18 @@ public class ReportedReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        try {
+            // Gestione delle eccezioni lanciate dal richiamo di doGet
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante il reindirizzamento da doPost a doGet", e);
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'elaborazione della richiesta.");
+                } catch (IOException ioEx) {
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 in doPost", ioEx);
+                }
+            }
+        }
     }
 }
