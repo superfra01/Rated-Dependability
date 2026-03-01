@@ -15,6 +15,7 @@ import sottosistemi.Gestione_Utenti.service.ProfileService;
 
 @WebServlet("/SegnaComeVistoServlet")
 public class SegnaComeVistoServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     // Risolto: Campi resi final e inizializzati direttamente
@@ -27,58 +28,74 @@ public class SegnaComeVistoServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-
-        final HttpSession session = request.getSession();
-        final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
-
-        if (utenteSessione == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Utente non loggato.");
-            return;
-        }
-
-        final String filmIdStr = request.getParameter("filmId");
-        int filmId = -1; // Non final perché riassegnato nel try
         try {
-            if (filmIdStr != null && !filmIdStr.isEmpty()) {
-                filmId = Integer.parseInt(filmIdStr);
-            }
-        } catch (final NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("ID Film non valido.");
-            return;
-        }
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
 
-        if (filmId != -1) {
-            final boolean giaVisto = profileService.isFilmVisto(utenteSessione.getEmail(), filmId);
+            final HttpSession session = request.getSession();
+            final UtenteBean utenteSessione = (UtenteBean) session.getAttribute("user");
+
+            if (utenteSessione == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                // Risoluzione dello smell: gestione IOException per getWriter
+                response.getWriter().write("Utente non loggato.");
+                return;
+            }
+
+            final String filmIdStr = request.getParameter("filmId");
+            int filmId = -1; 
             
-            if (giaVisto) {
-                // Controllo se esiste recensione prima di rimuovere
-                final RecensioneBean recensione = recensioniService.getRecensione(filmId, utenteSessione.getEmail());
-                
-                if (recensione != null) {
-                    // ERRORE: Vincolo di integrità logica
-                    response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
-                    response.getWriter().write("Non puoi rimuovere il film dai 'Visti' perché hai scritto una recensione. Elimina prima la recensione.");
-                    return;
-                } else {
-                    profileService.rimuoviFilmVisto(utenteSessione.getEmail(), filmId);
+            try {
+                if (filmIdStr != null && !filmIdStr.isEmpty()) {
+                    filmId = Integer.parseInt(filmIdStr);
                 }
+            } catch (final NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("ID Film non valido.");
+                return;
+            }
+
+            if (filmId != -1) {
+                final boolean giaVisto = profileService.isFilmVisto(utenteSessione.getEmail(), filmId);
+
+                if (giaVisto) {
+                    // Controllo se esiste recensione prima di rimuovere
+                    final RecensioneBean recensione = recensioniService.getRecensione(filmId, utenteSessione.getEmail());
+
+                    if (recensione != null) {
+                        response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
+                        response.getWriter().write("Non puoi rimuovere il film dai 'Visti' perché hai scritto una recensione. Elimina prima la recensione.");
+                        return;
+                    } else {
+                        profileService.rimuoviFilmVisto(utenteSessione.getEmail(), filmId);
+                    }
+                } else {
+                    profileService.aggiungiFilmVisto(utenteSessione.getEmail(), filmId);
+                }
+
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                profileService.aggiungiFilmVisto(utenteSessione.getEmail(), filmId);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Film ID mancante.");
             }
             
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Film ID mancante.");
+        } catch (IOException e) {
+            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'aggiornamento dello stato 'visto'.");
+            }
         }
     }
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("catalogo.jsp");
+        try {
+            // Risoluzione dello smell: gestione IOException per sendRedirect
+            response.sendRedirect("catalogo.jsp");
+        } catch (IOException e) {
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
+            }
+        }
     }
 }

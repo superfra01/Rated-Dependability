@@ -15,22 +15,33 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/ricerca")
 public class RicercaCatalogoServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: field final e inizializzato direttamente
+    // Field final e inizializzato direttamente
     private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HttpSession session = request.getSession(true);
+        try {
+            final HttpSession session = request.getSession(true);
 
-        // Risolto: Estratto il parametro in una variabile final
-        final String queryRicerca = request.getParameter("filmCercato");
-        final List<FilmBean> films = catalogoService.ricercaFilm(queryRicerca);
-        
-        session.setAttribute("films", films);
-        
-        request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
+            // Estratto il parametro in una variabile final
+            final String queryRicerca = request.getParameter("filmCercato");
+
+            final List<FilmBean> films = catalogoService.ricercaFilm(queryRicerca);
+            
+            session.setAttribute("films", films);
+
+            // Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
+            request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
+            
+        } catch (ServletException | IOException e) {
+            // Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la ricerca nel catalogo.");
+            }
+        }
     }
 
     @Override

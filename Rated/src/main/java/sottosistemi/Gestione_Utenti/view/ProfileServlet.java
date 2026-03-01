@@ -20,40 +20,51 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: Campi resi final e inizializzati direttamente per eliminare init()
+    // Campi resi final e inizializzati direttamente per eliminare init()
     private final ProfileService profileService = new ProfileService(); 
     private final RecensioniService recensioniService = new RecensioniService();
-    private final CatalogoService catalogoService = new CatalogoService();
+    private final catalogoService catalogoService = new catalogoService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HttpSession session = request.getSession(true);
-        final String userName = request.getParameter("visitedUser");
-        
-        final UtenteBean visitedUser = profileService.findByUsername(userName);
-        
-        if (visitedUser != null) {
-            session.setAttribute("visitedUser", visitedUser);
+        try {
+            final HttpSession session = request.getSession(true);
+            final String userName = request.getParameter("visitedUser");
             
-            final List<RecensioneBean> recensioni = recensioniService.FindRecensioni(visitedUser.getEmail());
-            session.setAttribute("recensioni", recensioni);
+            final UtenteBean visitedUser = profileService.findByUsername(userName);
             
-            final HashMap<Integer, FilmBean> FilmMap = catalogoService.getFilms(recensioni);
-            session.setAttribute("films", FilmMap);
-        
-            // Risolto: variabili locali final
-            final List<String> generi = catalogoService.getAllGeneri();
-            session.setAttribute("allGenres", generi);
+            if (visitedUser != null) {
+                session.setAttribute("visitedUser", visitedUser);
+                
+                final List<RecensioneBean> recensioni = recensioniService.FindRecensioni(visitedUser.getEmail());
+                session.setAttribute("recensioni", recensioni);
+                
+                final HashMap<Integer, FilmBean> filmMap = catalogoService.getFilms(recensioni);
+                session.setAttribute("films", filmMap);
             
-            final List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
-            session.setAttribute("userGenres", userGenres);
-            
-            request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("You can't access the profile page if visitedUser is not set");
+                // Variabili locali final
+                final List<String> generi = catalogoService.getAllGeneri();
+                session.setAttribute("allGenres", generi);
+                
+                final List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
+                session.setAttribute("userGenres", userGenres);
+                
+                // Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
+                request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
+
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                // Risoluzione dello smell: gestione IOException per getWriter
+                response.getWriter().write("You can't access the profile page if visitedUser is not set");
+            }
+        } catch (ServletException | IOException e) {
+            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento del profilo.");
+            }
         }
     }
 

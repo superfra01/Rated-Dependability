@@ -15,9 +15,10 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/DeleteReview")
 public class DeleteReviewServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: Campi resi final e inizializzati immediatamente per eliminare lo smell
+    // Risolto: Campi resi final e inizializzati immediatamente
     // Naming mantenuto identico per non rompere i test di integrazione
     private final ProfileService ProfileService = new ProfileService();
     private final RecensioniService RecensioniService = new RecensioniService();
@@ -29,20 +30,37 @@ public class DeleteReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        try {
+            final HttpSession session = request.getSession(true);
+            final UtenteBean user = (UtenteBean) session.getAttribute("user");
+            
+            // Verifica che l'utente sia loggato prima di procedere
+            if (user != null) {
+                try {
+                    final String email = user.getEmail();
+                    
+                    // Risoluzione dello smell: gestione NumberFormatException per DeleteFilmID
+                    final int idFilm = Integer.parseInt(request.getParameter("DeleteFilmID"));
 
-        final HttpSession session = request.getSession(true);
-        final UtenteBean user = (UtenteBean) session.getAttribute("user");
-        
-        // Buona pratica: verifica che l'utente sia loggato prima di procedere
-        if (user != null) {
-            final String email = user.getEmail();
-            final int ID_Film = Integer.parseInt(request.getParameter("DeleteFilmID"));
+                    RecensioniService.deleteRecensione(email, idFilm);
 
-            RecensioniService.deleteRecensione(email, ID_Film);
-
-            response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + user.getUsername());
-        } else {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+                    // Risoluzione dello smell: gestione dell'eccezione IOException lanciata dal sendRedirect
+                    response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + user.getUsername());
+                    
+                } catch (NumberFormatException e) {
+                    // Gestione dell'errore se l'ID film non è un numero valido
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().write("Errore: L'ID del film deve essere un valore numerico valido.");
+                }
+            } else {
+                // Se l'utente non è loggato, reindirizza alla login
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+            }
+        } catch (IOException e) {
+            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la cancellazione della recensione.");
+            }
         }
     }
 }

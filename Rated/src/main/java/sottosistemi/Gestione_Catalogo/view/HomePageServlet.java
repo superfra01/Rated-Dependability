@@ -1,7 +1,6 @@
 package sottosistemi.Gestione_Catalogo.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,9 +16,10 @@ import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 
 @WebServlet("")
 public class HomePageServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: il service può essere final se inizializzato subito
+    // Inizializzato direttamente e reso final
     private final CatalogoService catalogoService = new CatalogoService();
 
     public HomePageServlet() {
@@ -28,24 +28,32 @@ public class HomePageServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        final HttpSession session = request.getSession(); // Locale final
-        
-        // Recupera l'utente dalla sessione
-        final UtenteBean utente = (UtenteBean) session.getAttribute("user"); // Locale final
-        
-        List<FilmBean> filmConsigliati = null; // Non può essere final perché viene riassegnata nell'if
-        
-        // Se l'utente è loggato, calcola i consigliati
-        if (utente != null) {
-            // La Servlet interagisce SOLO con il Service
-            filmConsigliati = catalogoService.getFilmCompatibili(utente);
+        try {
+            final HttpSession session = request.getSession(); 
+            
+            // Recupera l'utente dalla sessione
+            final UtenteBean utente = (UtenteBean) session.getAttribute("user"); 
+            
+            List<FilmBean> filmConsigliati = null; 
+
+            // Se l'utente è loggato, calcola i consigliati
+            if (utente != null) {
+                // La Servlet interagisce SOLO con il Service
+                filmConsigliati = catalogoService.getFilmCompatibili(utente);
+            }
+
+            // Carica la lista in sessione
+            session.setAttribute("filmConsigliati", filmConsigliati);
+
+            // Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
+            request.getRequestDispatcher("/WEB-INF/jsp/HomePage.jsp").forward(request, response);
+            
+        } catch (ServletException | IOException e) {
+            // Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della HomePage.");
+            }
         }
-
-        // Carica la lista in sessione
-        session.setAttribute("filmConsigliati", filmConsigliati);
-
-        // Forward alla HomePage
-        request.getRequestDispatcher("/WEB-INF/jsp/HomePage.jsp").forward(request, response);
     }
 
     @Override

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/passwordModify")
 public class PasswordModifyServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 	
 	// Risolto: Campo reso final e inizializzato direttamente per rimuovere init()
@@ -28,27 +29,35 @@ public class PasswordModifyServlet extends HttpServlet {
 
 	@Override
 	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		final String email = request.getParameter("email");
-		final String password = request.getParameter("password");
-		
-		// Validazione della password prima dell'aggiornamento
-		if (FieldValidator.validatePassword(password)) {
-			// Risolto: variabili locali final
-			final UtenteBean utente = ProfileService.PasswordUpdate(email, password);
+		try {
+			final String email = request.getParameter("email");
+			final String password = request.getParameter("password");
 			
-			final HttpSession session = request.getSession(true);
-			session.setAttribute("user", utente);
-			
-			// Pulizia: usiamo direttamente l'oggetto 'utente' appena aggiornato
-			if (utente != null) {
-				response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
+			// Validazione della password prima dell'aggiornamento
+			if (FieldValidator.validatePassword(password)) {
+				// Risolto: variabili locali final
+				final UtenteBean utente = ProfileService.PasswordUpdate(email, password);
+
+				final HttpSession session = request.getSession(true);
+				session.setAttribute("user", utente);
+
+				// Pulizia: usiamo direttamente l'oggetto 'utente' appena aggiornato
+				if (utente != null) {
+					// Risoluzione dello smell: gestione IOException per sendRedirect
+					response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
+				} else {
+					// Fallback in caso di errore nell'aggiornamento
+					response.sendRedirect(request.getContextPath() + "/");
+				}
 			} else {
-				// Fallback in caso di errore nell'aggiornamento
-				response.sendRedirect(request.getContextPath() + "/");
+				// Gestione errore validazione
+				response.sendRedirect(request.getContextPath() + "/profile?error=invalidPassword");
 			}
-		} else {
-			// Gestione errore validazione (opzionale: potresti aggiungere un messaggio d'errore)
-			response.sendRedirect(request.getContextPath() + "/profile?error=invalidPassword");
+		} catch (IOException e) {
+			// Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+			if (!response.isCommitted()) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'aggiornamento della password.");
+			}
 		}
 	}
 }

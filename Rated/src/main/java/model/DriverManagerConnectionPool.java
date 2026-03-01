@@ -27,7 +27,7 @@ public class DriverManagerConnectionPool {
                         // Cerca la risorsa configurata nel file context.xml
                         dataSource = (DataSource) envCtx.lookup("jdbc/RatedDB");
                     } catch (NamingException e) {
-                        throw new RuntimeException("Errore durnate la configurazione del DataSource JNDI", e);
+                        throw new RuntimeException("Errore durante la configurazione del DataSource JNDI", e);
                     }
                 }
             }
@@ -37,20 +37,26 @@ public class DriverManagerConnectionPool {
 
     /**
      * Fornisce una connessione prelevandola dal pool di Tomcat.
+     * Risolve lo smell chiudendo la connessione se la configurazione fallisce.
      */
     public static Connection getConnection() throws SQLException {
         Connection connection = getDataSource().getConnection();
-        
-        // Manteniamo il false di default come facevi nel tuo codice originale
-        connection.setAutoCommit(false); 
-        
-        return connection;
+        try {
+            // Manteniamo il false di default come richiesto
+            connection.setAutoCommit(false); 
+            return connection;
+        } catch (SQLException e) {
+            // Se setAutoCommit fallisce, la connessione non verrebbe mai chiusa dal chiamante.
+            // La chiudiamo qui per prevenire il leak prima di rilanciare l'eccezione.
+            if (connection != null) {
+                connection.close();
+            }
+            throw e;
+        }
     }
 
     /**
-     * Rilascia la connessione.
-     * ATTENZIONE: Con i DataSource, il metodo .close() NON chiude fisicamente 
-     * la connessione con il DB, ma la restituisce semplicemente al pool!
+     * Rilascia la connessione restituendola al pool.
      */
     public static void releaseConnection(final Connection connection) {
         if (connection != null) {

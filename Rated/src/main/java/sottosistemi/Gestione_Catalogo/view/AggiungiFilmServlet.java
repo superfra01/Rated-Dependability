@@ -18,9 +18,10 @@ import javax.servlet.http.Part;
 @WebServlet("/addFilm")
 @MultipartConfig(maxFileSize = 16177215)
 public class AggiungiFilmServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     
-    // Risolto: Inizializzato direttamente e reso final
+    // Inizializzato direttamente e reso final
     private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
@@ -34,30 +35,41 @@ public class AggiungiFilmServlet extends HttpServlet {
         final HttpSession session = request.getSession(true);
         final UtenteBean user = (UtenteBean) session.getAttribute("user");
         
+        // Verifica dei permessi
         if (user != null && "GESTORE".equals(user.getTipoUtente())) {
             
-            final int anno = Integer.parseInt(request.getParameter("annoFilm"));
-            final String attori = request.getParameter("attoriFilm");
-            final int durata = Integer.parseInt(request.getParameter("durataFilm"));
-            final String[] generiSelezionati = request.getParameterValues("generiFilm");
-            final String nome = request.getParameter("nomeFilm");
-            final String regista = request.getParameter("registaFilm");
-            final String trama = request.getParameter("tramaFilm");
-            
-            byte[] locandina = null; // Corretto: non può essere final
-            
-            final Part filePart = request.getPart("locandinaFilm");
-            if (filePart != null && filePart.getSize() > 0) {
-                try (final InputStream inputStream = filePart.getInputStream()) {
-                    locandina = inputStream.readAllBytes();
-                }
-            }
+            try {
+                // Risoluzione dello smell: gestione NumberFormatException per anno e durata
+                final int anno = Integer.parseInt(request.getParameter("annoFilm"));
+                final int durata = Integer.parseInt(request.getParameter("durataFilm"));
 
-            // Uso del campo final
-            catalogoService.addFilm(anno, attori, durata, generiSelezionati, locandina, nome, regista, trama);
-            response.sendRedirect(request.getContextPath() + "/catalogo");
+                final String attori = request.getParameter("attoriFilm");
+                final String[] generiSelezionati = request.getParameterValues("generiFilm");
+                final String nome = request.getParameter("nomeFilm");
+                final String regista = request.getParameter("registaFilm");
+                final String trama = request.getParameter("tramaFilm");
+                
+                byte[] locandina = null; 
+                final Part filePart = request.getPart("locandinaFilm");
+                
+                if (filePart != null && filePart.getSize() > 0) {
+                    try (final InputStream inputStream = filePart.getInputStream()) {
+                        locandina = inputStream.readAllBytes();
+                    }
+                }
+
+                // Inserimento del film tramite il service
+                catalogoService.addFilm(anno, attori, durata, generiSelezionati, locandina, nome, regista, trama);
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+                
+            } catch (NumberFormatException e) {
+                // Gestione dell'errore nel caso i parametri numerici non siano validi
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Errore: I campi 'Anno' e 'Durata' devono essere numeri validi.");
+            }
             
         } else {
+            // Gestione mancanza di permessi
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
         }
