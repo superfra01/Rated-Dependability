@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Server port="8005" shutdown="SHUTDOWN">
+  <PropertySource className="org.apache.tomcat.util.digester.EnvironmentPropertySource" />
+
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
@@ -15,7 +17,6 @@
   </GlobalNamingResources>
 
   <Service name="Catalina">
-  
     <Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443"
