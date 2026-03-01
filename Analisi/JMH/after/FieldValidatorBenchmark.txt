@@ -1,0 +1,831 @@
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testEmailInvalid
+
+# Run progress: 0,00% complete, ETA 00:11:00
+# Fork: 1 of 2
+# Warmup Iteration   1: 158,785 ns/op
+# Warmup Iteration   2: 154,256 ns/op
+# Warmup Iteration   3: 152,124 ns/op
+# Warmup Iteration   4: 151,860 ns/op
+# Warmup Iteration   5: 151,460 ns/op
+# Warmup Iteration   6: 151,861 ns/op
+# Warmup Iteration   7: 151,606 ns/op
+# Warmup Iteration   8: 152,111 ns/op
+# Warmup Iteration   9: 151,665 ns/op
+# Warmup Iteration  10: 152,083 ns/op
+# Warmup Iteration  11: 152,266 ns/op
+# Warmup Iteration  12: 151,974 ns/op
+# Warmup Iteration  13: 151,338 ns/op
+# Warmup Iteration  14: 151,842 ns/op
+# Warmup Iteration  15: 153,070 ns/op
+Iteration   1: 151,771 ns/op
+Iteration   2: 151,867 ns/op
+Iteration   3: 152,284 ns/op
+Iteration   4: 152,150 ns/op
+Iteration   5: 152,300 ns/op
+Iteration   6: 152,253 ns/op
+Iteration   7: 152,124 ns/op
+Iteration   8: 152,027 ns/op
+Iteration   9: 152,271 ns/op
+Iteration  10: 152,180 ns/op
+Iteration  11: 152,163 ns/op
+Iteration  12: 151,777 ns/op
+Iteration  13: 152,072 ns/op
+Iteration  14: 151,738 ns/op
+Iteration  15: 152,396 ns/op
+Iteration  16: 152,407 ns/op
+Iteration  17: 152,004 ns/op
+Iteration  18: 152,124 ns/op
+Iteration  19: 152,676 ns/op
+Iteration  20: 152,257 ns/op
+Iteration  21: 152,189 ns/op
+Iteration  22: 152,057 ns/op
+Iteration  23: 151,867 ns/op
+Iteration  24: 152,241 ns/op
+Iteration  25: 152,181 ns/op
+Iteration  26: 151,815 ns/op
+Iteration  27: 152,035 ns/op
+Iteration  28: 151,895 ns/op
+Iteration  29: 152,439 ns/op
+Iteration  30: 151,953 ns/op
+Iteration  31: 152,457 ns/op
+Iteration  32: 152,325 ns/op
+Iteration  33: 155,805 ns/op
+Iteration  34: 152,046 ns/op
+Iteration  35: 151,929 ns/op
+Iteration  36: 151,716 ns/op
+Iteration  37: 152,016 ns/op
+Iteration  38: 152,071 ns/op
+Iteration  39: 152,008 ns/op
+Iteration  40: 152,119 ns/op
+
+# Run progress: 7,77% complete, ETA 00:10:15
+# Fork: 2 of 2
+# Warmup Iteration   1: 157,635 ns/op
+# Warmup Iteration   2: 131,038 ns/op
+# Warmup Iteration   3: 130,725 ns/op
+# Warmup Iteration   4: 130,311 ns/op
+# Warmup Iteration   5: 130,417 ns/op
+# Warmup Iteration   6: 130,374 ns/op
+# Warmup Iteration   7: 130,526 ns/op
+# Warmup Iteration   8: 130,432 ns/op
+# Warmup Iteration   9: 130,455 ns/op
+# Warmup Iteration  10: 130,260 ns/op
+# Warmup Iteration  11: 130,445 ns/op
+# Warmup Iteration  12: 130,696 ns/op
+# Warmup Iteration  13: 129,958 ns/op
+# Warmup Iteration  14: 130,164 ns/op
+# Warmup Iteration  15: 130,926 ns/op
+Iteration   1: 131,236 ns/op
+Iteration   2: 130,340 ns/op
+Iteration   3: 130,896 ns/op
+Iteration   4: 130,505 ns/op
+Iteration   5: 130,305 ns/op
+Iteration   6: 130,512 ns/op
+Iteration   7: 130,756 ns/op
+Iteration   8: 130,122 ns/op
+Iteration   9: 130,525 ns/op
+Iteration  10: 130,056 ns/op
+Iteration  11: 130,192 ns/op
+Iteration  12: 130,482 ns/op
+Iteration  13: 130,597 ns/op
+Iteration  14: 130,422 ns/op
+Iteration  15: 130,358 ns/op
+Iteration  16: 130,486 ns/op
+Iteration  17: 130,369 ns/op
+Iteration  18: 130,728 ns/op
+Iteration  19: 130,767 ns/op
+Iteration  20: 130,113 ns/op
+Iteration  21: 130,338 ns/op
+Iteration  22: 130,789 ns/op
+Iteration  23: 130,516 ns/op
+Iteration  24: 130,745 ns/op
+Iteration  25: 130,414 ns/op
+Iteration  26: 130,351 ns/op
+Iteration  27: 130,395 ns/op
+Iteration  28: 130,478 ns/op
+Iteration  29: 130,642 ns/op
+Iteration  30: 130,042 ns/op
+Iteration  31: 130,597 ns/op
+Iteration  32: 130,274 ns/op
+Iteration  33: 130,468 ns/op
+Iteration  34: 130,668 ns/op
+Iteration  35: 130,138 ns/op
+Iteration  36: 130,870 ns/op
+Iteration  37: 130,586 ns/op
+Iteration  38: 130,531 ns/op
+Iteration  39: 130,382 ns/op
+Iteration  40: 130,135 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testEmailInvalid":
+  141,339 ±(99.9%) 4,181 ns/op [Average]
+  (min, avg, max) = (130,042, 141,339, 155,805), stdev = 10,940
+  CI (99.9%): [137,159, 145,519] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testEmailValid
+
+# Run progress: 15,55% complete, ETA 00:09:19
+# Fork: 1 of 2
+# Warmup Iteration   1: 252,711 ns/op
+# Warmup Iteration   2: 244,021 ns/op
+# Warmup Iteration   3: 243,811 ns/op
+# Warmup Iteration   4: 242,650 ns/op
+# Warmup Iteration   5: 243,073 ns/op
+# Warmup Iteration   6: 242,158 ns/op
+# Warmup Iteration   7: 242,899 ns/op
+# Warmup Iteration   8: 243,830 ns/op
+# Warmup Iteration   9: 243,461 ns/op
+# Warmup Iteration  10: 243,154 ns/op
+# Warmup Iteration  11: 243,217 ns/op
+# Warmup Iteration  12: 243,058 ns/op
+# Warmup Iteration  13: 243,538 ns/op
+# Warmup Iteration  14: 244,316 ns/op
+# Warmup Iteration  15: 242,402 ns/op
+Iteration   1: 242,846 ns/op
+Iteration   2: 244,438 ns/op
+Iteration   3: 243,403 ns/op
+Iteration   4: 242,728 ns/op
+Iteration   5: 243,277 ns/op
+Iteration   6: 243,593 ns/op
+Iteration   7: 244,163 ns/op
+Iteration   8: 243,259 ns/op
+Iteration   9: 243,243 ns/op
+Iteration  10: 243,241 ns/op
+Iteration  11: 243,030 ns/op
+Iteration  12: 242,762 ns/op
+Iteration  13: 242,231 ns/op
+Iteration  14: 242,768 ns/op
+Iteration  15: 243,307 ns/op
+Iteration  16: 243,725 ns/op
+Iteration  17: 242,857 ns/op
+Iteration  18: 242,826 ns/op
+Iteration  19: 242,822 ns/op
+Iteration  20: 243,239 ns/op
+Iteration  21: 242,961 ns/op
+Iteration  22: 243,007 ns/op
+Iteration  23: 241,755 ns/op
+Iteration  24: 242,579 ns/op
+Iteration  25: 243,144 ns/op
+Iteration  26: 244,099 ns/op
+Iteration  27: 243,499 ns/op
+Iteration  28: 242,623 ns/op
+Iteration  29: 243,450 ns/op
+Iteration  30: 243,895 ns/op
+Iteration  31: 242,277 ns/op
+Iteration  32: 244,074 ns/op
+Iteration  33: 242,569 ns/op
+Iteration  34: 243,649 ns/op
+Iteration  35: 243,222 ns/op
+Iteration  36: 243,019 ns/op
+Iteration  37: 243,612 ns/op
+Iteration  38: 242,968 ns/op
+Iteration  39: 243,362 ns/op
+Iteration  40: 244,287 ns/op
+
+# Run progress: 23,32% complete, ETA 00:08:28
+# Fork: 2 of 2
+# Warmup Iteration   1: 272,607 ns/op
+# Warmup Iteration   2: 221,987 ns/op
+# Warmup Iteration   3: 244,593 ns/op
+# Warmup Iteration   4: 244,480 ns/op
+# Warmup Iteration   5: 245,407 ns/op
+# Warmup Iteration   6: 244,903 ns/op
+# Warmup Iteration   7: 244,422 ns/op
+# Warmup Iteration   8: 248,206 ns/op
+# Warmup Iteration   9: 244,819 ns/op
+# Warmup Iteration  10: 244,984 ns/op
+# Warmup Iteration  11: 245,276 ns/op
+# Warmup Iteration  12: 244,956 ns/op
+# Warmup Iteration  13: 245,873 ns/op
+# Warmup Iteration  14: 245,971 ns/op
+# Warmup Iteration  15: 244,913 ns/op
+Iteration   1: 245,619 ns/op
+Iteration   2: 244,578 ns/op
+Iteration   3: 245,612 ns/op
+Iteration   4: 245,774 ns/op
+Iteration   5: 245,537 ns/op
+Iteration   6: 245,819 ns/op
+Iteration   7: 246,298 ns/op
+Iteration   8: 245,959 ns/op
+Iteration   9: 245,359 ns/op
+Iteration  10: 245,281 ns/op
+Iteration  11: 245,446 ns/op
+Iteration  12: 244,744 ns/op
+Iteration  13: 245,097 ns/op
+Iteration  14: 244,712 ns/op
+Iteration  15: 245,175 ns/op
+Iteration  16: 245,586 ns/op
+Iteration  17: 245,374 ns/op
+Iteration  18: 245,196 ns/op
+Iteration  19: 245,952 ns/op
+Iteration  20: 245,126 ns/op
+Iteration  21: 245,799 ns/op
+Iteration  22: 245,330 ns/op
+Iteration  23: 245,143 ns/op
+Iteration  24: 245,217 ns/op
+Iteration  25: 245,413 ns/op
+Iteration  26: 244,861 ns/op
+Iteration  27: 243,913 ns/op
+Iteration  28: 245,748 ns/op
+Iteration  29: 245,911 ns/op
+Iteration  30: 245,436 ns/op
+Iteration  31: 245,067 ns/op
+Iteration  32: 245,637 ns/op
+Iteration  33: 245,859 ns/op
+Iteration  34: 245,062 ns/op
+Iteration  35: 245,512 ns/op
+Iteration  36: 245,287 ns/op
+Iteration  37: 245,173 ns/op
+Iteration  38: 245,776 ns/op
+Iteration  39: 245,731 ns/op
+Iteration  40: 245,178 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testEmailValid":
+  244,289 ±(99.9%) 0,464 ns/op [Average]
+  (min, avg, max) = (241,755, 244,289, 246,298), stdev = 1,215
+  CI (99.9%): [243,825, 244,753] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testPasswordInvalid
+
+# Run progress: 31,09% complete, ETA 00:07:30
+# Fork: 1 of 2
+# Warmup Iteration   1: 114,941 ns/op
+# Warmup Iteration   2: 113,604 ns/op
+# Warmup Iteration   3: 112,146 ns/op
+# Warmup Iteration   4: 113,001 ns/op
+# Warmup Iteration   5: 113,245 ns/op
+# Warmup Iteration   6: 112,665 ns/op
+# Warmup Iteration   7: 112,942 ns/op
+# Warmup Iteration   8: 112,526 ns/op
+# Warmup Iteration   9: 112,628 ns/op
+# Warmup Iteration  10: 112,858 ns/op
+# Warmup Iteration  11: 112,399 ns/op
+# Warmup Iteration  12: 112,591 ns/op
+# Warmup Iteration  13: 112,896 ns/op
+# Warmup Iteration  14: 113,595 ns/op
+# Warmup Iteration  15: 112,575 ns/op
+Iteration   1: 113,667 ns/op
+Iteration   2: 113,298 ns/op
+Iteration   3: 112,446 ns/op
+Iteration   4: 112,726 ns/op
+Iteration   5: 112,453 ns/op
+Iteration   6: 112,567 ns/op
+Iteration   7: 112,945 ns/op
+Iteration   8: 113,026 ns/op
+Iteration   9: 112,483 ns/op
+Iteration  10: 112,931 ns/op
+Iteration  11: 112,580 ns/op
+Iteration  12: 112,746 ns/op
+Iteration  13: 112,974 ns/op
+Iteration  14: 112,193 ns/op
+Iteration  15: 112,775 ns/op
+Iteration  16: 112,777 ns/op
+Iteration  17: 112,799 ns/op
+Iteration  18: 112,744 ns/op
+Iteration  19: 112,801 ns/op
+Iteration  20: 112,684 ns/op
+Iteration  21: 113,070 ns/op
+Iteration  22: 112,716 ns/op
+Iteration  23: 112,343 ns/op
+Iteration  24: 112,594 ns/op
+Iteration  25: 112,819 ns/op
+Iteration  26: 112,912 ns/op
+Iteration  27: 112,942 ns/op
+Iteration  28: 112,738 ns/op
+Iteration  29: 112,187 ns/op
+Iteration  30: 112,855 ns/op
+Iteration  31: 112,738 ns/op
+Iteration  32: 112,563 ns/op
+Iteration  33: 112,978 ns/op
+Iteration  34: 112,495 ns/op
+Iteration  35: 112,288 ns/op
+Iteration  36: 112,201 ns/op
+Iteration  37: 112,327 ns/op
+Iteration  38: 112,854 ns/op
+Iteration  39: 112,922 ns/op
+Iteration  40: 112,714 ns/op
+
+# Run progress: 38,87% complete, ETA 00:06:33
+# Fork: 2 of 2
+# Warmup Iteration   1: 114,170 ns/op
+# Warmup Iteration   2: 113,197 ns/op
+# Warmup Iteration   3: 112,522 ns/op
+# Warmup Iteration   4: 112,230 ns/op
+# Warmup Iteration   5: 112,252 ns/op
+# Warmup Iteration   6: 112,497 ns/op
+# Warmup Iteration   7: 112,188 ns/op
+# Warmup Iteration   8: 112,968 ns/op
+# Warmup Iteration   9: 112,632 ns/op
+# Warmup Iteration  10: 112,235 ns/op
+# Warmup Iteration  11: 112,661 ns/op
+# Warmup Iteration  12: 113,738 ns/op
+# Warmup Iteration  13: 112,700 ns/op
+# Warmup Iteration  14: 112,575 ns/op
+# Warmup Iteration  15: 112,614 ns/op
+Iteration   1: 112,582 ns/op
+Iteration   2: 112,535 ns/op
+Iteration   3: 112,492 ns/op
+Iteration   4: 112,996 ns/op
+Iteration   5: 112,615 ns/op
+Iteration   6: 113,087 ns/op
+Iteration   7: 112,278 ns/op
+Iteration   8: 112,847 ns/op
+Iteration   9: 112,595 ns/op
+Iteration  10: 112,355 ns/op
+Iteration  11: 112,170 ns/op
+Iteration  12: 112,957 ns/op
+Iteration  13: 112,627 ns/op
+Iteration  14: 112,587 ns/op
+Iteration  15: 112,262 ns/op
+Iteration  16: 112,552 ns/op
+Iteration  17: 112,426 ns/op
+Iteration  18: 112,226 ns/op
+Iteration  19: 112,432 ns/op
+Iteration  20: 112,319 ns/op
+Iteration  21: 111,961 ns/op
+Iteration  22: 112,447 ns/op
+Iteration  23: 112,309 ns/op
+Iteration  24: 113,024 ns/op
+Iteration  25: 112,767 ns/op
+Iteration  26: 112,482 ns/op
+Iteration  27: 112,705 ns/op
+Iteration  28: 112,470 ns/op
+Iteration  29: 112,405 ns/op
+Iteration  30: 112,646 ns/op
+Iteration  31: 112,563 ns/op
+Iteration  32: 112,605 ns/op
+Iteration  33: 112,996 ns/op
+Iteration  34: 113,136 ns/op
+Iteration  35: 112,308 ns/op
+Iteration  36: 112,430 ns/op
+Iteration  37: 112,606 ns/op
+Iteration  38: 112,633 ns/op
+Iteration  39: 113,095 ns/op
+Iteration  40: 112,805 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testPasswordInvalid":
+  112,653 ±(99.9%) 0,113 ns/op [Average]
+  (min, avg, max) = (111,961, 112,653, 113,667), stdev = 0,296
+  CI (99.9%): [112,540, 112,766] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testPasswordValid
+
+# Run progress: 46,64% complete, ETA 00:05:37
+# Fork: 1 of 2
+# Warmup Iteration   1: 578,196 ns/op
+# Warmup Iteration   2: 556,567 ns/op
+# Warmup Iteration   3: 555,031 ns/op
+# Warmup Iteration   4: 555,372 ns/op
+# Warmup Iteration   5: 553,827 ns/op
+# Warmup Iteration   6: 552,965 ns/op
+# Warmup Iteration   7: 554,768 ns/op
+# Warmup Iteration   8: 555,251 ns/op
+# Warmup Iteration   9: 553,874 ns/op
+# Warmup Iteration  10: 554,286 ns/op
+# Warmup Iteration  11: 566,709 ns/op
+# Warmup Iteration  12: 554,536 ns/op
+# Warmup Iteration  13: 555,925 ns/op
+# Warmup Iteration  14: 554,204 ns/op
+# Warmup Iteration  15: 556,393 ns/op
+Iteration   1: 554,319 ns/op
+Iteration   2: 551,393 ns/op
+Iteration   3: 554,769 ns/op
+Iteration   4: 557,620 ns/op
+Iteration   5: 554,343 ns/op
+Iteration   6: 553,961 ns/op
+Iteration   7: 553,213 ns/op
+Iteration   8: 555,062 ns/op
+Iteration   9: 553,939 ns/op
+Iteration  10: 555,258 ns/op
+Iteration  11: 553,069 ns/op
+Iteration  12: 553,282 ns/op
+Iteration  13: 553,538 ns/op
+Iteration  14: 552,162 ns/op
+Iteration  15: 554,622 ns/op
+Iteration  16: 552,004 ns/op
+Iteration  17: 555,327 ns/op
+Iteration  18: 553,514 ns/op
+Iteration  19: 553,820 ns/op
+Iteration  20: 554,599 ns/op
+Iteration  21: 552,729 ns/op
+Iteration  22: 552,913 ns/op
+Iteration  23: 554,614 ns/op
+Iteration  24: 556,615 ns/op
+Iteration  25: 554,024 ns/op
+Iteration  26: 553,709 ns/op
+Iteration  27: 552,181 ns/op
+Iteration  28: 551,492 ns/op
+Iteration  29: 553,526 ns/op
+Iteration  30: 555,825 ns/op
+Iteration  31: 553,880 ns/op
+Iteration  32: 554,508 ns/op
+Iteration  33: 551,021 ns/op
+Iteration  34: 554,353 ns/op
+Iteration  35: 553,020 ns/op
+Iteration  36: 554,527 ns/op
+Iteration  37: 554,361 ns/op
+Iteration  38: 552,752 ns/op
+Iteration  39: 554,828 ns/op
+Iteration  40: 553,176 ns/op
+
+# Run progress: 54,41% complete, ETA 00:04:40
+# Fork: 2 of 2
+# Warmup Iteration   1: 562,349 ns/op
+# Warmup Iteration   2: 540,626 ns/op
+# Warmup Iteration   3: 538,139 ns/op
+# Warmup Iteration   4: 536,564 ns/op
+# Warmup Iteration   5: 537,877 ns/op
+# Warmup Iteration   6: 536,559 ns/op
+# Warmup Iteration   7: 535,743 ns/op
+# Warmup Iteration   8: 536,865 ns/op
+# Warmup Iteration   9: 536,069 ns/op
+# Warmup Iteration  10: 537,916 ns/op
+# Warmup Iteration  11: 534,440 ns/op
+# Warmup Iteration  12: 537,321 ns/op
+# Warmup Iteration  13: 537,181 ns/op
+# Warmup Iteration  14: 536,944 ns/op
+# Warmup Iteration  15: 537,522 ns/op
+Iteration   1: 538,882 ns/op
+Iteration   2: 538,649 ns/op
+Iteration   3: 537,837 ns/op
+Iteration   4: 535,912 ns/op
+Iteration   5: 537,217 ns/op
+Iteration   6: 536,476 ns/op
+Iteration   7: 535,908 ns/op
+Iteration   8: 537,065 ns/op
+Iteration   9: 536,119 ns/op
+Iteration  10: 537,919 ns/op
+Iteration  11: 535,600 ns/op
+Iteration  12: 539,005 ns/op
+Iteration  13: 537,114 ns/op
+Iteration  14: 534,953 ns/op
+Iteration  15: 537,687 ns/op
+Iteration  16: 534,408 ns/op
+Iteration  17: 536,780 ns/op
+Iteration  18: 536,766 ns/op
+Iteration  19: 535,305 ns/op
+Iteration  20: 537,318 ns/op
+Iteration  21: 537,824 ns/op
+Iteration  22: 535,973 ns/op
+Iteration  23: 537,063 ns/op
+Iteration  24: 536,116 ns/op
+Iteration  25: 539,035 ns/op
+Iteration  26: 537,337 ns/op
+Iteration  27: 536,820 ns/op
+Iteration  28: 538,091 ns/op
+Iteration  29: 537,328 ns/op
+Iteration  30: 537,215 ns/op
+Iteration  31: 535,876 ns/op
+Iteration  32: 536,449 ns/op
+Iteration  33: 536,359 ns/op
+Iteration  34: 537,533 ns/op
+Iteration  35: 535,567 ns/op
+Iteration  36: 537,176 ns/op
+Iteration  37: 539,395 ns/op
+Iteration  38: 536,944 ns/op
+Iteration  39: 534,922 ns/op
+Iteration  40: 536,738 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testPasswordValid":
+  545,382 ±(99.9%) 3,291 ns/op [Average]
+  (min, avg, max) = (534,408, 545,382, 557,620), stdev = 8,611
+  CI (99.9%): [542,091, 548,672] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testUsernameInvalid
+
+# Run progress: 62,19% complete, ETA 00:03:44
+# Fork: 1 of 2
+# Warmup Iteration   1: 38,912 ns/op
+# Warmup Iteration   2: 35,217 ns/op
+# Warmup Iteration   3: 35,411 ns/op
+# Warmup Iteration   4: 35,500 ns/op
+# Warmup Iteration   5: 35,815 ns/op
+# Warmup Iteration   6: 35,371 ns/op
+# Warmup Iteration   7: 35,454 ns/op
+# Warmup Iteration   8: 35,611 ns/op
+# Warmup Iteration   9: 35,620 ns/op
+# Warmup Iteration  10: 35,655 ns/op
+# Warmup Iteration  11: 35,688 ns/op
+# Warmup Iteration  12: 35,380 ns/op
+# Warmup Iteration  13: 35,455 ns/op
+# Warmup Iteration  14: 35,445 ns/op
+# Warmup Iteration  15: 35,468 ns/op
+Iteration   1: 35,666 ns/op
+Iteration   2: 35,523 ns/op
+Iteration   3: 35,458 ns/op
+Iteration   4: 35,556 ns/op
+Iteration   5: 35,559 ns/op
+Iteration   6: 35,758 ns/op
+Iteration   7: 35,601 ns/op
+Iteration   8: 35,310 ns/op
+Iteration   9: 35,528 ns/op
+Iteration  10: 35,495 ns/op
+Iteration  11: 35,588 ns/op
+Iteration  12: 35,599 ns/op
+Iteration  13: 35,499 ns/op
+Iteration  14: 35,465 ns/op
+Iteration  15: 35,297 ns/op
+Iteration  16: 35,416 ns/op
+Iteration  17: 35,478 ns/op
+Iteration  18: 35,518 ns/op
+Iteration  19: 35,696 ns/op
+Iteration  20: 36,045 ns/op
+Iteration  21: 35,501 ns/op
+Iteration  22: 35,330 ns/op
+Iteration  23: 35,413 ns/op
+Iteration  24: 35,502 ns/op
+Iteration  25: 35,407 ns/op
+Iteration  26: 35,413 ns/op
+Iteration  27: 35,483 ns/op
+Iteration  28: 35,392 ns/op
+Iteration  29: 35,327 ns/op
+Iteration  30: 35,414 ns/op
+Iteration  31: 35,285 ns/op
+Iteration  32: 35,424 ns/op
+Iteration  33: 35,413 ns/op
+Iteration  34: 35,421 ns/op
+Iteration  35: 35,463 ns/op
+Iteration  36: 35,351 ns/op
+Iteration  37: 35,374 ns/op
+Iteration  38: 35,457 ns/op
+Iteration  39: 35,403 ns/op
+Iteration  40: 35,319 ns/op
+
+# Run progress: 69,96% complete, ETA 00:02:48
+# Fork: 2 of 2
+# Warmup Iteration   1: 29,516 ns/op
+# Warmup Iteration   2: 26,036 ns/op
+# Warmup Iteration   3: 25,379 ns/op
+# Warmup Iteration   4: 25,430 ns/op
+# Warmup Iteration   5: 25,224 ns/op
+# Warmup Iteration   6: 25,501 ns/op
+# Warmup Iteration   7: 25,249 ns/op
+# Warmup Iteration   8: 25,301 ns/op
+# Warmup Iteration   9: 25,341 ns/op
+# Warmup Iteration  10: 25,309 ns/op
+# Warmup Iteration  11: 25,418 ns/op
+# Warmup Iteration  12: 25,390 ns/op
+# Warmup Iteration  13: 25,318 ns/op
+# Warmup Iteration  14: 25,425 ns/op
+# Warmup Iteration  15: 25,388 ns/op
+Iteration   1: 25,515 ns/op
+Iteration   2: 25,353 ns/op
+Iteration   3: 25,147 ns/op
+Iteration   4: 25,217 ns/op
+Iteration   5: 25,317 ns/op
+Iteration   6: 25,330 ns/op
+Iteration   7: 25,254 ns/op
+Iteration   8: 25,286 ns/op
+Iteration   9: 25,356 ns/op
+Iteration  10: 25,356 ns/op
+Iteration  11: 25,291 ns/op
+Iteration  12: 25,262 ns/op
+Iteration  13: 25,271 ns/op
+Iteration  14: 25,439 ns/op
+Iteration  15: 25,253 ns/op
+Iteration  16: 25,283 ns/op
+Iteration  17: 25,212 ns/op
+Iteration  18: 25,360 ns/op
+Iteration  19: 25,253 ns/op
+Iteration  20: 25,342 ns/op
+Iteration  21: 25,292 ns/op
+Iteration  22: 25,320 ns/op
+Iteration  23: 25,332 ns/op
+Iteration  24: 25,500 ns/op
+Iteration  25: 25,250 ns/op
+Iteration  26: 25,350 ns/op
+Iteration  27: 25,411 ns/op
+Iteration  28: 25,208 ns/op
+Iteration  29: 25,486 ns/op
+Iteration  30: 25,232 ns/op
+Iteration  31: 25,282 ns/op
+Iteration  32: 25,412 ns/op
+Iteration  33: 25,201 ns/op
+Iteration  34: 25,268 ns/op
+Iteration  35: 25,391 ns/op
+Iteration  36: 25,349 ns/op
+Iteration  37: 25,263 ns/op
+Iteration  38: 25,265 ns/op
+Iteration  39: 25,375 ns/op
+Iteration  40: 25,292 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testUsernameInvalid":
+  30,396 ±(99.9%) 1,955 ns/op [Average]
+  (min, avg, max) = (25,147, 30,396, 36,045), stdev = 5,116
+  CI (99.9%): [28,442, 32,352] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 17.0.12, Java HotSpot(TM) 64-Bit Server VM, 17.0.12+8-LTS-286
+# VM invoker: C:\Program Files\Java\jdk-17\bin\java.exe
+# VM options: -ea -Dfile.encoding=UTF-8 -XX:+ShowCodeDetailsInExceptionMessages
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 15 iterations, 1 s each
+# Measurement: 40 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: benchmark.FieldValidatorBenchmark.testUsernameValid
+
+# Run progress: 77,73% complete, ETA 00:01:52
+# Fork: 1 of 2
+# Warmup Iteration   1: 154,983 ns/op
+# Warmup Iteration   2: 147,968 ns/op
+# Warmup Iteration   3: 155,264 ns/op
+# Warmup Iteration   4: 153,793 ns/op
+# Warmup Iteration   5: 154,608 ns/op
+# Warmup Iteration   6: 153,769 ns/op
+# Warmup Iteration   7: 154,737 ns/op
+# Warmup Iteration   8: 155,040 ns/op
+# Warmup Iteration   9: 154,141 ns/op
+# Warmup Iteration  10: 154,180 ns/op
+# Warmup Iteration  11: 154,618 ns/op
+# Warmup Iteration  12: 154,485 ns/op
+# Warmup Iteration  13: 154,045 ns/op
+# Warmup Iteration  14: 153,988 ns/op
+# Warmup Iteration  15: 153,986 ns/op
+Iteration   1: 154,837 ns/op
+Iteration   2: 154,684 ns/op
+Iteration   3: 154,167 ns/op
+Iteration   4: 154,862 ns/op
+Iteration   5: 154,758 ns/op
+Iteration   6: 155,087 ns/op
+Iteration   7: 154,021 ns/op
+Iteration   8: 154,388 ns/op
+Iteration   9: 154,335 ns/op
+Iteration  10: 154,269 ns/op
+Iteration  11: 154,385 ns/op
+Iteration  12: 154,829 ns/op
+Iteration  13: 154,045 ns/op
+Iteration  14: 153,998 ns/op
+Iteration  15: 153,936 ns/op
+Iteration  16: 154,289 ns/op
+Iteration  17: 154,837 ns/op
+Iteration  18: 153,599 ns/op
+Iteration  19: 153,984 ns/op
+Iteration  20: 154,239 ns/op
+Iteration  21: 154,567 ns/op
+Iteration  22: 154,773 ns/op
+Iteration  23: 153,998 ns/op
+Iteration  24: 154,493 ns/op
+Iteration  25: 154,266 ns/op
+Iteration  26: 155,562 ns/op
+Iteration  27: 154,377 ns/op
+Iteration  28: 154,556 ns/op
+Iteration  29: 154,946 ns/op
+Iteration  30: 154,061 ns/op
+Iteration  31: 154,251 ns/op
+Iteration  32: 154,223 ns/op
+Iteration  33: 153,768 ns/op
+Iteration  34: 153,487 ns/op
+Iteration  35: 154,904 ns/op
+Iteration  36: 155,190 ns/op
+Iteration  37: 154,154 ns/op
+Iteration  38: 154,288 ns/op
+Iteration  39: 154,673 ns/op
+Iteration  40: 154,330 ns/op
+
+# Run progress: 85,51% complete, ETA 00:00:56
+# Fork: 2 of 2
+# Warmup Iteration   1: 168,381 ns/op
+# Warmup Iteration   2: 150,617 ns/op
+# Warmup Iteration   3: 148,010 ns/op
+# Warmup Iteration   4: 148,376 ns/op
+# Warmup Iteration   5: 148,489 ns/op
+# Warmup Iteration   6: 148,892 ns/op
+# Warmup Iteration   7: 147,973 ns/op
+# Warmup Iteration   8: 148,890 ns/op
+# Warmup Iteration   9: 148,520 ns/op
+# Warmup Iteration  10: 148,916 ns/op
+# Warmup Iteration  11: 149,178 ns/op
+# Warmup Iteration  12: 148,245 ns/op
+# Warmup Iteration  13: 148,876 ns/op
+# Warmup Iteration  14: 150,822 ns/op
+# Warmup Iteration  15: 148,126 ns/op
+Iteration   1: 148,126 ns/op
+Iteration   2: 148,942 ns/op
+Iteration   3: 148,393 ns/op
+Iteration   4: 147,882 ns/op
+Iteration   5: 148,440 ns/op
+Iteration   6: 147,896 ns/op
+Iteration   7: 149,068 ns/op
+Iteration   8: 148,880 ns/op
+Iteration   9: 148,876 ns/op
+Iteration  10: 148,150 ns/op
+Iteration  11: 148,815 ns/op
+Iteration  12: 148,386 ns/op
+Iteration  13: 148,729 ns/op
+Iteration  14: 148,612 ns/op
+Iteration  15: 148,564 ns/op
+Iteration  16: 149,404 ns/op
+Iteration  17: 150,837 ns/op
+Iteration  18: 148,515 ns/op
+Iteration  19: 148,273 ns/op
+Iteration  20: 148,874 ns/op
+Iteration  21: 148,318 ns/op
+Iteration  22: 148,101 ns/op
+Iteration  23: 148,797 ns/op
+Iteration  24: 148,444 ns/op
+Iteration  25: 148,332 ns/op
+Iteration  26: 148,028 ns/op
+Iteration  27: 148,552 ns/op
+Iteration  28: 148,388 ns/op
+Iteration  29: 148,754 ns/op
+Iteration  30: 148,734 ns/op
+Iteration  31: 148,262 ns/op
+Iteration  32: 148,254 ns/op
+Iteration  33: 148,096 ns/op
+Iteration  34: 148,729 ns/op
+Iteration  35: 148,564 ns/op
+Iteration  36: 148,961 ns/op
+Iteration  37: 147,322 ns/op
+Iteration  38: 148,875 ns/op
+Iteration  39: 147,726 ns/op
+Iteration  40: 148,813 ns/op
+
+
+Result "benchmark.FieldValidatorBenchmark.testUsernameValid":
+  151,476 ±(99.9%) 1,144 ns/op [Average]
+  (min, avg, max) = (147,322, 151,476, 155,562), stdev = 2,993
+  CI (99.9%): [150,333, 152,621] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:11:12
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                    Mode  Cnt    Score   Error  Units
+FieldValidatorBenchmark.testEmailInvalid     avgt   80  141,339 ± 4,181  ns/op
+FieldValidatorBenchmark.testEmailValid       avgt   80  244,289 ± 0,464  ns/op
+FieldValidatorBenchmark.testPasswordInvalid  avgt   80  112,653 ± 0,113  ns/op
+FieldValidatorBenchmark.testPasswordValid    avgt   80  545,382 ± 3,291  ns/op
+FieldValidatorBenchmark.testUsernameInvalid  avgt   80   30,396 ± 1,955  ns/op
+FieldValidatorBenchmark.testUsernameValid    avgt   80  151,476 ± 1,144  ns/op
