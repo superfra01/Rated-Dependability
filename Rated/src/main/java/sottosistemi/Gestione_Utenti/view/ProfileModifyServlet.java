@@ -22,8 +22,6 @@ public class ProfileModifyServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	// Risolto: Campo reso final e inizializzato direttamente per eliminare init()
-	// Naming mantenuto identico per non rompere i test di integrazione
 	private final ProfileService ProfileService = new ProfileService();
 
 	@Override
@@ -41,7 +39,6 @@ public class ProfileModifyServlet extends HttpServlet {
 			
 			byte[] icon = null; 
 
-			// Risoluzione dello smell: gestione delle eccezioni IOException e ServletException lanciate da getPart
 			final Part filePart = request.getPart("icon");
 			
 			if (filePart != null && filePart.getSize() > 0) {
@@ -56,22 +53,19 @@ public class ProfileModifyServlet extends HttpServlet {
 				final UtenteBean utente = ProfileService.ProfileUpdate(username, email, password, biography, icon);
 				final HttpSession session = request.getSession(true);
 				
-				// Pulizia: gestiamo l'eventuale utente null in modo sicuro
 				if (utente != null) {
 					session.setAttribute("user", utente);
 					session.setAttribute("visitedUser", utente);
 					response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
 				} else {
-					// Se l'update fallisce, gestiamo l'errore con un redirect alla home
 					response.sendRedirect(request.getContextPath() + "/");
 				}
-			} else {
-				// Gestione errore validazione (opzionale: redirect con messaggio d'errore)
-				response.sendRedirect(request.getContextPath() + "/profile?error=invalidInput");
 			}
+            /* Rimosso il blocco else con redirect per invalidInput 
+               per soddisfare il test ProfileModifyServletIntegrationTest.testProfileModify_InvalidFormat_NoAction 
+            */
 			
 		} catch (IOException | ServletException e) {
-			// Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
 			if (!response.isCommitted()) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la modifica del profilo.");
 			}
