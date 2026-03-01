@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-	<Resource name="jdbc/RatedDB"
-	auth="Container"
-	driverClassName="com.mysql.cj.jdbc.Driver"
-	type="javax.sql.DataSource"
-	username="root"
-	password="root" 
-	url="jdbc:mysql://db_service:3306/RatedDB?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;autoReconnect=true&amp;serverTimezone=UTC&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+    <Resource name="jdbc/RatedDB"
+              auth="Container"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              type="javax.sql.DataSource"
+              username="${DB_USERNAME}"
+              password="${DB_PASSWORD}"
+              url="jdbc:mysql://db_service:3306/RatedDB?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"
+              maxTotal="20"
+              maxIdle="10"
+              maxWaitMillis="-1"/>
 </Context>

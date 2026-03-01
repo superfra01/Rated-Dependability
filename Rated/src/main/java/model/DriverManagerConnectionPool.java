@@ -1,57 +1,64 @@
 package model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 public class DriverManagerConnectionPool {
-	// Reso final perché inizializzato inline e mai riassegnato (solo modificato il contenuto)
-	private static List<Connection> freeDbConnections = new LinkedList<Connection>();
-	
-	static {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}
-		catch (final ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static Connection createDBConnection() throws SQLException {
-		Connection newConnection = null;
-		final String db = "RatedDB";
-		final String username = "root";
-		final String password = "root";
 
-		newConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+db, username, password);
-		
-		newConnection.setAutoCommit(false);
-		
-		return newConnection;
-	}
-	
-	public static synchronized Connection getConnection() throws SQLException {
-		Connection connection;
-		
-		if(! freeDbConnections.isEmpty()) {
-			connection = (Connection) freeDbConnections.get(0);
-			DriverManagerConnectionPool.freeDbConnections.remove(0);
-			try {
-				if (connection.isClosed()) {
-					connection = DriverManagerConnectionPool.getConnection();
-				}
-			} catch (final SQLException e) {
-				connection = DriverManagerConnectionPool.getConnection();
-			}
-		}
-		else connection = DriverManagerConnectionPool.createDBConnection();
-		
-		return connection;
-	}
-	
-	public static synchronized void releaseConnection(final Connection connection) {
-		DriverManagerConnectionPool.freeDbConnections.add(connection);
-	}
+    // Riferimento al pool di connessioni gestito dal server web
+    private static volatile DataSource dataSource;
+
+    // Costruttore privato per impedire l'istanziamento della classe
+    private DriverManagerConnectionPool() {}
+
+    // Metodo per recuperare il DataSource tramite pattern Singleton
+    private static DataSource getDataSource() {
+        if (dataSource == null) {
+            synchronized (DriverManagerConnectionPool.class) {
+                if (dataSource == null) {
+                    try {
+                        Context initCtx = new InitialContext();
+                        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+                        
+                        // Cerca la risorsa configurata nel file context.xml
+                        dataSource = (DataSource) envCtx.lookup("jdbc/RatedDB");
+                    } catch (NamingException e) {
+                        throw new RuntimeException("Errore durnate la configurazione del DataSource JNDI", e);
+                    }
+                }
+            }
+        }
+        return dataSource;
+    }
+
+    /**
+     * Fornisce una connessione prelevandola dal pool di Tomcat.
+     */
+    public static Connection getConnection() throws SQLException {
+        Connection connection = getDataSource().getConnection();
+        
+        // Manteniamo il false di default come facevi nel tuo codice originale
+        connection.setAutoCommit(false); 
+        
+        return connection;
+    }
+
+    /**
+     * Rilascia la connessione.
+     * ATTENZIONE: Con i DataSource, il metodo .close() NON chiude fisicamente 
+     * la connessione con il DB, ma la restituisce semplicemente al pool!
+     */
+    public static void releaseConnection(final Connection connection) {
+        if (connection != null) {
+            try {
+                connection.close(); // Restituisce la connessione al pool
+            } catch (SQLException e) {
+                System.err.println("Errore durante il rilascio della connessione: " + e.getMessage());
+            }
+        }
+    }
 }
