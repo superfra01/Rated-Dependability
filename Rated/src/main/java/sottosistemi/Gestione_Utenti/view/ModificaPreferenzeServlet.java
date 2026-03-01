@@ -1,6 +1,8 @@
 package sottosistemi.Gestione_Utenti.view;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,8 @@ public class ModificaPreferenzeServlet extends HttpServlet {
 
     // Campo reso final e inizializzato direttamente per eliminare init()
     private final ProfileService profileService = new ProfileService();
+    // Inizializzazione del Logger per tracciare le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(ModificaPreferenzeServlet.class.getName());
 
     public ModificaPreferenzeServlet() {
         super();
@@ -31,8 +35,12 @@ public class ModificaPreferenzeServlet extends HttpServlet {
 
             // 1. Controllo Autenticazione: L'utente è loggato?
             if (utenteSessione == null) {
-                // Risoluzione dello smell: gestione IOException per sendRedirect
-                response.sendRedirect("login.jsp");
+                try {
+                    // Risoluzione dello smell: gestione IOException per sendRedirect
+                    response.sendRedirect("login.jsp");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
+                }
                 return;
             }
 
@@ -41,7 +49,12 @@ public class ModificaPreferenzeServlet extends HttpServlet {
 
             // 2. Controllo Autorizzazione: Chi fa la richiesta è il proprietario dell'account?
             if (targetEmail != null && !targetEmail.equals(utenteSessione.getEmail())) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Non sei autorizzato a modificare le preferenze di questo utente.");
+                try {
+                    // Risoluzione dello smell per sendError
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Non sei autorizzato a modificare le preferenze di questo utente.");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare errore 403, stream disconnesso", e);
+                }
                 return;
             }
 
@@ -53,12 +66,23 @@ public class ModificaPreferenzeServlet extends HttpServlet {
             session.setAttribute("messaggioSuccesso", "Preferenze aggiornate con successo!");
 
             // 4. Redirect al profilo
-            response.sendRedirect("profile?visitedUser=" + utenteSessione.getUsername());
+            try {
+                // Risoluzione dello smell per sendRedirect
+                response.sendRedirect("profile?visitedUser=" + utenteSessione.getUsername());
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al profilo", e);
+            }
             
-        } catch (IOException e) {
-            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Errore imprevisto durante la modifica delle preferenze", e);
+            // Gestione dell'errore di sistema: invio di un codice di errore 500 protetto
             if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la modifica delle preferenze.");
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la modifica delle preferenze.");
+                } catch (IOException ioEx) {
+                    // Risoluzione dello smell per sendError
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
+                }
             }
         }
     }
@@ -69,8 +93,14 @@ public class ModificaPreferenzeServlet extends HttpServlet {
             // Risoluzione dello smell: gestione IOException per sendRedirect
             response.sendRedirect("profile.jsp");
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante il redirect in doGet", e);
             if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
+                try {
+                    // Risoluzione dello smell per sendError
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
+                } catch (IOException ioEx) {
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500 in doGet, stream disconnesso", ioEx);
+                }
             }
         }
     }

@@ -5,6 +5,8 @@ import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +22,8 @@ public class RicercaCatalogoServlet extends HttpServlet {
     
     // Field final e inizializzato per garantire l'immutabilità del service
     private final CatalogoService catalogoService = new CatalogoService();
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(RicercaCatalogoServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -39,6 +43,7 @@ public class RicercaCatalogoServlet extends HttpServlet {
                 films = catalogoService.ricercaFilm(queryRicerca);
             } catch (Exception e) {
                 // Se la ricerca fallisce a livello DB, gestiamo l'errore senza crashare
+                LOGGER.log(Level.SEVERE, "Eccezione durante la ricerca nel DB", e);
                 handleCriticalError(response, "Errore durante l'interrogazione del catalogo.");
                 return;
             }
@@ -51,11 +56,13 @@ public class RicercaCatalogoServlet extends HttpServlet {
             try {
                 request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
+                LOGGER.log(Level.SEVERE, "Errore nel forward verso catalogo.jsp", e);
                 handleCriticalError(response, "Errore interno durante il caricamento della vista dei risultati.");
             }
 
         } catch (Exception e) {
             // Catch-all per prevenire falle di sicurezza o crash imprevisti
+            LOGGER.log(Level.SEVERE, "Errore imprevisto globale nel doGet", e);
             handleCriticalError(response, "Si è verificato un errore critico imprevisto.");
         }
     }
@@ -71,7 +78,8 @@ public class RicercaCatalogoServlet extends HttpServlet {
                 response.setContentType("text/plain;charset=UTF-8");
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
             } catch (IOException ioException) {
-                // Se anche sendError fallisce (connessione interrotta), non possiamo fare altro che terminare
+                // Anche qui usiamo il Logger invece di lasciare il catch vuoto (altro potenziale code smell)
+                LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore (connessione interrotta)", ioException);
             }
         }
     }
@@ -79,6 +87,11 @@ public class RicercaCatalogoServlet extends HttpServlet {
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         // Supportiamo la ricerca anche via POST per flessibilità, delegando al GET
-        doGet(request, response);
+        try {
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            handleCriticalError(response, "Errore interno durante l'elaborazione della richiesta.");
+        }
     }
 }

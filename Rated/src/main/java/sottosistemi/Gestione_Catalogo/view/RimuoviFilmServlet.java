@@ -4,6 +4,8 @@ import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,10 +19,17 @@ public class RimuoviFilmServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final CatalogoService catalogoService = new CatalogoService();
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(RimuoviFilmServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException { 
-        response.sendRedirect(request.getContextPath() + "/catalogo");
+        try {
+            // Gestione dello smell su sendRedirect
+            response.sendRedirect(request.getContextPath() + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
+        }
     }
 
     @Override
@@ -33,7 +42,12 @@ public class RimuoviFilmServlet extends HttpServlet {
             // 1. Controllo Autorizzazione (Messaggio e Status richiesti dal test)
             if (user == null || !"GESTORE".equals(user.getTipoUtente())) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                try {
+                    // Protezione preventiva su getWriter()
+                    response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return; // FONDAMENTALE: Interrompe l'esecuzione per evitare il 500 successivo
             }
 
@@ -53,7 +67,12 @@ public class RimuoviFilmServlet extends HttpServlet {
             if (!response.isCommitted()) {
                 String contextPath = request.getContextPath();
                 // Gestione del mock che restituisce null per il context path
-                response.sendRedirect((contextPath != null ? contextPath : "") + "/catalogo");
+                try {
+                    // Gestione dello smell su sendRedirect
+                    response.sendRedirect((contextPath != null ? contextPath : "") + "/catalogo");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
+                }
             }
 
         } catch (Exception e) {
@@ -62,7 +81,8 @@ public class RimuoviFilmServlet extends HttpServlet {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
                 } catch (IOException ioEx) {
-                    // Stream già compromesso
+                    // Sostituzione del blocco catch vuoto con il Logger
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream chiuso", ioEx);
                 }
             }
         }

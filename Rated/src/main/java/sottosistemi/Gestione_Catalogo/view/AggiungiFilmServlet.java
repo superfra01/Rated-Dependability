@@ -4,6 +4,8 @@ import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Catalogo.service.CatalogoService;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,8 @@ import javax.servlet.http.Part;
 public class AggiungiFilmServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final CatalogoService catalogoService = new CatalogoService();
+    // Inizializzazione del Logger per gestire correttamente le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(AggiungiFilmServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {}
@@ -56,14 +60,24 @@ public class AggiungiFilmServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 if (!response.isCommitted()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().write("Errore: I campi 'Anno' e 'Durata' devono essere numeri validi.");
+                    // Gestione dello smell getWriter
+                    try {
+                        response.getWriter().write("Errore: I campi 'Anno' e 'Durata' devono essere numeri validi.");
+                    } catch (IOException ioException) {
+                        LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore per formato numero non valido", ioException);
+                    }
                 }
             } catch (Exception e) {
                 if (!response.isCommitted()) response.sendError(500, "Si è verificato un errore critico imprevisto.");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+            // Gestione dello smell getWriter
+            try {
+                response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+            } catch (IOException ioException) {
+                LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore per utente non autorizzato", ioException);
+            }
         }
     }
 }

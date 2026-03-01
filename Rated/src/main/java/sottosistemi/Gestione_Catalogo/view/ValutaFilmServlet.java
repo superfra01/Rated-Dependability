@@ -5,6 +5,8 @@ import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 import sottosistemi.Gestione_Utenti.service.ProfileService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,11 +23,18 @@ public class ValutaFilmServlet extends HttpServlet {
     // Service inizializzati per garantire l'immutabilità (Dependability)
     private final RecensioniService recensioniService = new RecensioniService();
     private final ProfileService profileService = new ProfileService();
+    // Inizializzazione del Logger per tracciare le eccezioni in modo appropriato
+    private static final Logger LOGGER = Logger.getLogger(ValutaFilmServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
+        }
     }
 
     @Override
@@ -39,7 +48,12 @@ public class ValutaFilmServlet extends HttpServlet {
             if (user == null) {
                 if (!response.isCommitted()) {
                     String cp = request.getContextPath();
-                    response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    try {
+                        // Risoluzione smell su sendRedirect (Autenticazione)
+                        response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
+                    }
                 }
                 return;
             }
@@ -69,7 +83,12 @@ public class ValutaFilmServlet extends HttpServlet {
             // 4. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
                 String cp = request.getContextPath();
-                response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                try {
+                    // Risoluzione smell su sendRedirect (Fine operazione)
+                    response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del film", e);
+                }
             }
 
         } catch (Exception e) {
@@ -78,7 +97,8 @@ public class ValutaFilmServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Risolto il blocco catch silenzioso
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

@@ -4,6 +4,8 @@ import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +18,18 @@ public class ReportReviewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final RecensioniService RecensioniService = new RecensioniService();
+    // Inizializzazione del Logger per tracciare le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(ReportReviewServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/catalogo");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
+        }
     }
 
     @Override
@@ -34,7 +43,12 @@ public class ReportReviewServlet extends HttpServlet {
             if (user == null) {
                 if (!response.isCommitted()) {
                     String cp = request.getContextPath();
-                    response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    try {
+                        // Risoluzione smell su sendRedirect (Login)
+                        response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
+                    }
                 }
                 return;
             }
@@ -63,8 +77,12 @@ public class ReportReviewServlet extends HttpServlet {
             // 4. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
                 String cp = request.getContextPath();
-                // Gestione null per i mock
-                response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                try {
+                    // Gestione null per i mock e risoluzione smell su sendRedirect
+                    response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del film", e);
+                }
             }
 
         } catch (Exception e) {
@@ -73,7 +91,8 @@ public class ReportReviewServlet extends HttpServlet {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore imprevisto nel sistema.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Sostituzione del catch silenzioso con log esplicito
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

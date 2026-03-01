@@ -4,6 +4,8 @@ import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +21,18 @@ public class DeleteReviewServlet extends HttpServlet {
     
     // Naming mantenuto identico per compatibilità con il field injection del test (Reflection)
     private final RecensioniService RecensioniService = new RecensioniService();
+    // Inizializzazione del Logger per tracciare le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(DeleteReviewServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/profile");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/profile");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al profilo in doGet", e);
+        }
     }
 
     @Override
@@ -37,7 +46,12 @@ public class DeleteReviewServlet extends HttpServlet {
             if (user == null) {
                 if (!response.isCommitted()) {
                     String cp = request.getContextPath();
-                    response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    try {
+                        // Risoluzione smell su sendRedirect (Login)
+                        response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
+                    }
                 }
                 return;
             }
@@ -57,7 +71,12 @@ public class DeleteReviewServlet extends HttpServlet {
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test: /Rated/profile?visitedUser=AuthorDelete)
             if (!response.isCommitted()) {
                 String cp = request.getContextPath();
-                response.sendRedirect((cp != null ? cp : "") + "/profile?visitedUser=" + user.getUsername());
+                try {
+                    // Risoluzione smell su sendRedirect (Fine operazione)
+                    response.sendRedirect((cp != null ? cp : "") + "/profile?visitedUser=" + user.getUsername());
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del profilo", e);
+                }
             }
 
         } catch (Exception e) {
@@ -66,7 +85,8 @@ public class DeleteReviewServlet extends HttpServlet {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Sostituzione del catch silenzioso con log esplicito
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

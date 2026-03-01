@@ -4,6 +4,8 @@ import model.Entity.UtenteBean;
 import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +21,18 @@ public class ApproveReviewServlet extends HttpServlet {
     
     // Naming mantenuto identico per compatibilità con il field injection del test
     private final RecensioniService RecensioniService = new RecensioniService();
+    // Inizializzazione del Logger
+    private static final Logger LOGGER = Logger.getLogger(ApproveReviewServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/moderator");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/moderator");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
+        }
     }
 
     @Override
@@ -36,7 +45,12 @@ public class ApproveReviewServlet extends HttpServlet {
             // 2. Controllo Autorizzazione (Messaggio esatto richiesto dal test)
             if (user == null || !"MODERATORE".equals(user.getTipoUtente())) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                try {
+                    // Prevenzione proattiva smell su getWriter()
+                    response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return; // Interrompe l'esecuzione prevenendo il cascade al 500
             }
 
@@ -63,7 +77,12 @@ public class ApproveReviewServlet extends HttpServlet {
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test: /Rated/moderator)
             if (!response.isCommitted()) {
                 String cp = request.getContextPath();
-                response.sendRedirect((cp != null ? cp : "") + "/moderator");
+                try {
+                    // Risoluzione smell su sendRedirect
+                    response.sendRedirect((cp != null ? cp : "") + "/moderator");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
+                }
             }
 
         } catch (Exception e) {
@@ -72,7 +91,8 @@ public class ApproveReviewServlet extends HttpServlet {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
                 } catch (IOException ioEx) {
-                    // Silenzioso: la connessione è già chiusa
+                    // Risolto il blocco catch vuoto (Silenzioso)
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

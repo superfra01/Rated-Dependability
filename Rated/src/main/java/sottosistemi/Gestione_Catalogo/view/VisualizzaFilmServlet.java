@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +31,8 @@ public class VisualizzaFilmServlet extends HttpServlet {
     private final CatalogoService catalogoService = new CatalogoService();
     private final RecensioniService recensioniService = new RecensioniService();
     private final ProfileService profileService = new ProfileService();
+    // Aggiunta del Logger
+    private static final Logger LOGGER = Logger.getLogger(VisualizzaFilmServlet.class.getName());
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +42,8 @@ public class VisualizzaFilmServlet extends HttpServlet {
             // 1. Validazione ID Film
             final String idFilmStr = request.getParameter("idFilm");
             if (idFilmStr == null || idFilmStr.isEmpty()) {
-                response.sendRedirect("catalogo.jsp");
+                // Sostituzione con il metodo helper protetto
+                redirectSafe(response, "catalogo.jsp");
                 return;
             }
 
@@ -46,14 +51,16 @@ public class VisualizzaFilmServlet extends HttpServlet {
             try {
                 idFilm = Integer.parseInt(idFilmStr);
             } catch (final NumberFormatException e) {
-                response.sendRedirect("catalogo.jsp");
+                // Sostituzione con il metodo helper protetto
+                redirectSafe(response, "catalogo.jsp");
                 return;
             }
 
             // 2. Recupero Dati Principali (Critici)
             final FilmBean film = catalogoService.getFilm(idFilm);
             if (film == null) {
-                response.sendRedirect("catalogo.jsp");
+                // Sostituzione con il metodo helper protetto
+                redirectSafe(response, "catalogo.jsp");
                 return;
             }
             session.setAttribute("film", film);
@@ -73,7 +80,8 @@ public class VisualizzaFilmServlet extends HttpServlet {
                     session.removeAttribute("users");
                 }
             } catch (Exception e) {
-                // Silenziamo l'errore per i dati non essenziali o logghiamolo internamente
+                // Registriamo l'errore non critico nel log
+                LOGGER.log(Level.WARNING, "Impossibile recuperare i dati correlati (generi/recensioni) per il film ID: " + idFilm, e);
                 session.setAttribute("recensioni", new ArrayList<>());
             }
 
@@ -84,10 +92,12 @@ public class VisualizzaFilmServlet extends HttpServlet {
             try {
                 request.getRequestDispatcher("/WEB-INF/jsp/film.jsp").forward(request, response);
             } catch (ServletException | IOException e) {
+                LOGGER.log(Level.SEVERE, "Errore nel forward verso la vista film.jsp", e);
                 handleCriticalError(response, "Errore nel caricamento della vista film.");
             }
 
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Errore critico imprevisto nel doGet", e);
             handleCriticalError(response, "Si è verificato un errore imprevisto.");
         }
     }
@@ -118,16 +128,26 @@ public class VisualizzaFilmServlet extends HttpServlet {
                     inWatchlist = watchlist.stream().anyMatch(f -> f.getIdFilm() == idFilm);
                 }
             } catch (Exception e) {
-                // Se fallisce il contesto utente, settiamo default per non bloccare la pagina
+                // Log dell'errore anziché ignorarlo silenziosamente
+                LOGGER.log(Level.WARNING, "Errore durante il recupero del contesto utente per il film ID: " + idFilm, e);
             }
         }
         session.setAttribute("watched", isWatched);
         session.setAttribute("inwatchlist", inWatchlist);
     }
 
-    private void redirectSafe(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+    /**
+     * Modificato: Gestisce internamente l'eccezione invece di lanciarla,
+     * risolvendo lo smell del sendRedirect.
+     */
+    private void redirectSafe(HttpServletResponse response, String path) {
         if (!response.isCommitted()) {
-            response.sendRedirect(request.getContextPath() + path);
+            try {
+                // Rimosso il context path per mantenere il redirect relativo atteso dal test
+                response.sendRedirect(path);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect a " + path, e);
+            }
         }
     }
 
@@ -136,13 +156,20 @@ public class VisualizzaFilmServlet extends HttpServlet {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
             } catch (IOException e) {
-                // Stream chiuso, nulla da fare
+                // Risolto blocco catch vuoto
+                LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", e);
             }
         }
     }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        // Protezione della chiamata a doGet
+        try {
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            handleCriticalError(response, "Errore interno durante l'elaborazione della richiesta.");
+        }
     }
 }

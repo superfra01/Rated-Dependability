@@ -5,6 +5,8 @@ import sottosistemi.Gestione_Utenti.service.ModerationService;
 import sottosistemi.Gestione_Recensioni.service.RecensioniService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,9 @@ import javax.servlet.http.HttpSession;
 public class RimuoviReviewAndWarnServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    
+    // Inizializzazione del Logger per tracciare le eccezioni
+    private static final Logger LOGGER = Logger.getLogger(RimuoviReviewAndWarnServlet.class.getName());
 
     // Campi final mantenuti con il naming atteso dal test (Reflection injection)
     private final RecensioniService RecensioniService = new RecensioniService();
@@ -25,7 +30,12 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         String cp = request.getContextPath();
-        response.sendRedirect((cp != null ? cp : "") + "/moderator");
+        try {
+            // Risoluzione smell su sendRedirect
+            response.sendRedirect((cp != null ? cp : "") + "/moderator");
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
+        }
     }
 
     @Override
@@ -38,7 +48,12 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
             // 2. Controllo Autorizzazione (Messaggio e Status richiesti dal test)
             if (user == null || !"MODERATORE".equals(user.getTipoUtente())) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                try {
+                    // Prevenzione smell su getWriter()
+                    response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
+                }
                 return; // FONDAMENTALE: Interrompe l'esecuzione prevenendo il cascade al 500
             }
 
@@ -61,7 +76,12 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
             if (!response.isCommitted()) {
                 String contextPath = request.getContextPath();
                 if (contextPath == null) contextPath = "/Rated"; // Fallback per i mock dei test
-                response.sendRedirect(contextPath + "/moderator");
+                try {
+                    // Risoluzione smell su sendRedirect finale
+                    response.sendRedirect(contextPath + "/moderator");
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale in doPost", e);
+                }
             }
 
         } catch (Exception e) {
@@ -70,7 +90,8 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
                 try {
                     response.sendError(500, "Errore critico imprevisto nel sistema di moderazione.");
                 } catch (IOException ioEx) {
-                    // Silenzioso: la connessione è già chiusa
+                    // Risolto il blocco catch vuoto
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }

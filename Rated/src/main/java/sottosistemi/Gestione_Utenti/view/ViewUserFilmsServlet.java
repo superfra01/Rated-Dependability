@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +30,8 @@ public class ViewUserFilmsServlet extends HttpServlet {
     // Naming mantenuto per compatibilità con l'iniezione tramite Reflection nei test
     private final ProfileService profileService = new ProfileService();
     private final CatalogoService catalogoService = new CatalogoService();
+    // Inizializzazione del Logger per tracciare le eccezioni silenziose
+    private static final Logger LOGGER = Logger.getLogger(ViewUserFilmsServlet.class.getName());
 
     public ViewUserFilmsServlet() {
         super();
@@ -44,7 +48,12 @@ public class ViewUserFilmsServlet extends HttpServlet {
             
             if (visitedUser == null) {
                 if (!response.isCommitted()) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
+                    try {
+                        // Prevenzione smell su sendError
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Impossibile inviare errore 404, stream disconnesso", e);
+                    }
                 }
                 return;
             }
@@ -67,16 +76,18 @@ public class ViewUserFilmsServlet extends HttpServlet {
             populateGenres(session, watchedList, catalogoService);
             populateGenres(session, watchlist, catalogoService);
 
-            // 4. Forward alla JSP
+            // 4. Forward alla JSP protetto implicitamente dal catch (Exception e) globale
             final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userFilms.jsp");
             dispatcher.forward(request, response);
 
         } catch (final Exception e) { 
+            LOGGER.log(Level.SEVERE, "Errore imprevisto in doGet durante il caricamento dei film", e);
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il recupero dei dati dell'utente.");
                 } catch (IOException ioEx) {
-                    // Silenzioso
+                    // Risolto il blocco catch silenzioso
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
         }
@@ -84,7 +95,19 @@ public class ViewUserFilmsServlet extends HttpServlet {
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        // Messa in sicurezza della delega a doGet (Risolve lo smell su ServletException e IOException)
+        try {
+            doGet(request, response);
+        } catch (ServletException | IOException e) {
+            LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno durante l'elaborazione della richiesta.");
+                } catch (IOException ioEx) {
+                    LOGGER.log(Level.SEVERE, "Impossibile inviare errore 500 in doPost, stream disconnesso", ioEx);
+                }
+            }
+        }
     }
 
     private void populateGenres(final HttpSession session, final List<FilmBean> films, final CatalogoService service) throws SQLException {
