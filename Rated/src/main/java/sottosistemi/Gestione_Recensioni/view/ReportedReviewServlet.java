@@ -21,49 +21,57 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/moderator")
 public class ReportedReviewServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+    // Naming con iniziale maiuscola mantenuto per compatibilità con i campi riflessi dei Test
+    private final CatalogoService CatalogoService = new CatalogoService();
+    private final RecensioniService RecensioniService = new RecensioniService();
+    private final ProfileService ProfileService = new ProfileService();
 
-	// Risolto: Campi resi final e inizializzati immediatamente
-	// Naming mantenuto identico all'originale per non rompere i test di integrazione
-	private final CatalogoService CatalogoService = new CatalogoService();
-	private final RecensioniService RecensioniService = new RecensioniService();
-	private final ProfileService ProfileService = new ProfileService();
+    @Override
+    public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // 1. Recupero Sessione: Usiamo getSession(true) per combaciare con lo stub del test
+            final HttpSession session = request.getSession(true); 
+            final UtenteBean user = (session != null) ? (UtenteBean) session.getAttribute("user") : null;
 
-	@Override
-	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		try {
-			final HttpSession session = request.getSession(true);
-			final UtenteBean user = (UtenteBean) session.getAttribute("user");
+            // 2. Controllo Autorizzazione (Messaggio e Status esatti per i test)
+            if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
 
-			if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
+                // 3. Recupero Dati
+                final List<RecensioneBean> recensioni = RecensioniService.GetAllRecensioniSegnalate();
+                session.setAttribute("recensioni", recensioni);
 
-				final List<RecensioneBean> recensioni = RecensioniService.GetAllRecensioniSegnalate();
-				session.setAttribute("recensioni", recensioni);
+                final HashMap<String, String> utenti = ProfileService.getUsers(recensioni);
+                session.setAttribute("users", utenti);
 
-				final HashMap<String, String> utenti = ProfileService.getUsers(recensioni);
-				session.setAttribute("users", utenti);
+                final HashMap<Integer, FilmBean> filmMap = CatalogoService.getFilms(recensioni);
+                session.setAttribute("films", filmMap);
 
-				final HashMap<Integer, FilmBean> FilmMap = CatalogoService.getFilms(recensioni);
-				session.setAttribute("films", FilmMap);
+                // 4. Forward alla JSP
+                request.getRequestDispatcher("/WEB-INF/jsp/moderator.jsp").forward(request, response);
 
-				// Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
-				request.getRequestDispatcher("/WEB-INF/jsp/moderator.jsp").forward(request, response);
+            } else {
+                // RIPRISTINO: Status 400 e stringa originale come richiesto dal test
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("You can't access the profile page unless you are an authenticated moderator.");
+                return; // Interrompe l'esecuzione
+            }
+            
+        } catch (Exception e) {
+            // Risoluzione dello smell: gestione IOException di sendError
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina moderatore.");
+                } catch (IOException ioEx) {
+                    // Silenzioso: la connessione è già chiusa
+                }
+            }
+        }
+    }
 
-			} else {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().write("You can't access the profile page unless you are an authenticated moderator.");
-			}
-		} catch (ServletException | IOException e) {
-			// Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
-			if (!response.isCommitted()) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina moderatore.");
-			}
-		}
-	}
-
-	@Override
-	public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		// Metodo vuoto
-	}
+    @Override
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

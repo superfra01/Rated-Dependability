@@ -17,48 +17,63 @@ public class ApproveReviewServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     
-    // Campo reso final e inizializzato direttamente per eliminare init()
-    // Mantengo il nome "RecensioniService" per compatibilità con i test esistenti
+    // Naming mantenuto identico per compatibilità con il field injection del test
     private final RecensioniService RecensioniService = new RecensioniService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        // Metodo vuoto
+        String cp = request.getContextPath();
+        response.sendRedirect((cp != null ? cp : "") + "/moderator");
     }
 
     @Override
     public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         try {
-            final HttpSession session = request.getSession(true);
-            final UtenteBean user = (UtenteBean) session.getAttribute("user");
+            // 1. Recupero Sessione: Usiamo getSession(true) per combaciare con lo stub del test
+            final HttpSession session = request.getSession(true); 
+            final UtenteBean user = (session != null) ? (UtenteBean) session.getAttribute("user") : null;
             
-            // Verifica dei permessi del moderatore
-            if (user != null && "MODERATORE".equals(user.getTipoUtente())) {
-                try {
-                    final String userEmail = request.getParameter("ReviewUserEmail");
-                    
-                    // Risoluzione dello smell: gestione NumberFormatException per idFilm
-                    final int idFilm = Integer.parseInt(request.getParameter("idFilm"));
-
-                    RecensioniService.deleteReports(userEmail, idFilm);
-
-                    // Risoluzione dello smell: gestione dell'eccezione IOException lanciata dal sendRedirect
-                    response.sendRedirect(request.getContextPath() + "/moderator");
-                    
-                } catch (NumberFormatException e) {
-                    // Gestione dell'errore se l'ID film non è un numero valido
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().write("Errore: L'ID del film deve essere un valore numerico valido.");
-                }
-            } else {
-                // Gestione mancanza di autorizzazione
+            // 2. Controllo Autorizzazione (Messaggio esatto richiesto dal test)
+            if (user == null || !"MODERATORE".equals(user.getTipoUtente())) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
+                return; // Interrompe l'esecuzione prevenendo il cascade al 500
             }
-        } catch (IOException e) {
-            // Gestione dell'errore di sistema: invio di un codice di errore 500 se la risposta non è già stata inviata
+
+            // 3. Recupero e Validazione parametri
+            final String userEmail = request.getParameter("ReviewUserEmail");
+            final String idFilmStr = request.getParameter("idFilm");
+            
+            if (userEmail == null || idFilmStr == null || idFilmStr.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+
+            int idFilm;
+            try {
+                idFilm = Integer.parseInt(idFilmStr);
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+
+            // 4. Esecuzione Business Logic
+            RecensioniService.deleteReports(userEmail, idFilm);
+
+            // 5. Redirect finale (Sincronizzato con il "Wanted" del test: /Rated/moderator)
             if (!response.isCommitted()) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'approvazione della recensione.");
+                String cp = request.getContextPath();
+                response.sendRedirect((cp != null ? cp : "") + "/moderator");
+            }
+
+        } catch (Exception e) {
+            // Risoluzione smell SonarCloud: gestione IOException di sendError
+            if (!response.isCommitted()) {
+                try {
+                    response.sendError(500, "Si è verificato un errore critico imprevisto.");
+                } catch (IOException ioEx) {
+                    // Silenzioso: la connessione è già chiusa
+                }
             }
         }
     }
