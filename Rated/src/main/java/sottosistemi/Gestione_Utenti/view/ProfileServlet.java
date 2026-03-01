@@ -26,7 +26,7 @@ public class ProfileServlet extends HttpServlet {
     // Campi resi final e inizializzati direttamente per eliminare init()
     private final ProfileService profileService = new ProfileService(); 
     private final RecensioniService recensioniService = new RecensioniService();
-    private final catalogoService catalogoService = new catalogoService();
+    private final CatalogoService catalogoService = new CatalogoService();
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
