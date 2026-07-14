@@ -74,8 +74,16 @@ class CatalogoServiceTest {
         // Esegui il metodo
         catalogoService.aggiungiFilm(nome, anno, durata, generi, regista, attori, locandina, trama);
 
-        // Verifica
-        verify(mockFilmDAO).save(any(FilmBean.class));
+        final ArgumentCaptor<FilmBean> captor = ArgumentCaptor.forClass(FilmBean.class);
+        verify(mockFilmDAO).save(captor.capture());
+        final FilmBean savedFilm = captor.getValue();
+        assertEquals(nome, savedFilm.getNome());
+        assertEquals(anno, savedFilm.getAnno());
+        assertEquals(durata, savedFilm.getDurata());
+        assertEquals(regista, savedFilm.getRegista());
+        assertEquals(attori, savedFilm.getAttori());
+        assertArrayEquals(locandina, savedFilm.getLocandina());
+        assertEquals(trama, savedFilm.getTrama());
     }
 
     @Test
@@ -170,7 +178,16 @@ class CatalogoServiceTest {
 
         catalogoService.addFilm(anno, attori, durata, generi, locandina, nome, regista, trama);
 
-        verify(mockFilmDAO).save(any(FilmBean.class));
+        final ArgumentCaptor<FilmBean> savedFilmCaptor = ArgumentCaptor.forClass(FilmBean.class);
+        verify(mockFilmDAO).save(savedFilmCaptor.capture());
+        final FilmBean submittedFilm = savedFilmCaptor.getValue();
+        assertEquals(anno, submittedFilm.getAnno());
+        assertEquals(attori, submittedFilm.getAttori());
+        assertEquals(durata, submittedFilm.getDurata());
+        assertArrayEquals(locandina, submittedFilm.getLocandina());
+        assertEquals(nome, submittedFilm.getNome());
+        assertEquals(regista, submittedFilm.getRegista());
+        assertEquals(trama, submittedFilm.getTrama());
         final ArgumentCaptor<FilmGenereBean> captor = ArgumentCaptor.forClass(FilmGenereBean.class);
         verify(mockFilmGenereDAO, times(2)).save(captor.capture());
         assertEquals(10, captor.getAllValues().get(0).getIdFilm());
@@ -181,25 +198,35 @@ class CatalogoServiceTest {
     @Test
     void testModifyFilm_UpdatesGeneri() throws SQLException {
         final int idFilm = 7;
-        final int durata = 90;
-        final String titolo = "Titolo";
         final int anno = 2021;
-        final String[] generi = new String[]{"Horror", "Thriller"};
-        final byte[] image = new byte[]{3};
-        final String regista = "Regista";
         final String attori = "Attori";
-        final String descrizione = "Descrizione";
+        final int durata = 90;
+        final String[] generi = new String[]{"Horror", "Thriller"};
+        final byte[] locandina = new byte[]{3};
+        final String nome = "Titolo";
+        final String regista = "Regista";
+        final String trama = "Descrizione";
 
         final FilmBean filmAttuale = new FilmBean();
         filmAttuale.setIdFilm(idFilm);
         filmAttuale.setValutazione(3);
         when(mockFilmDAO.findById(idFilm)).thenReturn(filmAttuale);
 
-        catalogoService.modifyFilm(idFilm, durata, titolo, anno, generi, image, regista, attori, descrizione);
+        catalogoService.modifyFilm(idFilm, anno, attori, durata, generi, locandina,
+                nome, regista, trama);
 
         final ArgumentCaptor<FilmBean> filmCaptor = ArgumentCaptor.forClass(FilmBean.class);
         verify(mockFilmDAO).update(filmCaptor.capture());
-        assertEquals(3, filmCaptor.getValue().getValutazione());
+        final FilmBean updatedFilm = filmCaptor.getValue();
+        assertEquals(idFilm, updatedFilm.getIdFilm());
+        assertEquals(anno, updatedFilm.getAnno());
+        assertEquals(attori, updatedFilm.getAttori());
+        assertEquals(durata, updatedFilm.getDurata());
+        assertArrayEquals(locandina, updatedFilm.getLocandina());
+        assertEquals(nome, updatedFilm.getNome());
+        assertEquals(regista, updatedFilm.getRegista());
+        assertEquals(trama, updatedFilm.getTrama());
+        assertEquals(3, updatedFilm.getValutazione());
 
         verify(mockFilmGenereDAO).deleteByIdFilm(idFilm);
         verify(mockFilmGenereDAO, times(2)).save(any(FilmGenereBean.class));
@@ -278,5 +305,34 @@ class CatalogoServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         verify(mockFilmDAO).doRetrieveConsigliati("test@email.com");
+    }
+    @Test
+    void getFilmsFromReviewsSkipsNullEntries() {
+        assertTrue(catalogoService.getFilms(java.util.Arrays.asList((RecensioneBean) null)).isEmpty());
+    }
+
+    @Test
+    void addFilmHandlesMissingEmptyAndNullableGenreResults() {
+        catalogoService.addFilm(2024, "actors", 120, new String[] {"Drama"}, null, "missing", "director", "plot");
+
+        when(mockFilmDAO.findByName("empty")).thenReturn(List.of());
+        catalogoService.addFilm(2024, "actors", 120, new String[] {"Drama"}, null, "empty", "director", "plot");
+
+        FilmBean stored = new FilmBean();
+        stored.setIdFilm(8);
+        when(mockFilmDAO.findByName("stored")).thenReturn(List.of(stored));
+        catalogoService.addFilm(2024, "actors", 120, new String[] {null, "Drama"}, null, "stored", "director", "plot");
+        verify(mockFilmGenereDAO).save(argThat(g -> g.getIdFilm() == 8 && "Drama".equals(g.getNomeGenere())));
+    }
+
+    @Test
+    void modifyFilmSupportsMissingFilmAndNullGenres() {
+        catalogoService.modifyFilm(9, 2024, "actors", 120, new String[] {null, "Drama"}, null,
+                "Film", "director", "plot");
+
+        ArgumentCaptor<FilmBean> film = ArgumentCaptor.forClass(FilmBean.class);
+        verify(mockFilmDAO).update(film.capture());
+        assertEquals(1, film.getValue().getValutazione());
+        verify(mockFilmGenereDAO).save(argThat(g -> g.getIdFilm() == 9 && "Drama".equals(g.getNomeGenere())));
     }
 }

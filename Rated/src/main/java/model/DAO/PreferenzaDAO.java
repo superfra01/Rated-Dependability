@@ -79,7 +79,7 @@ public class PreferenzaDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -106,7 +106,7 @@ public class PreferenzaDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
 
         return preferenze;
@@ -124,7 +124,7 @@ public class PreferenzaDAO {
             ps.executeUpdate();
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 }

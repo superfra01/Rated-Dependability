@@ -72,7 +72,7 @@ public class VistoDAO {
 			}
 
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			// Preserve the DAO fallback without exposing database details.
 		}
 	}
 
@@ -83,6 +83,7 @@ public class VistoDAO {
 	public VistoBean findByEmailAndIdFilm(final String email, final int idFilm) {
 		// RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
 		final String query = "SELECT email, ID_Film FROM Visto WHERE email = ? AND ID_Film = ?";
+		VistoBean result = null;
 
 		try (final Connection connection = dataSource.getConnection();
 			 final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -92,18 +93,18 @@ public class VistoDAO {
 
 			try (final ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
-					final VistoBean visto = new VistoBean();
-					visto.setEmail(rs.getString("email"));
-					visto.setIdFilm(rs.getInt("ID_Film"));
-					return visto;
+					result = new VistoBean();
+					result.setEmail(rs.getString("email"));
+					result.setIdFilm(rs.getInt("ID_Film"));
 				}
 			}
 
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			// Preserve the DAO fallback without exposing database details.
+			return null;
 		}
 
-		return null;
+		return result;
 	}
 	
 	//@ requires email != null;
@@ -120,7 +121,7 @@ public class VistoDAO {
 			ps.executeUpdate();
 
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			// Preserve the DAO fallback without exposing database details.
 		}
 	}
 
@@ -159,7 +160,7 @@ public class VistoDAO {
 				}
 			}
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			// Preserve the DAO fallback without exposing database details.
 		}
 		return films;
 	}

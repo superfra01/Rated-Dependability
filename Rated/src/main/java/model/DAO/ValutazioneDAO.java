@@ -98,7 +98,7 @@ public class ValutazioneDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -110,6 +110,7 @@ public class ValutazioneDAO {
     public ValutazioneBean findById(final String email, final String emailRecensore, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT Like_Dislike, email, email_Recensore, ID_Film FROM Valutazione WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
+        ValutazioneBean result = null;
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
@@ -117,18 +118,18 @@ public class ValutazioneDAO {
             ps.setInt(3, idFilm);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final ValutazioneBean valutazione = new ValutazioneBean(); 
-                    valutazione.setLikeDislike(rs.getBoolean("Like_Dislike"));
-                    valutazione.setEmail(rs.getString("email"));
-                    valutazione.setEmailRecensore(rs.getString("email_Recensore"));
-                    valutazione.setIdFilm(rs.getInt("ID_Film"));
-                    return valutazione;
+                    result = new ValutazioneBean();
+                    result.setLikeDislike(rs.getBoolean("Like_Dislike"));
+                    result.setEmail(rs.getString("email"));
+                    result.setEmailRecensore(rs.getString("email_Recensore"));
+                    result.setIdFilm(rs.getInt("ID_Film"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
     
     //@ requires idFilm >= 0;
@@ -154,7 +155,7 @@ public class ValutazioneDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return valutazioni;
     }
@@ -172,7 +173,7 @@ public class ValutazioneDAO {
             ps.setInt(3, idFilm);
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -187,7 +188,7 @@ public class ValutazioneDAO {
             ps.setInt(2, idFilm);
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 }

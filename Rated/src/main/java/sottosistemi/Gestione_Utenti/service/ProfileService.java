@@ -96,8 +96,8 @@ public class ProfileService {
         if (user != null) {
             user.setUsername(username);
             
-            final String rawHash = PasswordUtility.hashPassword(password);
-            final String hash = (rawHash == null) ? "" : rawHash; // Risolto: ora hash è final
+            // Il contratto di PasswordUtility garantisce un risultato non nullo.
+            final String hash = PasswordUtility.hashPassword(password);
             user.setPassword(hash);
             
             user.setBiografia(biografia);
@@ -120,8 +120,8 @@ public class ProfileService {
         if(user == null)
             return null;
         
-        final String rawHash = PasswordUtility.hashPassword(password);
-        final String hash = (rawHash == null) ? "" : rawHash; // Risolto: ora hash è final
+        // Il contratto di PasswordUtility garantisce un risultato non nullo.
+        final String hash = PasswordUtility.hashPassword(password);
         user.setPassword(hash);
         
         UtenteDAO.update(user);

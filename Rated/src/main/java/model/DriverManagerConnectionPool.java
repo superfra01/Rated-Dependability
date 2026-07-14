@@ -16,20 +16,16 @@ public class DriverManagerConnectionPool {
     private DriverManagerConnectionPool() {}
 
     // Metodo per recuperare il DataSource tramite pattern Singleton
-    private static DataSource getDataSource() {
+    private static synchronized DataSource getDataSource() {
         if (dataSource == null) {
-            synchronized (DriverManagerConnectionPool.class) {
-                if (dataSource == null) {
-                    try {
-                        Context initCtx = new InitialContext();
-                        Context envCtx = (Context) initCtx.lookup("java:comp/env");
-                        
-                        // Cerca la risorsa configurata nel file context.xml
-                        dataSource = (DataSource) envCtx.lookup("jdbc/RatedDB");
-                    } catch (NamingException e) {
-                        throw new RuntimeException("Errore durante la configurazione del DataSource JNDI", e);
-                    }
-                }
+            try {
+                Context initCtx = new InitialContext();
+                Context envCtx = (Context) initCtx.lookup("java:comp/env");
+
+                // Cerca la risorsa configurata nel file context.xml
+                dataSource = (DataSource) envCtx.lookup("jdbc/RatedDB");
+            } catch (NamingException e) {
+                throw new RuntimeException("Errore durante la configurazione del DataSource JNDI", e);
             }
         }
         return dataSource;
@@ -48,9 +44,7 @@ public class DriverManagerConnectionPool {
         } catch (SQLException e) {
             // Se setAutoCommit fallisce, la connessione non verrebbe mai chiusa dal chiamante.
             // La chiudiamo qui per prevenire il leak prima di rilanciare l'eccezione.
-            if (connection != null) {
-                connection.close();
-            }
+            connection.close();
             throw e;
         }
     }

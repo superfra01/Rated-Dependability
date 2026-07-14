@@ -47,7 +47,7 @@ public class AutenticationService {
         // Aggiungiamo un check di sicurezza per la stringa hash, utile per la static verification
         if (user != null) {
             final String hash = PasswordUtility.hashPassword(password);
-            if (hash != null && hash.equals(user.getPassword())) {
+            if (hash.equals(user.getPassword())) {
                 return user; // Authentication successful
             }
         }
@@ -86,10 +86,7 @@ public class AutenticationService {
         User.setEmail(email);
         
         // Previene la violazione dell'invariante di UtenteBean nel caso il metodo utility ritorni null (ESC lo assume possibile)
-        String hashedPwd = PasswordUtility.hashPassword(password);
-        if (hashedPwd == null) {
-            hashedPwd = ""; 
-        }
+        final String hashedPwd = PasswordUtility.hashPassword(password);
         User.setPassword(hashedPwd);
         
         User.setTipoUtente("RECENSORE");

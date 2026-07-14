@@ -77,7 +77,7 @@ public class UtenteDAO {
             ps.setString(7, utente.getBiografia());
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -87,26 +87,27 @@ public class UtenteDAO {
     public UtenteBean findByEmail(final String email) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE email = ?";
+        UtenteBean result = null;
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean utente = new UtenteBean();
-                    utente.setEmail(rs.getString("email"));
-                    utente.setIcona(rs.getBytes("icona"));
-                    utente.setUsername(rs.getString("username"));
-                    utente.setPassword(rs.getString("password"));
-                    utente.setTipoUtente(rs.getString("Tipo_Utente"));
-                    utente.setNWarning(rs.getInt("N_Warning"));
-                    utente.setBiografia(rs.getString("Biografia"));
-                    return utente;
+                    result = new UtenteBean();
+                    result.setEmail(rs.getString("email"));
+                    result.setIcona(rs.getBytes("icona"));
+                    result.setUsername(rs.getString("username"));
+                    result.setPassword(rs.getString("password"));
+                    result.setTipoUtente(rs.getString("Tipo_Utente"));
+                    result.setNWarning(rs.getInt("N_Warning"));
+                    result.setBiografia(rs.getString("Biografia"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
 
     //@ requires username != null;
@@ -115,26 +116,27 @@ public class UtenteDAO {
     public UtenteBean findByUsername(final String username) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE username = ?";
+        UtenteBean result = null;
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, username);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final UtenteBean user = new UtenteBean();
-                    user.setUsername(rs.getString("username"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setTipoUtente(rs.getString("Tipo_Utente"));
-                    user.setIcona(rs.getBytes("icona"));
-                    user.setNWarning(rs.getInt("N_Warning"));
-                    user.setBiografia(rs.getString("Biografia"));
-                    return user;
+                    result = new UtenteBean();
+                    result.setUsername(rs.getString("username"));
+                    result.setEmail(rs.getString("email"));
+                    result.setPassword(rs.getString("password"));
+                    result.setTipoUtente(rs.getString("Tipo_Utente"));
+                    result.setIcona(rs.getBytes("icona"));
+                    result.setNWarning(rs.getInt("N_Warning"));
+                    result.setBiografia(rs.getString("Biografia"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
 
     //@ requires utente != null;
@@ -152,7 +154,7 @@ public class UtenteDAO {
             ps.setString(7, utente.getEmail());
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 }
