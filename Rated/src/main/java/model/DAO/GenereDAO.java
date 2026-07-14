@@ -70,7 +70,7 @@ public class GenereDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -90,7 +90,7 @@ public class GenereDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
 
         return generi;

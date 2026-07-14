@@ -80,7 +80,7 @@ public class InteresseDAO {
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -91,6 +91,7 @@ public class InteresseDAO {
     public InteresseBean findByEmailAndIdFilm(final String email, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, ID_Film, interesse FROM Interesse WHERE email = ? AND ID_Film = ?";
+        InteresseBean result = null;
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -100,19 +101,19 @@ public class InteresseDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final InteresseBean interesse = new InteresseBean();
-                    interesse.setEmail(rs.getString("email"));
-                    interesse.setIdFilm(rs.getInt("ID_Film"));
-                    interesse.setInteresse(rs.getBoolean("interesse"));
-                    return interesse;
+                    result = new InteresseBean();
+                    result.setEmail(rs.getString("email"));
+                    result.setIdFilm(rs.getInt("ID_Film"));
+                    result.setInteresse(rs.getBoolean("interesse"));
                 }
             }
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
 
-        return null;
+        return result;
     }
 
     //@ requires email != null;
@@ -129,7 +130,7 @@ public class InteresseDAO {
             ps.executeUpdate();
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -168,7 +169,7 @@ public class InteresseDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return films;
     }

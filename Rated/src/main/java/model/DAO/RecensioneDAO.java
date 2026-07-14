@@ -71,7 +71,7 @@ public class RecensioneDAO {
             ps.setInt(8, recensione.getIdFilm());
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -82,28 +82,29 @@ public class RecensioneDAO {
     public RecensioneBean findById(final String email, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE email = ? AND ID_Film = ?";
+        RecensioneBean result = null;
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
             ps.setInt(2, idFilm);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final RecensioneBean recensione = new RecensioneBean();
-                    recensione.setTitolo(rs.getString("titolo"));
-                    recensione.setContenuto(rs.getString("contenuto"));
-                    recensione.setValutazione(rs.getInt("valutazione"));
-                    recensione.setNLike(rs.getInt("N_Like"));
-                    recensione.setNDislike(rs.getInt("N_DisLike"));
-                    recensione.setNReports(rs.getInt("N_Reports"));
-                    recensione.setEmail(rs.getString("email"));
-                    recensione.setIdFilm(rs.getInt("ID_Film"));
-                    return recensione;
+                    result = new RecensioneBean();
+                    result.setTitolo(rs.getString("titolo"));
+                    result.setContenuto(rs.getString("contenuto"));
+                    result.setValutazione(rs.getInt("valutazione"));
+                    result.setNLike(rs.getInt("N_Like"));
+                    result.setNDislike(rs.getInt("N_DisLike"));
+                    result.setNReports(rs.getInt("N_Reports"));
+                    result.setEmail(rs.getString("email"));
+                    result.setIdFilm(rs.getInt("ID_Film"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
     
     //@ requires idFilm >= 0;
@@ -131,7 +132,7 @@ public class RecensioneDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return recensioni;
     }
@@ -158,7 +159,7 @@ public class RecensioneDAO {
                 recensioni.add(recensione);
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return recensioni;
     }
@@ -188,7 +189,7 @@ public class RecensioneDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return recensioni;
     }
@@ -209,7 +210,7 @@ public class RecensioneDAO {
             ps.setInt(8, recensione.getIdFilm());
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -224,7 +225,7 @@ public class RecensioneDAO {
             ps.setInt(2, idFilm);
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 }

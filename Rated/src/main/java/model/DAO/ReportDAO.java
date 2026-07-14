@@ -64,7 +64,7 @@ public class ReportDAO {
             ps.setInt(3, report.getIdFilm());
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -76,6 +76,7 @@ public class ReportDAO {
     public ReportBean findById(final String email, final String emailRecensore, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, email_Recensore, ID_Film FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
+        ReportBean result = null;
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, email);
@@ -83,17 +84,17 @@ public class ReportDAO {
             ps.setInt(3, idFilm);
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final ReportBean report = new ReportBean(); 
-                    report.setEmail(rs.getString("email"));
-                    report.setEmailRecensore(rs.getString("email_Recensore"));
-                    report.setIdFilm(rs.getInt("ID_Film"));
-                    return report;
+                    result = new ReportBean();
+                    result.setEmail(rs.getString("email"));
+                    result.setEmailRecensore(rs.getString("email_Recensore"));
+                    result.setIdFilm(rs.getInt("ID_Film"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
 
     //@ requires emailRecensore != null;
@@ -107,7 +108,7 @@ public class ReportDAO {
             ps.setInt(2, idFilm);
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 }

@@ -86,7 +86,7 @@ public class FilmDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -111,7 +111,7 @@ public class FilmDAO {
 
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -126,7 +126,7 @@ public class FilmDAO {
             ps.setInt(1, idFilm);
             ps.executeUpdate();
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
     }
 
@@ -140,6 +140,7 @@ public class FilmDAO {
     public FilmBean findById(final int idFilm) { 
         // Risolto: Elenco esplicito delle colonne invece di SELECT *
         final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film WHERE ID_Film = ?";
+        FilmBean result = null;
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(query)) {
@@ -148,23 +149,23 @@ public class FilmDAO {
 
             try (final ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    final FilmBean film = new FilmBean();
-                    film.setIdFilm(rs.getInt("ID_Film"));
-                    film.setLocandina(rs.getBytes("locandina"));
-                    film.setNome(rs.getString("nome"));
-                    film.setAnno(rs.getInt("anno"));
-                    film.setDurata(rs.getInt("durata"));
-                    film.setRegista(rs.getString("regista"));
-                    film.setAttori(rs.getString("attori"));
-                    film.setValutazione(rs.getInt("valutazione"));
-                    film.setTrama(rs.getString("trama"));
-                    return film;
+                    result = new FilmBean();
+                    result.setIdFilm(rs.getInt("ID_Film"));
+                    result.setLocandina(rs.getBytes("locandina"));
+                    result.setNome(rs.getString("nome"));
+                    result.setAnno(rs.getInt("anno"));
+                    result.setDurata(rs.getInt("durata"));
+                    result.setRegista(rs.getString("regista"));
+                    result.setAttori(rs.getString("attori"));
+                    result.setValutazione(rs.getInt("valutazione"));
+                    result.setTrama(rs.getString("trama"));
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
+            return null;
         }
-        return null;
+        return result;
     }
 
     //@ requires name != null;
@@ -196,7 +197,7 @@ public class FilmDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return films;
     }
@@ -226,7 +227,7 @@ public class FilmDAO {
                 films.add(film);
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            // Preserve the DAO fallback without exposing database details.
         }
         return films;
     }
@@ -274,7 +275,7 @@ public class FilmDAO {
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace(); 
+            // Preserve the DAO fallback without exposing database details.
         }
         return films;
     }

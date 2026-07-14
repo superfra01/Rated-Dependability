@@ -268,4 +268,97 @@ class RecensioniServiceTest {
         // Verify that the review's report count was actually updated
         verify(mockRecensioneDAO).update(recensioneTarget); 
     }
+    @Test
+    void addValutazioneCoversRemainingLikeAndDislikeTransitions() {
+        RecensioneBean review = new RecensioneBean();
+        review.setNLike(2);
+        review.setNDislike(2);
+        when(mockRecensioneDAO.findById("reviewer@example.com", 1)).thenReturn(review);
+
+        ValutazioneBean dislike = new ValutazioneBean();
+        dislike.setLikeDislike(false);
+        when(mockValutazioneDAO.findById("user@example.com", "reviewer@example.com", 1)).thenReturn(dislike);
+        recensioniService.addValutazione("user@example.com", 1, "reviewer@example.com", true);
+        assertEquals(3, review.getNLike());
+        assertEquals(1, review.getNDislike());
+
+        ValutazioneBean removableDislike = new ValutazioneBean();
+        removableDislike.setLikeDislike(false);
+        when(mockValutazioneDAO.findById("other@example.com", "reviewer@example.com", 1))
+                .thenReturn(removableDislike);
+        recensioniService.addValutazione("other@example.com", 1, "reviewer@example.com", false);
+        assertEquals(0, review.getNDislike());
+
+        when(mockValutazioneDAO.findById("new@example.com", "reviewer@example.com", 1)).thenReturn(null);
+        recensioniService.addValutazione("new@example.com", 1, "reviewer@example.com", false);
+        assertEquals(1, review.getNDislike());
+    }
+
+    @Test
+    void addRecensioneCoversMissingFilmListAndNullElementBranches() {
+        when(mockRecensioneDAO.findById(anyString(), anyInt())).thenReturn(null);
+        recensioniService.addRecensione("a@example.com", 1, "text", "title", 5);
+
+        FilmBean noReviewsFilm = new FilmBean();
+        when(mockFilmDAO.findById(2)).thenReturn(noReviewsFilm);
+        when(mockRecensioneDAO.findByIdFilm(2)).thenReturn(null);
+        recensioniService.addRecensione("b@example.com", 2, "text", "title", 5);
+
+        FilmBean ratedFilm = new FilmBean();
+        RecensioneBean review = new RecensioneBean();
+        review.setValutazione(4);
+        when(mockFilmDAO.findById(3)).thenReturn(ratedFilm);
+        when(mockRecensioneDAO.findByIdFilm(3)).thenReturn(java.util.Arrays.asList(null, review));
+        recensioniService.addRecensione("c@example.com", 3, "text", "title", 5);
+        assertEquals(2, ratedFilm.getValutazione());
+    }
+
+    @Test
+    void deleteRecensioneCoversMissingFilmListAndNullElementBranches() {
+        recensioniService.deleteRecensione("a@example.com", 1);
+
+        FilmBean noReviewsFilm = new FilmBean();
+        when(mockFilmDAO.findById(2)).thenReturn(noReviewsFilm);
+        when(mockRecensioneDAO.findByIdFilm(2)).thenReturn(null);
+        recensioniService.deleteRecensione("b@example.com", 2);
+
+        FilmBean ratedFilm = new FilmBean();
+        RecensioneBean review = new RecensioneBean();
+        review.setValutazione(4);
+        when(mockFilmDAO.findById(3)).thenReturn(ratedFilm);
+        when(mockRecensioneDAO.findByIdFilm(3)).thenReturn(java.util.Arrays.asList(null, review));
+        recensioniService.deleteRecensione("c@example.com", 3);
+        assertEquals(2, ratedFilm.getValutazione());
+    }
+
+    @Test
+    void nullableQueryResultsAlwaysBecomeEmptyCollections() {
+        assertTrue(recensioniService.FindRecensioni("user@example.com").isEmpty());
+        assertTrue(recensioniService.GetRecensioni(1).isEmpty());
+        assertTrue(recensioniService.GetValutazioni(1, "user@example.com").isEmpty());
+        assertTrue(recensioniService.GetAllRecensioniSegnalate().isEmpty());
+    }
+
+    @Test
+    void filtersNullReviewsAndCoversMissingDeleteReportReview() {
+        RecensioneBean reported = new RecensioneBean();
+        reported.setNReports(1);
+        when(mockRecensioneDAO.findAll()).thenReturn(java.util.Arrays.asList(null, reported));
+        assertEquals(List.of(reported), recensioniService.GetAllRecensioniSegnalate());
+
+        recensioniService.deleteReports("missing@example.com", 7);
+        verify(mockReportDAO).deleteReports("missing@example.com", 7);
+    }
+
+    @Test
+    void reportIgnoresDuplicatesAndStillSavesWhenReviewIsMissing() {
+        ReportBean duplicate = new ReportBean();
+        when(mockReportDAO.findById("user@example.com", "reviewer@example.com", 1)).thenReturn(duplicate);
+        recensioniService.report("user@example.com", "reviewer@example.com", 1);
+        verify(mockReportDAO, never()).save(any(ReportBean.class));
+
+        when(mockReportDAO.findById("other@example.com", "missing@example.com", 2)).thenReturn(null);
+        recensioniService.report("other@example.com", "missing@example.com", 2);
+        verify(mockReportDAO).save(any(ReportBean.class));
+    }
 }

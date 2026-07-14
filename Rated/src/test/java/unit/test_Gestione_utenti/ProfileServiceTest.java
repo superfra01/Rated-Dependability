@@ -361,6 +361,54 @@ class ProfileServiceTest {
         
         verify(mockVistoDAO).delete(email, filmId);
     }
+    @Test
+    void profileUpdateAllowsKeepingUsernameAndReturnsNullForMissingUser() {
+        UtenteBean owner = new UtenteBean();
+        owner.setEmail("owner@example.com");
+        when(mockUtenteDAO.findByUsername("owner")).thenReturn(owner);
+
+        assertNull(profileService.ProfileUpdate("owner", "owner@example.com", "Pippo1234.", "bio", null));
+    }
+
+    @Test
+    void getUsersSkipsNullReviewsAndMissingUsers() {
+        RecensioneBean missingUser = new RecensioneBean();
+        missingUser.setEmail("missing@example.com");
+        assertTrue(profileService.getUsers(java.util.Arrays.asList(null, missingUser)).isEmpty());
+    }
+
+    @Test
+    void getPreferenzeHandlesNullListAndNullEntries() {
+        assertTrue(profileService.getPreferenze("missing@example.com").isEmpty());
+
+        when(mockPreferenzaDAO.findByEmail("user@example.com"))
+                .thenReturn(java.util.Arrays.asList(null, new PreferenzaBean("user@example.com", "Drama")));
+        assertEquals(List.of("Drama"), profileService.getPreferenze("user@example.com"));
+    }
+
+    @Test
+    void aggiornaPreferenzeHandlesEmptyAndNullEntries() {
+        profileService.aggiornaPreferenzeUtente("empty@example.com", new String[0]);
+        profileService.aggiornaPreferenzeUtente("user@example.com", new String[] {null, "Drama"});
+        verify(mockPreferenzaDAO).save(argThat(p -> "user@example.com".equals(p.getEmail())
+                && "Drama".equals(p.getNomeGenere())));
+    }
+
+    @Test
+    void retrievalMethodsReturnEmptyListsForNullDaoResults() {
+        assertTrue(profileService.retrieveWatchedFilms("missing").isEmpty());
+        assertTrue(profileService.retrieveWatchlist("missing").isEmpty());
+    }
+
+    @Test
+    void watchlistLookupCoversMissingAndFalseInterest() {
+        assertFalse(profileService.isFilmInWatchlist("missing@example.com", 1));
+
+        InteresseBean ignored = new InteresseBean();
+        ignored.setInteresse(false);
+        when(mockInteresseDAO.findByEmailAndIdFilm("user@example.com", 2)).thenReturn(ignored);
+        assertFalse(profileService.isFilmInWatchlist("user@example.com", 2));
+    }
 }
 
 

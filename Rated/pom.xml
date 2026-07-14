@@ -133,6 +133,7 @@
                     </targetTests>
                     <outputFormats>
                         <value>HTML</value>
+                        <value>XML</value>
                     </outputFormats>
                     <additionalClasspathElements>
 				        <additionalClasspathElement>${project.build.outputDirectory}</additionalClasspathElement>

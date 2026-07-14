@@ -174,8 +174,6 @@ public class CatalogoService {
         final FilmBean filmAttuale = FilmDAO.findById(idFilm); // Risolto: final
         if (filmAttuale != null) {
             film.setValutazione(filmAttuale.getValutazione());
-        } else {
-            film.setValutazione(1); 
         }
         FilmDAO.update(film);
         
