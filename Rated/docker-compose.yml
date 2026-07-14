@@ -1,55 +1,59 @@
-version: '3.8'
-
 services:
-  # --- TOMCAT APP ---
   webapp:
-    build: .
-    container_name: mia_webapp_container
+    # Pulls the application image published by the Docker Hub workflow.
+    image: ${RATED_IMAGE:-superfra01/rated:latest}
+    restart: unless-stopped
     ports:
-      - "8080:8080"
-      - "8000:8000"
+      - "${APP_PORT:-8080}:8080"
     environment:
-      - JPDA_ADDRESS=*:8000
-      - JPDA_TRANSPORT=dt_socket
-      # Passiamo le variabili come System Properties (-D)
-      - CATALINA_OPTS=-DDB_USERNAME=user -DDB_PASSWORD=password
-    volumes:
-      - ./target/rated-app.war:/usr/local/tomcat/webapps/ROOT.war
-      - ./server.xml:/usr/local/tomcat/conf/server.xml
+      CATALINA_OPTS: >-
+        -DDB_HOST=${DB_HOST:-db_service}
+        -DDB_PORT=${DB_PORT:-3306}
+        -DDB_NAME=${DB_NAME:-RatedDB}
+        -DDB_USERNAME=${DB_USERNAME:?Set DB_USERNAME in .env}
+        -DDB_PASSWORD=${DB_PASSWORD:?Set DB_PASSWORD in .env}
     depends_on:
-      - db_service
+      db_service:
+        condition: service_healthy
     networks:
-      - dev-network
+      - rated-network
 
-  # --- MYSQL DATABASE ---
   db_service:
     image: mysql:8.0
-    container_name: mio_db_container
-    #command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
     environment:
       LANG: C.UTF-8
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: RatedDB
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${DB_NAME:-RatedDB}
+      MYSQL_USER: ${DB_USERNAME:?Set DB_USERNAME in .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     volumes:
       - db_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
     networks:
-      - dev-network
+      - rated-network
 
+  # Optional local administration interface: docker compose --profile tools up
   db_gui:
-    image: adminer
-    restart: always
+    image: adminer:4.8.1
+    profiles: ["tools"]
+    restart: unless-stopped
     ports:
-      - "8081:8080"  # Lo vedrai su localhost:8081
+      - "${ADMINER_PORT:-8081}:8080"
+    depends_on:
+      db_service:
+        condition: service_healthy
     networks:
-      - dev-network
+      - rated-network
 
 volumes:
   db_data:
 
 networks:
-  dev-network:
+  rated-network:
