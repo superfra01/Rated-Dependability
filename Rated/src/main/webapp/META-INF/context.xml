@@ -6,7 +6,7 @@
               type="javax.sql.DataSource"
               username="${DB_USERNAME}"
               password="${DB_PASSWORD}"
-              url="jdbc:mysql://db_service:3306/RatedDB?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"
+              url="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"
               maxTotal="20"
               maxIdle="10"
               maxWaitMillis="-1"/>
