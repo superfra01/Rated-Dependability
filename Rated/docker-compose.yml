@@ -1,7 +1,8 @@
 services:
   webapp:
-    # Pulls the application image published by the Docker Hub workflow.
-    image: ${RATED_IMAGE:-superfra01/rated:latest}
+    # Builds the application image from the local Dockerfile.
+    build: .
+    pull_policy: build
     restart: unless-stopped
     ports:
       - "${APP_PORT:-8080}:8080"
