@@ -92,9 +92,10 @@ jobs:
         shell: bash
         run: |
           CLASSPATH="target/classes:$(cat target/openjml-classpath.txt)"
+          # OpenJML 21 usa il JDK e le specifiche Java 21 incluse nel pacchetto.
+          # La compatibilita Java 17 del progetto e gia verificata da Maven.
           "$HOME/.openjml/$OPENJML_VERSION/openjml" \
             --esc \
-            --release 17 \
             --progress \
             --timeout=60 \
             --esc-max-warnings=1 \
