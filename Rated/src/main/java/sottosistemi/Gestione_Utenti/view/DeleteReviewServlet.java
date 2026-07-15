@@ -26,11 +26,11 @@ public class DeleteReviewServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/profile");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al profilo in doGet", e);
         }
     }
@@ -45,11 +45,11 @@ public class DeleteReviewServlet extends HttpServlet {
             // 2. Controllo Autenticazione
             if (user == null) {
                 if (!response.isCommitted()) {
-                    String cp = request.getContextPath();
+                    final String cp = request.getContextPath();
                     try {
                         // Risoluzione smell su sendRedirect (Login)
                         response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
                     }
                 }
@@ -63,28 +63,28 @@ public class DeleteReviewServlet extends HttpServlet {
                 return;
             }
 
-            int idFilm = Integer.parseInt(idFilmStr);
+            final int idFilm = Integer.parseInt(idFilmStr);
 
             // 4. Esecuzione Business Logic (Cancellazione recensione)
             RecensioniService.deleteRecensione(user.getEmail(), idFilm);
 
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test: /Rated/profile?visitedUser=AuthorDelete)
             if (!response.isCommitted()) {
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 try {
                     // Risoluzione smell su sendRedirect (Fine operazione)
                     response.sendRedirect((cp != null ? cp : "") + "/profile?visitedUser=" + user.getUsername());
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del profilo", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Sostituzione del catch silenzioso con log esplicito
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }

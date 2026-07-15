@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
     public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         try {
             req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             handleCriticalError(resp, "Errore durante il caricamento della pagina di login.");
         }
     }
@@ -51,34 +51,34 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", utente);
                 
                 // Redirect alla home (gestendo il context path per i test)
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 response.sendRedirect((cp != null ? cp : "") + "/");
             } else {
                 // 4. Fallimento Credenziali: Deve restituire "Email o password non valide."
                 handleSafeForward(request, response, "/WEB-INF/jsp/login.jsp", "Email o password non valide.");
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             handleCriticalError(response, "Si è verificato un errore critico durante l'autenticazione.");
         }
     }
 
-    private void handleSafeForward(HttpServletRequest request, HttpServletResponse response, String path, String errorMsg) {
+    private void handleSafeForward(final HttpServletRequest request, final HttpServletResponse response, final String path, final String errorMsg) {
         try {
             if (!response.isCommitted()) {
                 request.setAttribute("loginError", errorMsg);
                 request.getRequestDispatcher(path).forward(request, response);
             }
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             // Fallback silenzioso
         }
     }
 
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException ioEx) {
+            } catch (final IOException ioEx) {
                 // Connessione interrotta
             }
         }

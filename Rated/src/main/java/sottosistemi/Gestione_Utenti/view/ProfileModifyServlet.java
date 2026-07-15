@@ -63,14 +63,14 @@ public class ProfileModifyServlet extends HttpServlet {
                     try {
                         // Risoluzione dello smell: isolamento di sendRedirect
                         response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al profilo modificato", e);
                     }
                 } else {
                     try {
                         // Risoluzione dello smell: isolamento di sendRedirect
                         response.sendRedirect(request.getContextPath() + "/");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla home page", e);
                     }
                 }
@@ -79,13 +79,13 @@ public class ProfileModifyServlet extends HttpServlet {
                per soddisfare il test ProfileModifyServletIntegrationTest.testProfileModify_InvalidFormat_NoAction 
             */
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore imprevisto durante l'elaborazione del profilo", e);
             if (!response.isCommitted()) {
                 try {
                     // Risoluzione dello smell principale: protezione di sendError
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la modifica del profilo.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }

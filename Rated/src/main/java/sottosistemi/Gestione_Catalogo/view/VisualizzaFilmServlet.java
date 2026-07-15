@@ -79,7 +79,7 @@ public class VisualizzaFilmServlet extends HttpServlet {
                 } else {
                     session.removeAttribute("users");
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Registriamo l'errore non critico nel log
                 LOGGER.log(Level.WARNING, "Impossibile recuperare i dati correlati (generi/recensioni) per il film ID: " + idFilm, e);
                 session.setAttribute("recensioni", new ArrayList<>());
@@ -91,18 +91,18 @@ public class VisualizzaFilmServlet extends HttpServlet {
             // 5. Inoltro alla JSP
             try {
                 request.getRequestDispatcher("/WEB-INF/jsp/film.jsp").forward(request, response);
-            } catch (ServletException | IOException e) {
+            } catch (final ServletException | IOException e) {
                 LOGGER.log(Level.SEVERE, "Errore nel forward verso la vista film.jsp", e);
                 handleCriticalError(response, "Errore nel caricamento della vista film.");
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore critico imprevisto nel doGet", e);
             handleCriticalError(response, "Si è verificato un errore imprevisto.");
         }
     }
 
-    private void handleUserContext(HttpSession session, int idFilm) {
+    private void handleUserContext(final HttpSession session, final int idFilm) {
         final UtenteBean user = (UtenteBean) session.getAttribute("user");
         boolean isWatched = false;
         boolean inWatchlist = false;
@@ -119,15 +119,15 @@ public class VisualizzaFilmServlet extends HttpServlet {
                 // Controllo Visti
                 final List<FilmBean> watchedList = profileService.retrieveWatchedFilms(username);
                 if (watchedList != null) {
-                    isWatched = watchedList.stream().anyMatch(f -> f.getIdFilm() == idFilm);
+                    isWatched = watchedList.stream().anyMatch((final var f) -> f.getIdFilm() == idFilm);
                 }
 
                 // Controllo Watchlist
                 final List<FilmBean> watchlist = profileService.retrieveWatchlist(username);
                 if (watchlist != null) {
-                    inWatchlist = watchlist.stream().anyMatch(f -> f.getIdFilm() == idFilm);
+                    inWatchlist = watchlist.stream().anyMatch((final var f) -> f.getIdFilm() == idFilm);
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Log dell'errore anziché ignorarlo silenziosamente
                 LOGGER.log(Level.WARNING, "Errore durante il recupero del contesto utente per il film ID: " + idFilm, e);
             }
@@ -140,22 +140,22 @@ public class VisualizzaFilmServlet extends HttpServlet {
      * Modificato: Gestisce internamente l'eccezione invece di lanciarla,
      * risolvendo lo smell del sendRedirect.
      */
-    private void redirectSafe(HttpServletResponse response, String path) {
+    private void redirectSafe(final HttpServletResponse response, final String path) {
         if (!response.isCommitted()) {
             try {
                 // Rimosso il context path per mantenere il redirect relativo atteso dal test
                 response.sendRedirect(path);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect a " + path, e);
             }
         }
     }
 
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // Risolto blocco catch vuoto
                 LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", e);
             }
@@ -167,7 +167,7 @@ public class VisualizzaFilmServlet extends HttpServlet {
         // Protezione della chiamata a doGet
         try {
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             handleCriticalError(response, "Errore interno durante l'elaborazione della richiesta.");
         }

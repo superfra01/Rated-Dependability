@@ -41,7 +41,7 @@ public class NonInteressatoServlet extends HttpServlet {
                 try {
                     // Risoluzione dello smell: gestione IOException per getWriter
                     response.getWriter().write("Devi effettuare il login.");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return;
@@ -59,7 +59,7 @@ public class NonInteressatoServlet extends HttpServlet {
                 try {
                     // Protezione getWriter per Bad Request
                     response.getWriter().write("ID Film non valido.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di validazione ID", ioEx);
                 }
                 return;
@@ -76,18 +76,18 @@ public class NonInteressatoServlet extends HttpServlet {
                 try {
                     // Protezione getWriter per film non identificato
                     response.getWriter().write("Impossibile identificare il film.");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore film mancante", e);
                 }
             }
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore imprevisto durante l'elaborazione in doPost", e);
             // Gestione dell'errore di sistema: invio di un codice di errore 500 protetto
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'elaborazione della richiesta.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risoluzione smell per sendError all'interno del catch
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
@@ -100,12 +100,12 @@ public class NonInteressatoServlet extends HttpServlet {
         try {
             // Risoluzione dello smell: gestione IOException per sendRedirect
             response.sendRedirect(request.getContextPath() + "/index.jsp"); 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante il redirect in doGet", e);
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante il reindirizzamento.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risoluzione smell per sendError all'interno del catch
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500 in doGet, stream disconnesso", ioEx);
                 }

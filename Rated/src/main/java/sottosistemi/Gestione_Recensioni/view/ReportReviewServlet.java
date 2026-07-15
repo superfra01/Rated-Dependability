@@ -23,11 +23,11 @@ public class ReportReviewServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
         }
     }
@@ -42,11 +42,11 @@ public class ReportReviewServlet extends HttpServlet {
             // 1. Controllo Autenticazione
             if (user == null) {
                 if (!response.isCommitted()) {
-                    String cp = request.getContextPath();
+                    final String cp = request.getContextPath();
                     try {
                         // Risoluzione smell su sendRedirect (Login)
                         response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
                     }
                 }
@@ -76,21 +76,21 @@ public class ReportReviewServlet extends HttpServlet {
             
             // 4. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 try {
                     // Gestione null per i mock e risoluzione smell su sendRedirect
                     response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del film", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore imprevisto nel sistema.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Sostituzione del catch silenzioso con log esplicito
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream disconnesso", ioEx);
                 }

@@ -29,11 +29,11 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/moderator");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
@@ -51,7 +51,7 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
                 try {
                     // Prevenzione smell su getWriter()
                     response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return; // FONDAMENTALE: Interrompe l'esecuzione prevenendo il cascade al 500
@@ -66,7 +66,7 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
                 return;
             }
 
-            int idFilm = Integer.parseInt(idFilmStr);
+            final int idFilm = Integer.parseInt(idFilmStr);
 
             // 4. Esecuzione Business Logic coordinata
             RecensioniService.deleteRecensione(userEmail, idFilm);
@@ -79,17 +79,17 @@ public class RimuoviReviewAndWarnServlet extends HttpServlet {
                 try {
                     // Risoluzione smell su sendRedirect finale
                     response.sendRedirect(contextPath + "/moderator");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale in doPost", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(500, "Errore critico imprevisto nel sistema di moderazione.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risolto il blocco catch vuoto
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }

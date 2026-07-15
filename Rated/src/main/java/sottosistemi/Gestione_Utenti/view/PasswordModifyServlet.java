@@ -50,14 +50,14 @@ public class PasswordModifyServlet extends HttpServlet {
                     try {
                         // Risoluzione dello smell: gestione isolata IOException per sendRedirect
                         response.sendRedirect(request.getContextPath() + "/profile?visitedUser=" + utente.getUsername());
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al profilo aggiornato", e);
                     }
                 } else {
                     try {
                         // Fallback in caso di errore nell'aggiornamento
                         response.sendRedirect(request.getContextPath() + "/");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect di fallback", e);
                     }
                 }
@@ -65,17 +65,17 @@ public class PasswordModifyServlet extends HttpServlet {
                 try {
                     // Gestione errore validazione
                     response.sendRedirect(request.getContextPath() + "/profile?error=invalidPassword");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect per password non valida", e);
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore imprevisto durante l'aggiornamento della password", e);
             // Gestione dell'errore di sistema: invio di un codice di errore 500 protetto
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'aggiornamento della password.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risoluzione dello smell su sendError
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }

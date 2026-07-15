@@ -31,7 +31,7 @@ public class ModificaFilmServlet extends HttpServlet {
         try {
             // Gestione dello smell su sendRedirect
             response.sendRedirect(request.getContextPath() + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
@@ -49,7 +49,7 @@ public class ModificaFilmServlet extends HttpServlet {
                 try {
                     // Proteggiamo anche getWriter() per prevenire ulteriori code smells
                     response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return; // Interrompe il flusso
@@ -80,7 +80,7 @@ public class ModificaFilmServlet extends HttpServlet {
                         locandina = inputStream.readAllBytes();
                     }
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Nei test d'integrazione proseguiamo anche se il part fallisce
                 LOGGER.log(Level.WARNING, "Impossibile processare la locandina del film", e);
             }
@@ -90,21 +90,21 @@ public class ModificaFilmServlet extends HttpServlet {
             
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 try {
                     // Gestione dello smell su sendRedirect
                     response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(500, "Errore imprevisto nel sistema.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream chiuso", ioEx);
                 }
             }

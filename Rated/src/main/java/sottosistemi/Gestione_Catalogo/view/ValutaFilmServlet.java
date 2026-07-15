@@ -28,11 +28,11 @@ public class ValutaFilmServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
@@ -47,11 +47,11 @@ public class ValutaFilmServlet extends HttpServlet {
             // 1. Controllo Autenticazione
             if (user == null) {
                 if (!response.isCommitted()) {
-                    String cp = request.getContextPath();
+                    final String cp = request.getContextPath();
                     try {
                         // Risoluzione smell su sendRedirect (Autenticazione)
                         response.sendRedirect((cp != null ? cp : "") + "/login.jsp");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login", e);
                     }
                 }
@@ -69,8 +69,8 @@ public class ValutaFilmServlet extends HttpServlet {
                 return;
             }
 
-            int idFilm = Integer.parseInt(idParam);
-            int valutazione = Integer.parseInt(valParam);
+            final int idFilm = Integer.parseInt(idParam);
+            final int valutazione = Integer.parseInt(valParam);
 
             // 3. Esecuzione Business Logic coordinata
             recensioniService.addRecensione(user.getEmail(), idFilm, recensione, titolo, valutazione);
@@ -82,21 +82,21 @@ public class ValutaFilmServlet extends HttpServlet {
 
             // 4. Redirect finale (Sincronizzato con il "Wanted" del test)
             if (!response.isCommitted()) {
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 try {
                     // Risoluzione smell su sendRedirect (Fine operazione)
                     response.sendRedirect((cp != null ? cp : "") + "/film?idFilm=" + idFilm);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect finale alla pagina del film", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risolto il blocco catch silenzioso
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream disconnesso", ioEx);
                 }

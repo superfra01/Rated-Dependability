@@ -19,12 +19,12 @@ public class DriverManagerConnectionPool {
     private static synchronized DataSource getDataSource() {
         if (dataSource == null) {
             try {
-                Context initCtx = new InitialContext();
-                Context envCtx = (Context) initCtx.lookup("java:comp/env");
+                final Context initCtx = new InitialContext();
+                final Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
                 // Cerca la risorsa configurata nel file context.xml
                 dataSource = (DataSource) envCtx.lookup("jdbc/RatedDB");
-            } catch (NamingException e) {
+            } catch (final NamingException e) {
                 throw new RuntimeException("Errore durante la configurazione del DataSource JNDI", e);
             }
         }
@@ -36,12 +36,12 @@ public class DriverManagerConnectionPool {
      * Risolve lo smell chiudendo la connessione se la configurazione fallisce.
      */
     public static Connection getConnection() throws SQLException {
-        Connection connection = getDataSource().getConnection();
+        final Connection connection = getDataSource().getConnection();
         try {
             // Manteniamo il false di default come richiesto
             connection.setAutoCommit(false); 
             return connection;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             // Se setAutoCommit fallisce, la connessione non verrebbe mai chiusa dal chiamante.
             // La chiudiamo qui per prevenire il leak prima di rilanciare l'eccezione.
             connection.close();
@@ -56,7 +56,7 @@ public class DriverManagerConnectionPool {
         if (connection != null) {
             try {
                 connection.close(); // Restituisce la connessione al pool
-            } catch (SQLException e) {
+            } catch (final SQLException e) {
                 System.err.println("Errore durante il rilascio della connessione: " + e.getMessage());
             }
         }

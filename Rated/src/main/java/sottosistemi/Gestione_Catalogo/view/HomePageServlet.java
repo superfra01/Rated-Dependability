@@ -41,12 +41,12 @@ public class HomePageServlet extends HttpServlet {
             
             request.getRequestDispatcher("/WEB-INF/jsp/HomePage.jsp").forward(request, response);
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore nel caricamento della HomePage.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore, stream già chiuso in doGet", ioEx);
                 }
             }
@@ -58,13 +58,13 @@ public class HomePageServlet extends HttpServlet {
         try {
             // Gestione dello smell: catturiamo le eccezioni lanciate dalla firma di doGet
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno durante l'elaborazione della richiesta.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore, stream già chiuso in doPost", ioEx);
                 }
             }

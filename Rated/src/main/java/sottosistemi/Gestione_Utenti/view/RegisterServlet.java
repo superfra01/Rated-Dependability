@@ -46,14 +46,14 @@ public class RegisterServlet extends HttpServlet {
             // Risoluzione dello smell: gestione delle eccezioni ServletException e IOException lanciate dal forward
             req.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(req, resp);
             
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante il caricamento della pagina di registrazione", e);
             // Gestione dell'errore: invio di un codice di errore 500 se la risposta non è già stata inviata
             if (!resp.isCommitted()) {
                 try {
                     // Protezione del sendError
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina di registrazione.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
             }
@@ -96,7 +96,7 @@ public class RegisterServlet extends HttpServlet {
                     try {
                         // Risoluzione dello smell: gestione IOException per sendRedirect
                         response.sendRedirect(request.getContextPath() + "/login");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect alla login post-registrazione", e);
                     }
                 } else {
@@ -104,7 +104,7 @@ public class RegisterServlet extends HttpServlet {
                     try {
                         // Risoluzione dello smell: gestione IOException per getWriter
                         response.getWriter().write("Registration failed. User may already exist.");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di registrazione fallita", e);
                     }
                 }
@@ -114,19 +114,19 @@ public class RegisterServlet extends HttpServlet {
                 try {
                     // Protezione getWriter per validazione fallita
                     response.getWriter().write("Invalid form data. Check your inputs.");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di validazione form", e);
                 }
             }
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore imprevisto durante la procedura di registrazione", e);
             // Gestione dell'errore di sistema
             if (!response.isCommitted()) {
                 try {
                     // Protezione del sendError
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante la procedura di registrazione.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500 in doPost, stream disconnesso", ioEx);
                 }
             }

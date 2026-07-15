@@ -63,12 +63,12 @@ public class ReportedReviewServlet extends HttpServlet {
                 return; // Interrompe l'esecuzione
             }
             
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Risoluzione dello smell: gestione IOException di sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il caricamento della pagina moderatore.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 in doGet", ioEx);
                 }
             }
@@ -80,12 +80,12 @@ public class ReportedReviewServlet extends HttpServlet {
         try {
             // Gestione delle eccezioni lanciate dal richiamo di doGet
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante il reindirizzamento da doPost a doGet", e);
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante l'elaborazione della richiesta.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 in doPost", ioEx);
                 }
             }

@@ -41,7 +41,7 @@ public class VisualizzaCatalogoServlet extends HttpServlet {
                 if (films == null) {
                     films = new ArrayList<>(); // Evita NullPointerException nel ciclo for e nella JSP
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Se il recupero dei film fallisce (es. DB down), gestiamo l'errore subito
                 LOGGER.log(Level.SEVERE, "Errore durante il recupero del catalogo dei film", e);
                 handleCriticalError(response, "Impossibile recuperare il catalogo dei film.");
@@ -57,7 +57,7 @@ public class VisualizzaCatalogoServlet extends HttpServlet {
                         final List<FilmGenereBean> generi = catalogoService.getGeneri(film.getIdFilm());
                         // Usiamo una chiave univoca basata sull'ID per evitare collisioni in sessione
                         session.setAttribute(film.getIdFilm() + "Generi", (generi != null) ? generi : new ArrayList<>());
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         // Se fallisce il recupero dei generi per un singolo film, non blocchiamo l'intero catalogo
                         LOGGER.log(Level.WARNING, "Errore recupero generi per il film ID: " + film.getIdFilm(), e);
                         session.setAttribute(film.getIdFilm() + "Generi", new ArrayList<>());
@@ -68,12 +68,12 @@ public class VisualizzaCatalogoServlet extends HttpServlet {
             // 4. Inoltro alla vista (Forward) protetto
             try {
                 request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
-            } catch (ServletException | IOException e) {
+            } catch (final ServletException | IOException e) {
                 LOGGER.log(Level.SEVERE, "Errore nel forward verso catalogo.jsp", e);
                 handleCriticalError(response, "Errore interno durante il caricamento della pagina catalogo.");
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Catch-all per RuntimeException impreviste (es. OutOfMemory o errori di sessione)
             LOGGER.log(Level.SEVERE, "Errore critico imprevisto nel doGet", e);
             handleCriticalError(response, "Si è verificato un errore critico nel sistema.");
@@ -84,12 +84,12 @@ public class VisualizzaCatalogoServlet extends HttpServlet {
      * Metodo helper per gestire le risposte di errore in modo "dependable".
      * Risolve lo smell: "Handle the following exception that could be thrown by 'sendError': IOException."
      */
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 response.setContentType("text/plain;charset=UTF-8");
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException ioEx) {
+            } catch (final IOException ioEx) {
                 // Risolto il blocco catch vuoto
                 LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore, stream disconnesso", ioEx);
             }
@@ -101,7 +101,7 @@ public class VisualizzaCatalogoServlet extends HttpServlet {
         // Delega al GET per supportare refresh o redirect POST-Redirect-GET
         try {
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             handleCriticalError(response, "Errore interno durante l'elaborazione della richiesta.");
         }

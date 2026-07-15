@@ -49,12 +49,12 @@ public class AggiungiFilmServlet extends HttpServlet {
                             locandina = inputStream.readAllBytes();
                         }
                     }
-                } catch (IOException | ServletException e) {
+                } catch (final IOException | ServletException e) {
                     if (!response.isCommitted()) {
                         try {
                             // Gestione dello smell su sendError
                             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                        } catch (IOException sendException) {
+                        } catch (final IOException sendException) {
                             LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 durante la lettura della locandina", sendException);
                         }
                     }
@@ -64,22 +64,22 @@ public class AggiungiFilmServlet extends HttpServlet {
                 catalogoService.addFilm(anno, attori, durata, generiSelezionati, locandina, nome, regista, trama);
                 response.sendRedirect(request.getContextPath() + "/catalogo");
                 
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 if (!response.isCommitted()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     // Gestione dello smell getWriter
                     try {
                         response.getWriter().write("Errore: I campi 'Anno' e 'Durata' devono essere numeri validi.");
-                    } catch (IOException ioException) {
+                    } catch (final IOException ioException) {
                         LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore per formato numero non valido", ioException);
                     }
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 if (!response.isCommitted()) {
                     try {
                         // Gestione dello smell su sendError
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
-                    } catch (IOException sendException) {
+                    } catch (final IOException sendException) {
                         LOGGER.log(Level.SEVERE, "Impossibile inviare l'errore 500 per un errore critico imprevisto", sendException);
                     }
                 }
@@ -89,7 +89,7 @@ public class AggiungiFilmServlet extends HttpServlet {
             // Gestione dello smell getWriter
             try {
                 response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-            } catch (IOException ioException) {
+            } catch (final IOException ioException) {
                 LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore per utente non autorizzato", ioException);
             }
         }

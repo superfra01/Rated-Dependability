@@ -26,11 +26,11 @@ public class VoteReviewServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
         }
     }
@@ -52,7 +52,7 @@ public class VoteReviewServlet extends HttpServlet {
                 try {
                     // Prevenzione proattiva smell su getWriter()
                     response.getWriter().write("Devi essere autenticato per votare una recensione.");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return; // Impedisce il crash o la prosecuzione senza utente
@@ -68,8 +68,8 @@ public class VoteReviewServlet extends HttpServlet {
                 return;
             }
 
-            int idFilm = Integer.parseInt(idFilmStr);
-            boolean valutazione = Boolean.parseBoolean(valutazioneStr);
+            final int idFilm = Integer.parseInt(idFilmStr);
+            final boolean valutazione = Boolean.parseBoolean(valutazioneStr);
 
             // 3. Esecuzione Business Logic (Ora viene chiamata perché l'utente è trovato)
             RecensioniService.addValutazione(user.getEmail(), idFilm, emailRecensore, valutazione);
@@ -77,12 +77,12 @@ public class VoteReviewServlet extends HttpServlet {
             // 4. Successo
             response.setStatus(HttpServletResponse.SC_OK);
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore critico imprevisto.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Sostituito il commento "Silenzioso" con un log reale
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }

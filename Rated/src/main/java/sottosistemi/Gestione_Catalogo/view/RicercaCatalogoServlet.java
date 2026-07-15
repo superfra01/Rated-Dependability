@@ -41,7 +41,7 @@ public class RicercaCatalogoServlet extends HttpServlet {
             final List<FilmBean> films;
             try {
                 films = catalogoService.ricercaFilm(queryRicerca);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // Se la ricerca fallisce a livello DB, gestiamo l'errore senza crashare
                 LOGGER.log(Level.SEVERE, "Eccezione durante la ricerca nel DB", e);
                 handleCriticalError(response, "Errore durante l'interrogazione del catalogo.");
@@ -55,12 +55,12 @@ public class RicercaCatalogoServlet extends HttpServlet {
             // 5. Inoltro alla vista (Forward) con gestione delle eccezioni
             try {
                 request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
-            } catch (ServletException | IOException e) {
+            } catch (final ServletException | IOException e) {
                 LOGGER.log(Level.SEVERE, "Errore nel forward verso catalogo.jsp", e);
                 handleCriticalError(response, "Errore interno durante il caricamento della vista dei risultati.");
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Catch-all per prevenire falle di sicurezza o crash imprevisti
             LOGGER.log(Level.SEVERE, "Errore imprevisto globale nel doGet", e);
             handleCriticalError(response, "Si è verificato un errore critico imprevisto.");
@@ -71,13 +71,13 @@ public class RicercaCatalogoServlet extends HttpServlet {
      * Metodo helper per gestire risposte di errore in modo "dependable".
      * Risolve lo smell: "Handle the following exception that could be thrown by 'sendError': IOException."
      */
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 // Impostiamo il tipo di contenuto prima dell'errore per coerenza
                 response.setContentType("text/plain;charset=UTF-8");
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException ioException) {
+            } catch (final IOException ioException) {
                 // Anche qui usiamo il Logger invece di lasciare il catch vuoto (altro potenziale code smell)
                 LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore (connessione interrotta)", ioException);
             }
@@ -89,7 +89,7 @@ public class RicercaCatalogoServlet extends HttpServlet {
         // Supportiamo la ricerca anche via POST per flessibilità, delegando al GET
         try {
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             handleCriticalError(response, "Errore interno durante l'elaborazione della richiesta.");
         }

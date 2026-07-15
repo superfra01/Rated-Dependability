@@ -26,11 +26,11 @@ public class ApproveReviewServlet extends HttpServlet {
 
     @Override
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        String cp = request.getContextPath();
+        final String cp = request.getContextPath();
         try {
             // Risoluzione smell su sendRedirect
             response.sendRedirect((cp != null ? cp : "") + "/moderator");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
@@ -48,7 +48,7 @@ public class ApproveReviewServlet extends HttpServlet {
                 try {
                     // Prevenzione proattiva smell su getWriter()
                     response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return; // Interrompe l'esecuzione prevenendo il cascade al 500
@@ -66,7 +66,7 @@ public class ApproveReviewServlet extends HttpServlet {
             int idFilm;
             try {
                 idFilm = Integer.parseInt(idFilmStr);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
@@ -76,21 +76,21 @@ public class ApproveReviewServlet extends HttpServlet {
 
             // 5. Redirect finale (Sincronizzato con il "Wanted" del test: /Rated/moderator)
             if (!response.isCommitted()) {
-                String cp = request.getContextPath();
+                final String cp = request.getContextPath();
                 try {
                     // Risoluzione smell su sendRedirect
                     response.sendRedirect((cp != null ? cp : "") + "/moderator");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Risoluzione smell SonarCloud: gestione IOException di sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risolto il blocco catch vuoto (Silenzioso)
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }

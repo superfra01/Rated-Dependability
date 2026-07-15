@@ -51,7 +51,7 @@ public class ViewUserFilmsServlet extends HttpServlet {
                     try {
                         // Prevenzione smell su sendError
                         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utente non trovato");
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         LOGGER.log(Level.SEVERE, "Impossibile inviare errore 404, stream disconnesso", e);
                     }
                 }
@@ -85,7 +85,7 @@ public class ViewUserFilmsServlet extends HttpServlet {
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Si è verificato un errore durante il recupero dei dati dell'utente.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Risolto il blocco catch silenzioso
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
@@ -98,12 +98,12 @@ public class ViewUserFilmsServlet extends HttpServlet {
         // Messa in sicurezza della delega a doGet (Risolve lo smell su ServletException e IOException)
         try {
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore interno durante l'elaborazione della richiesta.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Impossibile inviare errore 500 in doPost, stream disconnesso", ioEx);
                 }
             }

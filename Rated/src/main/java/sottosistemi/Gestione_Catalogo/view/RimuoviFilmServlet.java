@@ -27,7 +27,7 @@ public class RimuoviFilmServlet extends HttpServlet {
         try {
             // Gestione dello smell su sendRedirect
             response.sendRedirect(request.getContextPath() + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
@@ -45,7 +45,7 @@ public class RimuoviFilmServlet extends HttpServlet {
                 try {
                     // Protezione preventiva su getWriter()
                     response.getWriter().write("Non hai i permessi per effettuare la seguente operazione");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return; // FONDAMENTALE: Interrompe l'esecuzione per evitare il 500 successivo
@@ -58,29 +58,29 @@ public class RimuoviFilmServlet extends HttpServlet {
                 return;
             }
 
-            int idFilm = Integer.parseInt(idParam);
+            final int idFilm = Integer.parseInt(idParam);
 
             // 3. Business Logic
             catalogoService.removeFilm(idFilm);
             
             // 4. Redirect (Sincronizzato con il "Wanted" del test: /Rated/catalogo)
             if (!response.isCommitted()) {
-                String contextPath = request.getContextPath();
+                final String contextPath = request.getContextPath();
                 // Gestione del mock che restituisce null per il context path
                 try {
                     // Gestione dello smell su sendRedirect
                     response.sendRedirect((contextPath != null ? contextPath : "") + "/catalogo");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doPost", e);
                 }
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(500, "Si è verificato un errore critico imprevisto.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Sostituzione del blocco catch vuoto con il Logger
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la pagina di errore 500, stream chiuso", ioEx);
                 }

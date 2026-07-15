@@ -78,7 +78,7 @@ public class SegnaComeVistoServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore imprevisto durante l'elaborazione del doPost", e);
             handleCriticalError(response, "Si è verificato un errore critico imprevisto.");
         }
@@ -88,35 +88,35 @@ public class SegnaComeVistoServlet extends HttpServlet {
     public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         try {
             // FIX: Costruzione del redirect per matchare esattamente "catalogo.jsp" se contextPath è null/vuoto
-            String cp = request.getContextPath();
+            final String cp = request.getContextPath();
             if (cp == null || cp.isEmpty()) {
                 response.sendRedirect("catalogo.jsp");
             } else {
                 response.sendRedirect(cp + "/catalogo.jsp");
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Risoluzione dello smell su sendRedirect
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect in doGet", e);
         }
     }
 
-    private void handleSafeError(HttpServletResponse response, int statusCode, String message) {
+    private void handleSafeError(final HttpServletResponse response, final int statusCode, final String message) {
         try {
             if (!response.isCommitted()) {
                 response.setStatus(statusCode);
                 response.getWriter().write(message);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Risolto lo smell del catch silenzioso
             LOGGER.log(Level.SEVERE, "Impossibile scrivere la risposta di errore personalizzata, stream disconnesso", e);
         }
     }
 
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException ioEx) {
+            } catch (final IOException ioEx) {
                 // Risolto lo smell del catch silenzioso
                 LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
             }

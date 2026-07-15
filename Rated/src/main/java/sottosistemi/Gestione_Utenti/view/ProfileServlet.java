@@ -60,7 +60,7 @@ public class ProfileServlet extends HttpServlet {
 
                     final HashMap<Integer, FilmBean> filmMap = catalogoService.getFilms(recensioni);
                     session.setAttribute("films", (filmMap != null) ? filmMap : new HashMap<Integer, FilmBean>());
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LOGGER.log(Level.WARNING, "Recupero dati correlati (recensioni/film) fallito", e);
                     // Se fallisce il recupero recensioni, inizializziamo a vuoto per non rompere la JSP
                     session.setAttribute("recensioni", new ArrayList<>());
@@ -73,7 +73,7 @@ public class ProfileServlet extends HttpServlet {
 
                     final List<String> userGenres = profileService.getPreferenze(visitedUser.getEmail());
                     session.setAttribute("userGenres", (userGenres != null) ? userGenres : new ArrayList<>());
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LOGGER.log(Level.WARNING, "Recupero generi fallito", e);
                     session.setAttribute("allGenres", new ArrayList<>());
                     session.setAttribute("userGenres", new ArrayList<>());
@@ -82,7 +82,7 @@ public class ProfileServlet extends HttpServlet {
                 // 5. Inoltro alla JSP protetto
                 try {
                     request.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(request, response);    
-                } catch (ServletException | IOException e) {
+                } catch (final ServletException | IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore durante il forward a profile.jsp", e);
                     handleCriticalError(response, "Errore interno durante il caricamento della vista profilo.");
                 }
@@ -92,7 +92,7 @@ public class ProfileServlet extends HttpServlet {
                 handleSafeError(response, HttpServletResponse.SC_BAD_REQUEST, "You can't access the profile page if visitedUser is not set");
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Errore critico imprevisto nel doGet", e);
             // Catch-all per prevenire crash del thread e risolvere lo smell sendError
             handleCriticalError(response, "Si è verificato un errore critico imprevisto nel sistema.");
@@ -103,11 +103,11 @@ public class ProfileServlet extends HttpServlet {
      * Helper per gestire errori critici gestendo l'eccezione IOException di sendError.
      * Risolve lo smell: "Handle the following exception that could be thrown by 'sendError': IOException."
      */
-    private void handleCriticalError(HttpServletResponse response, String message) {
+    private void handleCriticalError(final HttpServletResponse response, final String message) {
         if (!response.isCommitted()) {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
-            } catch (IOException ioEx) {
+            } catch (final IOException ioEx) {
                 // Risolto lo smell del catch silenzioso
                 LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
             }
@@ -117,7 +117,7 @@ public class ProfileServlet extends HttpServlet {
     /**
      * Helper per scrivere errori testuali in modo sicuro, gestendo IOException di getWriter.
      */
-    private void handleSafeError(HttpServletResponse response, int statusCode, String message) {
+    private void handleSafeError(final HttpServletResponse response, final int statusCode, final String message) {
         try {
             if (!response.isCommitted()) {
                 response.setStatus(statusCode);
@@ -125,7 +125,7 @@ public class ProfileServlet extends HttpServlet {
                 response.setContentType("text/plain;charset=UTF-8");
                 response.getWriter().write(message);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Risolto lo smell del catch silenzioso
             LOGGER.log(Level.SEVERE, "Impossibile scrivere l'errore di validazione, stream disconnesso", e);
         }
@@ -136,7 +136,7 @@ public class ProfileServlet extends HttpServlet {
         // Messa in sicurezza della delega a doGet (Risolve lo smell su ServletException e IOException)
         try {
             doGet(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (final ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, "Errore durante l'inoltro della richiesta POST al metodo doGet", e);
             handleCriticalError(response, "Errore interno durante il caricamento del profilo.");
         }

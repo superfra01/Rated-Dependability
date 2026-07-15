@@ -38,7 +38,7 @@ public class AggiungiWatchlistServlet extends HttpServlet {
                 try {
                     // Prevenzione dello smell su getWriter()
                     response.getWriter().write("Devi effettuare il login per gestire la watchlist.");
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di autorizzazione", e);
                 }
                 return;
@@ -58,7 +58,7 @@ public class AggiungiWatchlistServlet extends HttpServlet {
                 try {
                     // Prevenzione dello smell su getWriter()
                     response.getWriter().write("ID Film non valido.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura dell'errore di validazione", ioEx);
                 }
                 return;
@@ -82,16 +82,16 @@ public class AggiungiWatchlistServlet extends HttpServlet {
             try {
                 // Prevenzione dello smell su getWriter()
                 response.getWriter().write(message);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOGGER.log(Level.SEVERE, "Errore di I/O durante la scrittura della risposta di successo", e);
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Gestione dependability dello smell IOException su sendError
             if (!response.isCommitted()) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante l'aggiornamento della watchlist.");
-                } catch (IOException ioEx) {
+                } catch (final IOException ioEx) {
                     // Sostituzione del catch silenzioso
                     LOGGER.log(Level.SEVERE, "Impossibile inviare la risposta di errore 500, stream disconnesso", ioEx);
                 }
@@ -104,7 +104,7 @@ public class AggiungiWatchlistServlet extends HttpServlet {
         try {
             // Isolamento dell'eccezione lanciata dal sendRedirect
             response.sendRedirect(request.getContextPath() + "/catalogo");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Errore di I/O durante il redirect al catalogo in doGet", e);
         }
     }
