@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn -B -ntp package -DskipTests
 
 
-FROM tomcat:9.0.118-jdk17-temurin-jammy
+FROM tomcat:9.0.120-jdk17-temurin-jammy
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y curl \
