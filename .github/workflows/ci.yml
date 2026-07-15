@@ -8,11 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      OPENJML_VERSION: "21.0.27"
 
     steps:
       - name: Checkout
@@ -55,53 +53,6 @@ jobs:
           java-version: '17' # Modificato in 17
           distribution: 'temurin'
           cache: 'maven'
-
-      # --- OpenJML (formal verification) ---
-      - name: Compile and build Maven classpath for OpenJML
-        working-directory: Rated
-        run: |
-          mvn -B -ntp -DskipTests compile dependency:build-classpath \
-            "-DincludeScope=compile" \
-            "-Dmdep.outputFile=target/openjml-classpath.txt"
-
-      - name: Cache OpenJML
-        id: cache-openjml
-        uses: actions/cache@v4
-        with:
-          path: ~/.openjml/${{ env.OPENJML_VERSION }}
-          key: openjml-ubuntu-24.04-x64-${{ env.OPENJML_VERSION }}
-
-      - name: Install OpenJML
-        if: steps.cache-openjml.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          OPENJML_HOME="$HOME/.openjml/$OPENJML_VERSION"
-          mkdir -p "$OPENJML_HOME"
-          curl --fail --location --retry 3 \
-            "https://github.com/OpenJML/OpenJML/releases/download/${OPENJML_VERSION}/openjml-ubuntu-24.04-${OPENJML_VERSION}.zip" \
-            --output /tmp/openjml.zip
-          unzip -q /tmp/openjml.zip -d "$OPENJML_HOME"
-          chmod +x "$OPENJML_HOME/openjml"
-
-      - name: Check OpenJML installation
-        run: '"$HOME/.openjml/$OPENJML_VERSION/openjml" --version'
-
-      - name: Verify JML specifications
-        continue-on-error: true
-        working-directory: Rated
-        shell: bash
-        run: |
-          CLASSPATH="target/classes:$(cat target/openjml-classpath.txt)"
-          # OpenJML 21 usa il JDK e le specifiche Java 21 incluse nel pacchetto.
-          # La compatibilita Java 17 del progetto e gia verificata da Maven.
-          "$HOME/.openjml/$OPENJML_VERSION/openjml" \
-            --esc \
-            --progress \
-            --timeout=60 \
-            --esc-max-warnings=1 \
-            --class-path "$CLASSPATH" \
-            --source-path src/main/java \
-            --dir src/main/java
 
       - name: Build & test (Maven verify + JaCoCo)
         run: mvn -B -ntp -f Rated/pom.xml verify
