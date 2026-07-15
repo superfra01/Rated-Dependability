@@ -7,8 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  jml:
-    name: OpenJML verification
+  build:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -18,16 +17,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # --- GitGuardian  ---
+      - name: GitGuardian scan (secrets)
+        uses: GitGuardian/ggshield-action@v1
+        env:
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+      # --- Snyk (install CLI) ---
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
+      # --- Snyk Open Source (dipendenze Maven) ---
+      - name: Snyk Open Source (dependencies)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --file=Rated/pom.xml --severity-threshold=high
+
+      - name: Snyk Monitor (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk monitor --file=Rated/pom.xml
+
+      # --- Snyk Code (SAST) ---
+      # Userà le esclusioni del file .snyk
+      - name: Snyk Code (SAST)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk code test --report --project-name="Rated-Dependability-SAST"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: "17"
-          distribution: temurin
-          cache: maven
-          cache-dependency-path: Rated/pom.xml
+          java-version: '17' # Modificato in 17
+          distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Compile and build Maven classpath
+      # --- OpenJML (formal verification) ---
+      - name: Compile and build Maven classpath for OpenJML
         working-directory: Rated
         run: |
           mvn -B -ntp -DskipTests compile dependency:build-classpath \
@@ -71,53 +101,6 @@ jobs:
             --class-path "$CLASSPATH" \
             --source-path src/main/java \
             --dir src/main/java
-
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # --- GitGuardian  ---
-      - name: GitGuardian scan (secrets)
-        uses: GitGuardian/ggshield-action@v1
-        env:
-          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-
-      # --- Snyk (install CLI) ---
-      - name: Install Snyk CLI
-        uses: snyk/actions/setup@master
-
-      # --- Snyk Open Source (dipendenze Maven) ---
-      - name: Snyk Open Source (dependencies)
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk test --file=Rated/pom.xml --severity-threshold=high
-
-      - name: Snyk Monitor (main only)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk monitor --file=Rated/pom.xml
-
-      # --- Snyk Code (SAST) ---
-      # Userà le esclusioni del file .snyk
-      - name: Snyk Code (SAST)
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk code test --report --project-name="Rated-Dependability-SAST"
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17' # Modificato in 17
-          distribution: 'temurin'
-          cache: 'maven'
 
       - name: Build & test (Maven verify + JaCoCo)
         run: mvn -B -ntp -f Rated/pom.xml verify
