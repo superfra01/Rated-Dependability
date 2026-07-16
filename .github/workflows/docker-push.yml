@@ -19,7 +19,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
-          java-version: "21" # Se il tuo progetto richiede una versione specifica (es. 11 o 17), modificala qui
+          java-version: "17" # Se il tuo progetto richiede una versione specifica (es. 11 o 17), modificala qui
           distribution: "temurin"
           cache: "maven"
 
