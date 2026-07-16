@@ -19,12 +19,14 @@ public class GenereBean implements Serializable {
      * ========================================= */
 
     //@ ensures this.nome.equals("");
+    //@ assignable \nothing;
     public GenereBean() {
         nome = "";
     }
 
     //@ requires nome != null;
     //@ ensures this.nome == nome;
+    //@ assignable \nothing;
     public GenereBean(final String nome) {
         this.nome = nome;
     }
@@ -39,9 +41,10 @@ public class GenereBean implements Serializable {
     }
 
     //@ requires nome != null;
-    //@ assigns this.nome;
+    //@ assignable this.nome;
     //@ ensures this.nome == nome;
     public void setNome(final String nome) {
         this.nome = nome;
     }
+
 }

@@ -24,6 +24,7 @@ public class FilmGenereBean implements Serializable {
 
     //@ ensures this.idFilm == 0;
     //@ ensures this.nomeGenere.equals("");
+    //@ assignable \nothing;
     public FilmGenereBean() {
         idFilm = 0;
         nomeGenere = "";
@@ -33,6 +34,7 @@ public class FilmGenereBean implements Serializable {
     //@ requires nomeGenere != null;
     //@ ensures this.idFilm == idFilm;
     //@ ensures this.nomeGenere == nomeGenere;
+    //@ assignable \nothing;
     public FilmGenereBean(final int idFilm, final String nomeGenere) {
         this.idFilm = idFilm;
         this.nomeGenere = nomeGenere;
@@ -48,7 +50,7 @@ public class FilmGenereBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
@@ -60,9 +62,10 @@ public class FilmGenereBean implements Serializable {
     }
 
     //@ requires nomeGenere != null;
-    //@ assigns this.nomeGenere;
+    //@ assignable this.nomeGenere;
     //@ ensures this.nomeGenere == nomeGenere;
     public void setNomeGenere(final String nomeGenere) {
         this.nomeGenere = nomeGenere;
     }
+
 }

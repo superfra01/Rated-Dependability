@@ -29,6 +29,7 @@ public class ReportBean implements Serializable {
     //@ ensures this.email.equals("");
     //@ ensures this.emailRecensore.equals("");
     //@ ensures this.idFilm == 0;
+    //@ assignable \nothing;
     public ReportBean() {
         email = "";
         emailRecensore = "";
@@ -41,6 +42,7 @@ public class ReportBean implements Serializable {
     //@ ensures this.email == email;
     //@ ensures this.emailRecensore == emailRecensore;
     //@ ensures this.idFilm == idFilm;
+    //@ assignable \nothing;
     public ReportBean(final String email, final String emailRecensore, final int idFilm) {
         this.email = email;
         this.emailRecensore = emailRecensore;
@@ -57,7 +59,7 @@ public class ReportBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -69,7 +71,7 @@ public class ReportBean implements Serializable {
     }
 
     //@ requires emailRecensore != null;
-    //@ assigns this.emailRecensore;
+    //@ assignable this.emailRecensore;
     //@ ensures this.emailRecensore == emailRecensore;
     public void setEmailRecensore(final String emailRecensore) {
         this.emailRecensore = emailRecensore;
@@ -81,9 +83,10 @@ public class ReportBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }
+
 }

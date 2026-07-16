@@ -28,6 +28,7 @@ public class InteresseBean implements Serializable {
     //@ ensures this.email.equals("");
     //@ ensures this.idFilm == 0;
     //@ ensures this.interesse == false;
+    //@ assignable \nothing;
     public InteresseBean() {
         email = "";
         idFilm = 0;
@@ -39,6 +40,7 @@ public class InteresseBean implements Serializable {
     //@ ensures this.email == email;
     //@ ensures this.idFilm == idFilm;
     //@ ensures this.interesse == interesse;
+    //@ assignable \nothing;
     public InteresseBean(final String email, final int idFilm, final boolean interesse) {
         this.email = email;
         this.idFilm = idFilm;
@@ -55,7 +57,7 @@ public class InteresseBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -67,7 +69,7 @@ public class InteresseBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
@@ -78,9 +80,10 @@ public class InteresseBean implements Serializable {
         return interesse;
     }
 
-    //@ assigns this.interesse;
+    //@ assignable this.interesse;
     //@ ensures this.interesse == interesse;
     public void setInteresse(final boolean interesse) {
         this.interesse = interesse;
     }
+
 }

@@ -24,6 +24,7 @@ public class PreferenzaBean implements Serializable {
 
     //@ ensures this.email.equals("");
     //@ ensures this.nomeGenere.equals("");
+    //@ assignable \nothing;
     public PreferenzaBean() {
         email = "";
         nomeGenere = "";
@@ -33,6 +34,7 @@ public class PreferenzaBean implements Serializable {
     //@ requires nomeGenere != null;
     //@ ensures this.email == email;
     //@ ensures this.nomeGenere == nomeGenere;
+    //@ assignable \nothing;
     public PreferenzaBean(final String email, final String nomeGenere) {
         this.email = email;
         this.nomeGenere = nomeGenere;
@@ -48,7 +50,7 @@ public class PreferenzaBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -60,9 +62,10 @@ public class PreferenzaBean implements Serializable {
     }
 
     //@ requires nomeGenere != null;
-    //@ assigns this.nomeGenere;
+    //@ assignable this.nomeGenere;
     //@ ensures this.nomeGenere == nomeGenere;
     public void setNomeGenere(final String nomeGenere) {
         this.nomeGenere = nomeGenere;
     }
+
 }

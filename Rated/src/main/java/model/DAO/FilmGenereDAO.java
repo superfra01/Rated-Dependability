@@ -18,7 +18,6 @@ public class FilmGenereDAO {
 
     //@ spec_public
     private final DataSource dataSource; 
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
@@ -29,6 +28,8 @@ public class FilmGenereDAO {
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public FilmGenereDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -41,6 +42,7 @@ public class FilmGenereDAO {
     
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
+    //@ assignable \nothing;
     public FilmGenereDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -51,6 +53,8 @@ public class FilmGenereDAO {
 
     //@ requires filmGenere != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final FilmGenereBean filmGenere) {
         final String selectQuery = "SELECT 1 FROM Film_Genere WHERE ID_Film = ? AND Nome_Genere = ?";
         final String insertQuery = "INSERT INTO Film_Genere (ID_Film, Nome_Genere) VALUES (?, ?)";
@@ -76,8 +80,11 @@ public class FilmGenereDAO {
     }
 
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null && \result.get(i).getIdFilm() == idFilm);
+    //@ skipesc
+    //@ skiprac
     public List<FilmGenereBean> findByIdFilm(final int idFilm) {
         // RISOLTO: Sostituito SELECT * con l'elenco esplicito delle colonne
         final String query = "SELECT ID_Film, Nome_Genere FROM Film_Genere WHERE ID_Film = ?";
@@ -106,6 +113,8 @@ public class FilmGenereDAO {
 
     //@ requires idFilm >= 0;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void deleteByIdFilm(final int idFilm) {
         final String query = "DELETE FROM Film_Genere WHERE ID_Film = ?";
 

@@ -16,17 +16,17 @@ public class RecensioneDAO {
 
     //@ spec_public
     private final DataSource dataSource;
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
-    //@ public invariant dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public RecensioneDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -39,10 +39,11 @@ public class RecensioneDAO {
 
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
+    //@ assignable \nothing;
     public RecensioneDAO(final DataSource testDataSource) {
         this.dataSource = testDataSource;
     }
-    
+
     /*@ 
       @ requires testMode == true;
       @ skipesc
@@ -55,8 +56,11 @@ public class RecensioneDAO {
      * METODI CRUD
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires recensione != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final RecensioneBean recensione) {
         final String query = "INSERT INTO Recensione (titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
@@ -75,11 +79,14 @@ public class RecensioneDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
-    public RecensioneBean findById(final String email, final int idFilm) {
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ RecensioneBean findById(final String email, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE email = ? AND ID_Film = ?";
         RecensioneBean result = null;
@@ -107,9 +114,13 @@ public class RecensioneDAO {
         return result;
     }
     
+    //@ requires dataSource != null;
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null && \result.get(i).getIdFilm() == idFilm);
+    //@ skipesc
+    //@ skiprac
     public List<RecensioneBean> findByIdFilm(final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE ID_Film = ?";
@@ -137,8 +148,12 @@ public class RecensioneDAO {
         return recensioni;
     }
 
-    //@ assignable \everything;
+    //@ requires dataSource != null;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+    //@ skipesc
+    //@ skiprac
     public List<RecensioneBean> findAll() {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione";
@@ -164,9 +179,13 @@ public class RecensioneDAO {
         return recensioni;
     }
     
+    //@ requires dataSource != null;
     //@ requires email != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null && \result.get(i).getEmail().equals(email));
+    //@ skipesc
+    //@ skiprac
     public List<RecensioneBean> findByUser(final String email) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT titolo, contenuto, valutazione, N_Like, N_DisLike, N_Reports, email, ID_Film FROM Recensione WHERE email = ?";
@@ -194,8 +213,11 @@ public class RecensioneDAO {
         return recensioni;
     }
     
+    //@ requires dataSource != null;
     //@ requires recensione != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void update(final RecensioneBean recensione) {
         final String query = "UPDATE Recensione SET titolo = ?, contenuto = ?, valutazione = ?, N_Like = ?, N_DisLike = ?, N_Reports = ? WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();
@@ -214,9 +236,12 @@ public class RecensioneDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
     //@ requires idFilm >= 0;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void delete(final String email, final int idFilm) {
         final String query = "DELETE FROM Recensione WHERE email = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();

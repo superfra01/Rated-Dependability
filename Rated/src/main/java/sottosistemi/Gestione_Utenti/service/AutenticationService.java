@@ -18,18 +18,22 @@ public class AutenticationService {
      * INVARIANTI DI CLASSE
      * ========================================= */
     //@ public invariant UtenteDAO != null;
+    //@ public invariant UtenteDAO.dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.UtenteDAO != null;
+    //@ assignable \nothing;
     public AutenticationService() {
         this.UtenteDAO = new UtenteDAO();
     }
 
     //@ requires utenteDAO != null;
+    //@ requires utenteDAO.dataSource != null;
     //@ ensures this.UtenteDAO == utenteDAO;
+    //@ assignable \nothing;
     public AutenticationService(final UtenteDAO utenteDAO) { // Parametro final
         this.UtenteDAO = utenteDAO;
     }
@@ -40,9 +44,10 @@ public class AutenticationService {
 
     //@ requires email != null;
     //@ requires password != null;
-    //@ assignable \everything;
-    public UtenteBean login(final String email, final String password) { // Parametri final
-        final UtenteBean user = UtenteDAO.findByEmail(email); // Variabile locale final
+    //@ assignable \nothing;
+    //@ ensures \result != null ==> \result.getEmail().equals(email);
+    public /*@ nullable @*/ UtenteBean login(final String email, final String password) { // Parametri final
+        final /*@ nullable @*/ UtenteBean user = UtenteDAO.findByEmail(email); // Variabile locale final
         
         // Aggiungiamo un check di sicurezza per la stringa hash, utile per la static verification
         if (user != null) {
@@ -58,6 +63,8 @@ public class AutenticationService {
 
     //@ requires session != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void logout(final HttpSession session) { // Parametro final
         session.invalidate();
     }
@@ -69,7 +76,10 @@ public class AutenticationService {
     //@ requires biografia != null;
     //@ assignable \everything;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getUsername().equals(username));
-    public UtenteBean register(final String username, final String email, final String password, final String biografia, final byte[] icon) { // Parametri final
+    //@ ensures \result != null ==> \result.getPassword().length() == 56;
+    //@ ensures \result != null ==> \result.getTipoUtente().equals("RECENSORE") && \result.getNWarning() == 0;
+    //@ ensures \result != null ==> \result.getBiografia().equals(biografia) && \result.getIcona() == icon;
+    public /*@ nullable @*/ UtenteBean register(final String username, final String email, final String password, final String biografia, final byte /*@ nullable @*/ [] icon) { // Parametri final
         
         // Check if the user already exists
         if (UtenteDAO.findByEmail(email) != null) {

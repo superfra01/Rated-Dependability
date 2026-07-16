@@ -33,6 +33,7 @@ public class ValutazioneBean implements Serializable {
     //@ ensures this.email.equals("");
     //@ ensures this.emailRecensore.equals("");
     //@ ensures this.idFilm == 0;
+    //@ assignable \nothing;
     public ValutazioneBean() {
         likeDislike = false;
         email = "";
@@ -47,6 +48,7 @@ public class ValutazioneBean implements Serializable {
     //@ ensures this.email == email;
     //@ ensures this.emailRecensore == emailRecensore;
     //@ ensures this.idFilm == idFilm;
+    //@ assignable \nothing;
     public ValutazioneBean(final boolean likeDislike, final String email, final String emailRecensore, final int idFilm) {
         this.likeDislike = likeDislike;
         this.email = email;
@@ -63,7 +65,7 @@ public class ValutazioneBean implements Serializable {
         return likeDislike;
     }
 
-    //@ assigns this.likeDislike;
+    //@ assignable this.likeDislike;
     //@ ensures this.likeDislike == likeDislike;
     public void setLikeDislike(final boolean likeDislike) {
         this.likeDislike = likeDislike;
@@ -75,7 +77,7 @@ public class ValutazioneBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -87,7 +89,7 @@ public class ValutazioneBean implements Serializable {
     }
 
     //@ requires emailRecensore != null;
-    //@ assigns this.emailRecensore;
+    //@ assignable this.emailRecensore;
     //@ ensures this.emailRecensore == emailRecensore;
     public void setEmailRecensore(final String emailRecensore) {
         this.emailRecensore = emailRecensore;
@@ -99,9 +101,10 @@ public class ValutazioneBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }
+
 }

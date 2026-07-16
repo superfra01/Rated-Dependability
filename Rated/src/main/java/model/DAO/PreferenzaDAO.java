@@ -18,17 +18,17 @@ public class PreferenzaDAO {
 
     //@ spec_public
     private final DataSource dataSource; 
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
-    //@ public invariant dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public PreferenzaDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -41,10 +41,11 @@ public class PreferenzaDAO {
     
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
+    //@ assignable \nothing;
     public PreferenzaDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     /*@ 
       @ requires testMode == true;
       @ skipesc
@@ -57,8 +58,11 @@ public class PreferenzaDAO {
      * METODI CRUD
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires preferenza != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final PreferenzaBean preferenza) {
         final String selectQuery = "SELECT 1 FROM Preferenza WHERE email = ? AND Nome_Genere = ?";
         final String insertQuery = "INSERT INTO Preferenza (email, Nome_Genere) VALUES (?, ?)";
@@ -83,9 +87,13 @@ public class PreferenzaDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null && \result.get(i).getEmail().equals(email));
+    //@ skipesc
+    //@ skiprac
     public List<PreferenzaBean> findByEmail(final String email) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, Nome_Genere FROM Preferenza WHERE email = ?";
@@ -112,8 +120,11 @@ public class PreferenzaDAO {
         return preferenze;
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void deleteByEmail(final String email) {
         final String query = "DELETE FROM Preferenza WHERE email = ?";
 

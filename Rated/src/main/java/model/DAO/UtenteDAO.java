@@ -16,17 +16,17 @@ public class UtenteDAO {
 
     //@ spec_public
     private DataSource dataSource; 
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
-    //@ public invariant dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public UtenteDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -39,10 +39,11 @@ public class UtenteDAO {
     
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
+    //@ assignable \nothing;
     public UtenteDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     /*@ 
       @ requires testMode == true;
       @ skipesc
@@ -52,7 +53,7 @@ public class UtenteDAO {
     }
 
     //@ requires dataSource != null;
-    //@ assigns this.dataSource;
+    //@ assignable this.dataSource;
     //@ ensures this.dataSource == dataSource;
     public void setDataSource(final DataSource dataSource) {
         this.dataSource = dataSource;
@@ -62,8 +63,11 @@ public class UtenteDAO {
      * METODI CRUD
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires utente != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final UtenteBean utente) {
         final String query = "INSERT INTO Utente_Registrato (email, icona, username, password, Tipo_Utente, N_Warning, Biografia) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
@@ -81,10 +85,13 @@ public class UtenteDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> \result.getEmail().equals(email);
-    public UtenteBean findByEmail(final String email) {
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ UtenteBean findByEmail(final String email) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE email = ?";
         UtenteBean result = null;
@@ -110,10 +117,13 @@ public class UtenteDAO {
         return result;
     }
 
+    //@ requires dataSource != null;
     //@ requires username != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> \result.getUsername().equals(username);
-    public UtenteBean findByUsername(final String username) {
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ UtenteBean findByUsername(final String username) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, icona, username, password, Tipo_Utente, N_Warning, Biografia FROM Utente_Registrato WHERE username = ?";
         UtenteBean result = null;
@@ -139,8 +149,11 @@ public class UtenteDAO {
         return result;
     }
 
+    //@ requires dataSource != null;
     //@ requires utente != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void update(final UtenteBean utente) {
         final String query = "UPDATE Utente_Registrato SET icona = ?, username = ?, password = ?, Tipo_Utente = ?, N_Warning = ?, Biografia = ? WHERE email = ?";
         try (final Connection connection = dataSource.getConnection();

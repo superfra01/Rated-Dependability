@@ -47,6 +47,7 @@ public class RecensioneBean implements Serializable {
     //@ ensures this.nReports == 0;
     //@ ensures this.email.equals("");
     //@ ensures this.idFilm == 0;
+    //@ assignable \nothing;
     public RecensioneBean() {
         titolo = "";
         contenuto = "";
@@ -74,6 +75,7 @@ public class RecensioneBean implements Serializable {
     //@ ensures this.nReports == nReports;
     //@ ensures this.email == email;
     //@ ensures this.idFilm == idFilm;
+    //@ assignable \nothing;
     public RecensioneBean(final String titolo, final String contenuto, final int valutazione, final int nLike, final int nDislike, final int nReports, final String email, final int idFilm) {
         this.titolo = titolo;
         this.contenuto = contenuto;
@@ -95,7 +97,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires titolo != null;
-    //@ assigns this.titolo;
+    //@ assignable this.titolo;
     //@ ensures this.titolo == titolo;
     public void setTitolo(final String titolo) {
         this.titolo = titolo;
@@ -107,7 +109,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires contenuto != null;
-    //@ assigns this.contenuto;
+    //@ assignable this.contenuto;
     //@ ensures this.contenuto == contenuto;
     public void setContenuto(final String contenuto) {
         this.contenuto = contenuto;
@@ -119,7 +121,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires valutazione >= 0;
-    //@ assigns this.valutazione;
+    //@ assignable this.valutazione;
     //@ ensures this.valutazione == valutazione;
     public void setValutazione(final int valutazione) {
         this.valutazione = valutazione;
@@ -131,7 +133,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires nLike >= 0;
-    //@ assigns this.nLike;
+    //@ assignable this.nLike;
     //@ ensures this.nLike == nLike;
     public void setNLike(final int nLike) {
         this.nLike = nLike;
@@ -143,7 +145,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires nDislike >= 0;
-    //@ assigns this.nDislike;
+    //@ assignable this.nDislike;
     //@ ensures this.nDislike == nDislike;
     public void setNDislike(final int nDislike) {
         this.nDislike = nDislike;
@@ -155,7 +157,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires nReports >= 0;
-    //@ assigns this.nReports;
+    //@ assignable this.nReports;
     //@ ensures this.nReports == nReports;
     public void setNReports(final int nReports) {
         this.nReports = nReports;
@@ -167,7 +169,7 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -179,9 +181,10 @@ public class RecensioneBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }
+
 }

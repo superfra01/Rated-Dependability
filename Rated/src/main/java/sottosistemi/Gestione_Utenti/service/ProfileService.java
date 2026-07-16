@@ -29,7 +29,9 @@ public class ProfileService {
      * INVARIANTI DI CLASSE
      * ========================================= */
     //@ public invariant UtenteDAO != null;
+    //@ public invariant UtenteDAO.dataSource != null;
     //@ public invariant PreferenzaDAO != null;
+    //@ public invariant PreferenzaDAO.dataSource != null;
     //@ public invariant InteresseDAO != null;
     //@ public invariant VistoDAO != null;
 
@@ -41,6 +43,7 @@ public class ProfileService {
     //@ ensures this.PreferenzaDAO != null;
     //@ ensures this.InteresseDAO != null;
     //@ ensures this.VistoDAO != null;
+    //@ assignable \nothing;
     public ProfileService() {
         this.UtenteDAO = new UtenteDAO();
         this.PreferenzaDAO = new PreferenzaDAO();
@@ -53,6 +56,7 @@ public class ProfileService {
     //@ ensures this.PreferenzaDAO != null;
     //@ ensures this.InteresseDAO != null;
     //@ ensures this.VistoDAO != null;
+    //@ assignable \nothing;
     public ProfileService(final DataSource dataSource) { 
         this.UtenteDAO = new UtenteDAO(dataSource);
         this.PreferenzaDAO = new PreferenzaDAO(dataSource);
@@ -61,13 +65,16 @@ public class ProfileService {
     }
 
     //@ requires utenteDAO != null;
+    //@ requires utenteDAO.dataSource != null;
     //@ requires PreferenzaDAO != null;
+    //@ requires PreferenzaDAO.dataSource != null;
     //@ requires InteresseDAO != null;
     //@ requires VistoDAO != null;
     //@ ensures this.UtenteDAO == utenteDAO;
     //@ ensures this.PreferenzaDAO == PreferenzaDAO;
     //@ ensures this.InteresseDAO == InteresseDAO;
     //@ ensures this.VistoDAO == VistoDAO;
+    //@ assignable \nothing;
     public ProfileService(final UtenteDAO utenteDAO, final PreferenzaDAO PreferenzaDAO, final InteresseDAO InteresseDAO, final VistoDAO VistoDAO) { 
         this.UtenteDAO = utenteDAO;
         this.PreferenzaDAO = PreferenzaDAO;
@@ -83,16 +90,19 @@ public class ProfileService {
       @ requires username != null;
       @ requires email != null;
       @ requires password != null;
+      @ requires biografia != null;
       @ assignable \everything;
-      @ skiprac
+      @ ensures \result != null ==> \result.getEmail().equals(email) && \result.getUsername().equals(username);
+      @ ensures \result != null ==> \result.getPassword().length() == 56;
+      @ ensures \result != null ==> \result.getBiografia().equals(biografia) && \result.getIcona() == icon;
       @*/
-    public UtenteBean ProfileUpdate(final String username, final String email, final String password, final String biografia, final byte[] icon) { 
+    public /*@ nullable @*/ UtenteBean ProfileUpdate(final String username, final String email, final String password, final String biografia, final byte /*@ nullable @*/ [] icon) {
         
-        final UtenteBean u = UtenteDAO.findByUsername(username); 
+        final /*@ nullable @*/ UtenteBean u = UtenteDAO.findByUsername(username);
         if(u != null && !(u.getEmail().equals(email)))
             return null;
         
-        final UtenteBean user = UtenteDAO.findByEmail(email); 
+        final /*@ nullable @*/ UtenteBean user = UtenteDAO.findByEmail(email);
         if (user != null) {
             user.setUsername(username);
             
@@ -112,11 +122,12 @@ public class ProfileService {
       @ requires email != null;
       @ requires password != null;
       @ assignable \everything;
-      @ skiprac
+      @ ensures \result != null ==> \result.getEmail().equals(email);
+      @ ensures \result != null ==> \result.getPassword().length() == 56;
       @*/
-    public UtenteBean PasswordUpdate(final String email, final String password) { 
+    public /*@ nullable @*/ UtenteBean PasswordUpdate(final String email, final String password) {
         
-        final UtenteBean user = UtenteDAO.findByEmail(email); 
+        final /*@ nullable @*/ UtenteBean user = UtenteDAO.findByEmail(email);
         if(user == null)
             return null;
         
@@ -130,26 +141,32 @@ public class ProfileService {
     }
     
     //@ requires username != null;
-    //@ assignable \everything;
-    public UtenteBean findByUsername(final String username) { 
+    //@ assignable \nothing;
+    //@ ensures \result != null ==> \result.getUsername().equals(username);
+    public /*@ nullable @*/ UtenteBean findByUsername(final String username) {
         return UtenteDAO.findByUsername(username);
     }
     
     /*@ 
       @ requires recensioni != null;
-      @ assignable \everything;
+      @ requires 0 <= recensioni.size();
+      @ requires (\forall int i; 0 <= i && i < recensioni.size(); recensioni.get(i) != null);
+      @ assignable \nothing;
       @ ensures \result != null;
-      @ skiprac
       @*/
     public HashMap<String, String> getUsers(final List<RecensioneBean> recensioni) { 
         final HashMap<String, String> users = new HashMap<String, String>(); 
         
         final int size = recensioni.size();
+        /*@ loop_invariant 0 <= i && i <= size;
+          @ loop_invariant size == recensioni.size();
+          @ decreases size - i;
+          @*/
         for(int i = 0; i < size; ++i) { 
             final RecensioneBean recensione = recensioni.get(i); // Risolto: final
             if (recensione != null) {
                 final String em = recensione.getEmail(); 
-                final UtenteBean u = UtenteDAO.findByEmail(em);
+                final /*@ nullable @*/ UtenteBean u = UtenteDAO.findByEmail(em);
                 if (u != null) {
                     final String un = u.getUsername(); 
                     users.put(em, un);
@@ -161,9 +178,9 @@ public class ProfileService {
     
     /*@ 
       @ requires email != null;
-      @ assignable \everything;
+      @ assignable \nothing;
       @ ensures \result != null;
-      @ skiprac
+      @ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
       @*/
     public List<String> getPreferenze(final String email){
         final List<PreferenzaBean> preferenze = PreferenzaDAO.findByEmail(email); // Risolto: final
@@ -171,6 +188,11 @@ public class ProfileService {
         
         if (preferenze != null) {
         	final int size = preferenze.size();
+            /*@ loop_invariant 0 <= i && i <= size;
+              @ loop_invariant size == preferenze.size();
+              @ loop_invariant (\forall int j; 0 <= j && j < preferenzeString.size(); preferenzeString.get(j) != null);
+              @ decreases size - i;
+              @*/
             for(int i = 0; i < size; ++i) { 
                 final PreferenzaBean b = preferenze.get(i); // Risolto: final
                 if (b != null) {
@@ -213,14 +235,16 @@ public class ProfileService {
     /*@ 
       @ requires email != null;
       @ assignable \everything;
-      @ skiprac
       @*/
-    public void aggiornaPreferenzeUtente(final String email, final String[] idGeneri){ // Parametri final
+    public void aggiornaPreferenzeUtente(final String email, final /*@ nullable @*/ String /*@ nullable @*/ [] idGeneri){ // Parametri final
         PreferenzaDAO.deleteByEmail(email);
             
         if (idGeneri != null && idGeneri.length > 0) {
+            /*@ loop_invariant 0 <= i && i <= idGeneri.length;
+              @ decreases idGeneri.length - i;
+              @*/
             for (int i = 0; i < idGeneri.length; ++i) {
-                final String idGenereStr = idGeneri[i]; // Risolto: final
+                final /*@ nullable @*/ String idGenereStr = idGeneri[i]; // Risolto: final
                 if (idGenereStr != null) {
                     final PreferenzaBean preferenza = new PreferenzaBean(); // Risolto: final
                     preferenza.setEmail(email);
@@ -243,7 +267,7 @@ public class ProfileService {
     }
     
     //@ requires username != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
     public List<FilmBean> retrieveWatchedFilms(final String username) {
         final List<FilmBean> res = VistoDAO.doRetrieveFilmsByUtente(username); // Risolto: final
@@ -251,7 +275,7 @@ public class ProfileService {
     }
 
     //@ requires username1 != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
     public List<FilmBean> retrieveWatchlist(final String username1) {
         final List<FilmBean> res = this.InteresseDAO.doRetrieveFilmsByUtente(username1); // Risolto: final
@@ -260,9 +284,9 @@ public class ProfileService {
     
     //@ requires email != null;
     //@ requires filmId >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     public boolean isFilmInWatchlist(final String email, final int filmId) { // Parametri final
-            final InteresseBean interesseBean = this.InteresseDAO.findByEmailAndIdFilm(email, filmId); // Risolto: final
+            final /*@ nullable @*/ InteresseBean interesseBean = this.InteresseDAO.findByEmailAndIdFilm(email, filmId); // Risolto: final
             if (interesseBean == null) {
                 return false;
             }
@@ -278,7 +302,7 @@ public class ProfileService {
     
     //@ requires email != null;
     //@ requires filmId >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     public boolean isFilmVisto(final String email, final int filmId) { // Parametri final
         return this.VistoDAO.findByEmailAndIdFilm(email, filmId) != null;
     }

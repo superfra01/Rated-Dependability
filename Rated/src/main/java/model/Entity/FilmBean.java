@@ -10,7 +10,7 @@ public class FilmBean implements Serializable {
     private int idFilm;
     
     //@ spec_public
-    private byte[] locandina;
+    private byte /*@ nullable @*/ [] locandina;
     
     //@ spec_public
     private String nome;
@@ -58,6 +58,7 @@ public class FilmBean implements Serializable {
     //@ ensures this.attori.equals("");
     //@ ensures this.valutazione == 1;
     //@ ensures this.trama.equals("");
+    //@ assignable \nothing;
     public FilmBean() {
         idFilm = 0;
         locandina = null;
@@ -86,8 +87,9 @@ public class FilmBean implements Serializable {
     //@ ensures this.attori == attori;
     //@ ensures this.valutazione == 1;
     //@ ensures this.trama == trama;
+    //@ assignable \nothing;
     public FilmBean(final int idFilm,
-                    final byte[] locandina,
+                    final byte /*@ nullable @*/ [] locandina,
                     final String nome,
                     final int anno,
                     final int durata,
@@ -115,20 +117,20 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }
 
     //@ ensures \result == locandina;
-    public /*@ pure @*/ byte[] getLocandina() {
+    public /*@ pure @*/ byte /*@ nullable @*/ [] getLocandina() {
         return locandina;
     }
 
-    //@ assigns this.locandina;
+    //@ assignable this.locandina;
     //@ ensures this.locandina == locandina;
-    public void setLocandina(final byte[] locandina) {
+    public void setLocandina(final byte /*@ nullable @*/ [] locandina) {
         this.locandina = locandina;
     }
 
@@ -138,7 +140,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires nome != null;
-    //@ assigns this.nome;
+    //@ assignable this.nome;
     //@ ensures this.nome == nome;
     public void setNome(final String nome) {
         this.nome = nome;
@@ -150,7 +152,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires anno >= 0;
-    //@ assigns this.anno;
+    //@ assignable this.anno;
     //@ ensures this.anno == anno;
     public void setAnno(final int anno) {
         this.anno = anno;
@@ -162,7 +164,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires durata >= 0;
-    //@ assigns this.durata;
+    //@ assignable this.durata;
     //@ ensures this.durata == durata;
     public void setDurata(final int durata) {
         this.durata = durata;
@@ -174,7 +176,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires regista != null;
-    //@ assigns this.regista;
+    //@ assignable this.regista;
     //@ ensures this.regista == regista;
     public void setRegista(final String regista) {
         this.regista = regista;
@@ -186,7 +188,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires attori != null;
-    //@ assigns this.attori;
+    //@ assignable this.attori;
     //@ ensures this.attori == attori;
     public void setAttori(final String attori) {
         this.attori = attori;
@@ -198,7 +200,7 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires valutazione >= 0;
-    //@ assigns this.valutazione;
+    //@ assignable this.valutazione;
     //@ ensures this.valutazione == valutazione;
     public void setValutazione(int valutazione) {
         this.valutazione = valutazione;
@@ -210,9 +212,10 @@ public class FilmBean implements Serializable {
     }
 
     //@ requires trama != null;
-    //@ assigns this.trama;
+    //@ assignable this.trama;
     //@ ensures this.trama == trama;
     public void setTrama(String trama) {
         this.trama = trama;
     }
+
 }

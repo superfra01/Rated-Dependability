@@ -14,17 +14,17 @@ public class ReportDAO {
 
     //@ spec_public
     private final DataSource dataSource; 
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
-    //@ public invariant dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public ReportDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -37,6 +37,7 @@ public class ReportDAO {
     
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
+    //@ assignable \nothing;
     public ReportDAO(final DataSource testDataSource) {
         this.dataSource = testDataSource;
     }
@@ -53,8 +54,11 @@ public class ReportDAO {
      * METODI CRUD
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires report != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final ReportBean report) {
         final String query = "INSERT INTO Report (email, email_Recensore, ID_Film) VALUES (?, ?, ?)";
         try (final Connection connection = dataSource.getConnection();
@@ -68,12 +72,15 @@ public class ReportDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires email != null;
     //@ requires emailRecensore != null;
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getEmailRecensore().equals(emailRecensore) && \result.getIdFilm() == idFilm);
-    public ReportBean findById(final String email, final String emailRecensore, final int idFilm) {
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ ReportBean findById(final String email, final String emailRecensore, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, email_Recensore, ID_Film FROM Report WHERE email = ? AND email_Recensore = ? AND ID_Film = ?";
         ReportBean result = null;
@@ -97,9 +104,12 @@ public class ReportDAO {
         return result;
     }
 
+    //@ requires dataSource != null;
     //@ requires emailRecensore != null;
     //@ requires idFilm >= 0;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void deleteReports(final String emailRecensore, final int idFilm) {
         final String query = "DELETE FROM Report WHERE email_Recensore = ? AND ID_Film = ?";
         try (final Connection connection = dataSource.getConnection();

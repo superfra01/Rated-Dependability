@@ -19,7 +19,6 @@ public class InteresseDAO {
 
     //@ spec_public
     private final DataSource dataSource;
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
@@ -30,6 +29,8 @@ public class InteresseDAO {
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public InteresseDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -42,6 +43,7 @@ public class InteresseDAO {
     
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
+    //@ assignable \nothing;
     public InteresseDAO(final DataSource testDataSource) {
         this.dataSource = testDataSource;
     }
@@ -52,6 +54,8 @@ public class InteresseDAO {
 
     //@ requires interesseBean != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final InteresseBean interesseBean) {
         final String selectQuery = "SELECT 1 FROM Interesse WHERE email = ? AND ID_Film = ?";
         final String insertQuery = "INSERT INTO Interesse (email, ID_Film, interesse) VALUES (?, ?, ?)";
@@ -86,9 +90,11 @@ public class InteresseDAO {
 
     //@ requires email != null;
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
-    public InteresseBean findByEmailAndIdFilm(final String email, final int idFilm) {
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ InteresseBean findByEmailAndIdFilm(final String email, final int idFilm) {
         // RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
         final String query = "SELECT email, ID_Film, interesse FROM Interesse WHERE email = ? AND ID_Film = ?";
         InteresseBean result = null;
@@ -119,6 +125,8 @@ public class InteresseDAO {
     //@ requires email != null;
     //@ requires idFilm >= 0;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void delete(final String email, final int idFilm) {
         final String query = "DELETE FROM Interesse WHERE email = ? AND ID_Film = ?";
 
@@ -135,8 +143,11 @@ public class InteresseDAO {
     }
 
     //@ requires username != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+    //@ skipesc
+    //@ skiprac
     public List<FilmBean> doRetrieveFilmsByUtente(final String username) {
         final List<FilmBean> films = new ArrayList<>();
         

@@ -10,7 +10,7 @@ public class UtenteBean implements Serializable {
     private String email;
     
     //@ spec_public
-    private byte[] icona;
+    private byte /*@ nullable @*/ [] icona;
     
     //@ spec_public
     private String username;
@@ -48,6 +48,7 @@ public class UtenteBean implements Serializable {
     //@ ensures this.tipoUtente.equals("");
     //@ ensures this.nWarning == 0;
     //@ ensures this.biografia.equals("");
+    //@ assignable \nothing;
     public UtenteBean() {
         email = "";
         icona = null;
@@ -71,7 +72,8 @@ public class UtenteBean implements Serializable {
     //@ ensures this.tipoUtente == tipoUtente;
     //@ ensures this.nWarning == nWarning;
     //@ ensures this.biografia == biografia;
-    public UtenteBean(final String email, final byte[] icona, final String username, final String password, final String tipoUtente, final int nWarning, final String biografia) {
+    //@ assignable \nothing;
+    public UtenteBean(final String email, final byte /*@ nullable @*/ [] icona, final String username, final String password, final String tipoUtente, final int nWarning, final String biografia) {
         this.email = email;
         this.icona = icona;
         this.username = username;
@@ -91,20 +93,20 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
     }
 
     //@ ensures \result == icona;
-    public /*@ pure @*/ byte[] getIcona() {
+    public /*@ pure @*/ byte /*@ nullable @*/ [] getIcona() {
         return icona;
     }
 
-    //@ assigns this.icona;
+    //@ assignable this.icona;
     //@ ensures this.icona == icona;
-    public void setIcona(final byte[] icona) {
+    public void setIcona(final byte /*@ nullable @*/ [] icona) {
         this.icona = icona;
     }
 
@@ -114,7 +116,7 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires username != null;
-    //@ assigns this.username;
+    //@ assignable this.username;
     //@ ensures this.username == username;
     public void setUsername(final String username) {
         this.username = username;
@@ -126,7 +128,7 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires password != null;
-    //@ assigns this.password;
+    //@ assignable this.password;
     //@ ensures this.password == password;
     public void setPassword(final String password) {
         this.password = password;
@@ -138,7 +140,7 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires tipoUtente != null;
-    //@ assigns this.tipoUtente;
+    //@ assignable this.tipoUtente;
     //@ ensures this.tipoUtente == tipoUtente;
     public void setTipoUtente(final String tipoUtente) {
         this.tipoUtente = tipoUtente;
@@ -150,7 +152,7 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires nWarning >= 0;
-    //@ assigns this.nWarning;
+    //@ assignable this.nWarning;
     //@ ensures this.nWarning == nWarning;
     public void setNWarning(final int nWarning) {
         this.nWarning = nWarning;
@@ -162,9 +164,10 @@ public class UtenteBean implements Serializable {
     }
 
     //@ requires biografia != null;
-    //@ assigns this.biografia;
+    //@ assignable this.biografia;
     //@ ensures this.biografia == biografia;
     public void setBiografia(final String biografia) {
         this.biografia = biografia;
     }
+
 }

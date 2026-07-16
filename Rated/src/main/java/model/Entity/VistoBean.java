@@ -24,6 +24,7 @@ public class VistoBean implements Serializable {
 
     //@ ensures this.email.equals("");
     //@ ensures this.idFilm == 0;
+    //@ assignable \nothing;
     public VistoBean() {
         email = "";
         idFilm = 0;
@@ -33,6 +34,7 @@ public class VistoBean implements Serializable {
     //@ requires idFilm >= 0;
     //@ ensures this.email == email;
     //@ ensures this.idFilm == idFilm;
+    //@ assignable \nothing;
     public VistoBean(final String email, final int idFilm) {
         this.email = email;
         this.idFilm = idFilm;
@@ -48,7 +50,7 @@ public class VistoBean implements Serializable {
     }
 
     //@ requires email != null;
-    //@ assigns this.email;
+    //@ assignable this.email;
     //@ ensures this.email == email;
     public void setEmail(final String email) {
         this.email = email;
@@ -60,9 +62,10 @@ public class VistoBean implements Serializable {
     }
 
     //@ requires idFilm >= 0;
-    //@ assigns this.idFilm;
+    //@ assignable this.idFilm;
     //@ ensures this.idFilm == idFilm;
     public void setIdFilm(final int idFilm) {
         this.idFilm = idFilm;
     }
+
 }

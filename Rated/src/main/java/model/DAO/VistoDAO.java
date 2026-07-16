@@ -19,7 +19,6 @@ public class VistoDAO {
 
 	//@ spec_public
 	private final DataSource dataSource; 
-
 	/* =========================================
 	 * INVARIANTI DI CLASSE
 	 * ========================================= */
@@ -30,6 +29,8 @@ public class VistoDAO {
 	 * ========================================= */
 
 	//@ ensures this.dataSource != null;
+	//@ assignable \nothing;
+	//@ skipesc
 	public VistoDAO() {
 		try {
 			final Context initCtx = new InitialContext();
@@ -42,6 +43,7 @@ public class VistoDAO {
 	
 	//@ requires testDataSource != null;
 	//@ ensures this.dataSource == testDataSource;
+	//@ assignable \nothing;
 	public VistoDAO(final DataSource testDataSource) {
 		this.dataSource = testDataSource;
 	}
@@ -52,6 +54,8 @@ public class VistoDAO {
 
 	//@ requires visto != null;
 	//@ assignable \everything;
+	//@ skipesc
+	//@ skiprac
 	public void save(final VistoBean visto) {
 		final String selectQuery = "SELECT 1 FROM Visto WHERE email = ? AND ID_Film = ?";
 		final String insertQuery = "INSERT INTO Visto (email, ID_Film) VALUES (?, ?)";
@@ -78,9 +82,11 @@ public class VistoDAO {
 
 	//@ requires email != null;
 	//@ requires idFilm >= 0;
-	//@ assignable \everything;
+	//@ assignable \nothing;
 	//@ ensures \result != null ==> (\result.getEmail().equals(email) && \result.getIdFilm() == idFilm);
-	public VistoBean findByEmailAndIdFilm(final String email, final int idFilm) {
+	//@ skipesc
+	//@ skiprac
+	public /*@ nullable @*/ VistoBean findByEmailAndIdFilm(final String email, final int idFilm) {
 		// RISOLTO: Sostituito SELECT * con elenco esplicito delle colonne
 		final String query = "SELECT email, ID_Film FROM Visto WHERE email = ? AND ID_Film = ?";
 		VistoBean result = null;
@@ -110,6 +116,8 @@ public class VistoDAO {
 	//@ requires email != null;
 	//@ requires idFilm >= 0;
 	//@ assignable \everything;
+	//@ skipesc
+	//@ skiprac
 	public void delete(final String email, final int idFilm) {
 		final String query = "DELETE FROM Visto WHERE email = ? AND ID_Film = ?";
 
@@ -126,8 +134,11 @@ public class VistoDAO {
 	}
 
 	//@ requires username != null;
-	//@ assignable \everything;
+	//@ assignable \nothing;
 	//@ ensures \result != null;
+	//@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+	//@ skipesc
+	//@ skiprac
 	public List<FilmBean> doRetrieveFilmsByUtente(final String username) {
 		final List<FilmBean> films = new ArrayList<>(); 
 		

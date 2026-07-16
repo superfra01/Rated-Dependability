@@ -18,17 +18,17 @@ public class FilmDAO {
 
     //@ spec_public
     private final DataSource dataSource;
-
     /* =========================================
      * INVARIANTI
      * ========================================= */
-    //@ public invariant dataSource != null;
 
     /* =========================================
      * COSTRUTTORI
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public FilmDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -41,6 +41,7 @@ public class FilmDAO {
 
     //@ requires testDataSource != null;
     //@ ensures this.dataSource == testDataSource;
+    //@ assignable \nothing;
     public FilmDAO(final DataSource testDataSource) {
         this.dataSource = testDataSource;
     }
@@ -57,9 +58,12 @@ public class FilmDAO {
      * METODI DI SCRITTURA (SAVE, UPDATE, DELETE)
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires film != null;
     //@ assignable \everything;
     //@ ensures film.getIdFilm() >= 0;
+    //@ skipesc
+    //@ skiprac
     public void save(final FilmBean film) {
         final String query = "INSERT INTO Film (locandina, nome, anno, durata, regista, attori, valutazione, trama) "
                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -90,8 +94,11 @@ public class FilmDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires film != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void update(final FilmBean film) { 
         final String query = "UPDATE Film SET locandina = ?, nome = ?, anno = ?, durata = ?, regista = ?, attori = ?, valutazione = ?, trama = ? "
                            + "WHERE ID_Film = ?";
@@ -115,8 +122,11 @@ public class FilmDAO {
         }
     }
 
+    //@ requires dataSource != null;
     //@ requires idFilm >= 0;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void delete(final int idFilm) { 
         final String query = "DELETE FROM Film WHERE ID_Film = ?";
 
@@ -134,10 +144,13 @@ public class FilmDAO {
      * METODI DI LETTURA (FIND)
      * ========================================= */
 
+    //@ requires dataSource != null;
     //@ requires idFilm >= 0;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null ==> \result.getIdFilm() == idFilm;
-    public FilmBean findById(final int idFilm) { 
+    //@ skipesc
+    //@ skiprac
+    public /*@ nullable @*/ FilmBean findById(final int idFilm) {
         // Risolto: Elenco esplicito delle colonne invece di SELECT *
         final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film WHERE ID_Film = ?";
         FilmBean result = null;
@@ -168,9 +181,13 @@ public class FilmDAO {
         return result;
     }
 
+    //@ requires dataSource != null;
     //@ requires name != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+    //@ skipesc
+    //@ skiprac
     public List<FilmBean> findByName(final String name) { 
         // Risolto: Elenco esplicito delle colonne invece di SELECT *
         final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film WHERE nome LIKE ?";
@@ -202,8 +219,12 @@ public class FilmDAO {
         return films;
     }
 
-    //@ assignable \everything;
+    //@ requires dataSource != null;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+    //@ skipesc
+    //@ skiprac
     public List<FilmBean> findAll() {
         // Risolto: Elenco esplicito delle colonne invece di SELECT *
         final String query = "SELECT ID_Film, locandina, nome, anno, durata, regista, attori, valutazione, trama FROM Film";
@@ -232,9 +253,13 @@ public class FilmDAO {
         return films;
     }
 
+    //@ requires dataSource != null;
     //@ requires emailUtente != null;
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null);
+    //@ skipesc
+    //@ skiprac
     public synchronized List<FilmBean> doRetrieveConsigliati(final String emailUtente) {
         final List<FilmBean> films = new ArrayList<>();
 

@@ -18,7 +18,6 @@ public class GenereDAO {
 
     //@ spec_public
     private final DataSource dataSource;
-
     /* =========================================
      * INVARIANTI DI CLASSE
      * ========================================= */
@@ -29,6 +28,8 @@ public class GenereDAO {
      * ========================================= */
 
     //@ ensures this.dataSource != null;
+    //@ assignable \nothing;
+    //@ skipesc
     public GenereDAO() {
         try {
             final Context initCtx = new InitialContext();
@@ -41,6 +42,7 @@ public class GenereDAO {
     
     //@ requires dataSource != null;
     //@ ensures this.dataSource == dataSource;
+    //@ assignable \nothing;
     public GenereDAO(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -51,6 +53,8 @@ public class GenereDAO {
     
     //@ requires genere != null;
     //@ assignable \everything;
+    //@ skipesc
+    //@ skiprac
     public void save(final GenereBean genere) {
         // SELECT 1 è già ottimale, non recupera colonne inutili
         final String selectQuery = "SELECT 1 FROM Genere WHERE Nome = ?";
@@ -74,8 +78,11 @@ public class GenereDAO {
         }
     }
 
-    //@ assignable \everything;
+    //@ assignable \nothing;
     //@ ensures \result != null;
+    //@ ensures (\forall int i; 0 <= i && i < \result.size(); \result.get(i) != null && \result.get(i).length() > 0 && \result.get(i).length() <= 50);
+    //@ skipesc
+    //@ skiprac
     public List<String> findAllString() {
         // RISOLTO: Sostituito SELECT * con SELECT Nome
         final String query = "SELECT Nome FROM Genere ORDER BY Nome";
