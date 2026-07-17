@@ -18,7 +18,7 @@
 
 ## Il progetto
 
-Rated è un'applicazione Java basata su Servlet e JSP. Offre un catalogo di film consultabile pubblicamente e funzionalità dedicate a recensori, moderatori e gestori del catalogo
+Rated è un'applicazione Java basata su Servlet e JSP. Offre un catalogo di film consultabile pubblicamente e funzionalità dedicate a recensori, moderatori e gestori del catalogo.
 
 Il repository comprende anche test automatici, benchmark, specifiche JML, pipeline di sicurezza e gli elaborati prodotti per gli esami di software engineering, sustainability, e dependability.
 
