@@ -64,12 +64,13 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B -ntp -f Rated/pom.xml org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          mvn -B -ntp -f Rated/pom.xml org.sonarsource.scanner.maven:sonar-maven-plugin:5.7.0.6970:sonar \
             -Dsonar.organization=rated \
             -Dsonar.projectKey=superfra01_Rated-Dependability \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.qualitygate.wait=false \
             -Dsonar.scanner.metadataFilePath="${GITHUB_WORKSPACE}/sonar-report-task.txt" \
+            '-Dsonar.exclusions=**/*.class,**/*.jar,**/*.png,**/*.ico' \
             -Dsonar.coverage.exclusions=**/*
 
       - name: Require zero SonarCloud security issues
@@ -81,14 +82,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          CE_TASK_URL=$(awk -F= '$1 == "ceTaskUrl" { print $2 }' sonar-report-task.txt)
+          CE_TASK_URL=$(sed -n 's/^ceTaskUrl=//p' sonar-report-task.txt)
           if [[ -z "$CE_TASK_URL" ]]; then
             echo "Impossibile trovare il task SonarCloud dell'analisi."
             exit 1
           fi
 
           for attempt in {1..60}; do
-            TASK_RESPONSE=$(curl --silent --show-error --fail \
+            TASK_RESPONSE=$(curl --silent --show-error --fail-with-body \
               --user "${SONAR_TOKEN}:" \
               "$CE_TASK_URL")
             TASK_STATUS=$(jq -r '.task.status' <<< "$TASK_RESPONSE")
@@ -121,7 +122,7 @@ jobs:
             ISSUE_QUERY+=(--data-urlencode "pullRequest=${SONAR_PULL_REQUEST}")
           fi
 
-          ISSUE_RESPONSE=$(curl --silent --show-error --fail \
+          ISSUE_RESPONSE=$(curl --silent --show-error --fail-with-body \
             --user "${SONAR_TOKEN}:" \
             "${ISSUE_QUERY[@]}" \
             "https://sonarcloud.io/api/issues/search")
