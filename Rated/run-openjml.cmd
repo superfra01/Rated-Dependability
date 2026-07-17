@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-title OpenJML - Rated
+title OpenJML ESC e RAC - Rated
 set "WSL_DISTRO=Ubuntu-24.04"
 
 pushd "%~dp0"
