@@ -5,7 +5,7 @@
 <h1 align="center">Rated</h1>
 
 <p align="center">
-  Piattaforma web per scoprire film, condividere recensioni e gestire una community cinematografica.
+  Piattaforma web per scoprire film e condividere recensioni.
 </p>
 
 <p align="center">
@@ -20,16 +20,7 @@
 
 Rated è un'applicazione Java basata su Servlet e JSP. Offre un catalogo di film consultabile pubblicamente e funzionalità dedicate a recensori, moderatori e gestori del catalogo.
 
-Il repository comprende anche test automatici, benchmark, specifiche JML, pipeline di sicurezza e gli elaborati prodotti durante le attività di software engineering, sustainability, testing e dependability.
-
-## Funzionalità
-
-| Profilo | Funzionalità principali |
-| --- | --- |
-| **Ospite** | Consulta il catalogo, cerca e ordina i film, apre le schede di dettaglio e visualizza i profili pubblici. |
-| **Recensore** | Si registra e accede, gestisce profilo e preferenze, riceve suggerimenti, organizza film visti e watchlist, pubblica recensioni, vota e segnala contenuti. |
-| **Moderatore** | Esamina le recensioni segnalate, le approva oppure le rimuove applicando un warning all'autore. |
-| **Gestore catalogo** | Aggiunge, modifica e rimuove film e relativi metadati. |
+Il repository comprende anche test automatici, benchmark, specifiche JML, pipeline di sicurezza e gli elaborati prodotti per gli esami di software engineering, sustainability, e dependability.
 
 ## Architettura
 
@@ -60,6 +51,25 @@ Browser
 | Sicurezza e CI | GitHub Actions, GitGuardian, Snyk, SonarCloud |
 | Deploy | Docker, Docker Compose |
 
+## Struttura della repository
+
+```text
+Rated-Dependability/
+├── Rated/                         # Applicazione, test e configurazione Docker
+│   ├── src/main/java/             # Entity, DAO, servizi e Servlet
+│   ├── src/main/webapp/           # JSP e risorse frontend
+│   ├── src/test/java/             # Test unitari, integrazione e benchmark
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── init.sql
+│   └── pom.xml
+├── Deliverables/                  # Elaborati finali organizzati per esame
+├── Diagrams/                      # Diagrammi UML, navigazionali e di sequenza
+├── Raw Docs Files/                # Documetazione in formato docx non finale
+├── DB.sql                         # Schema SQL storico del progetto
+└── RATED_icon.png
+```
+
 ## Avvio rapido con Docker
 
 ### Requisiti
@@ -74,23 +84,19 @@ git clone https://github.com/superfra01/Rated-Dependability.git
 cd Rated-Dependability/Rated
 ```
 
-### 2. Configura l'ambiente
+### 2. Configurazione dell'ambiente
 
-Crea un file `.env` nella cartella `Rated`:
+Creare un file `.env` nella cartella `Rated`:
 
 ```dotenv
 DB_USERNAME=rated
-DB_PASSWORD=scegli-una-password-sicura
-MYSQL_ROOT_PASSWORD=scegli-una-password-root-sicura
+DB_PASSWORD=password-sicura
+MYSQL_ROOT_PASSWORD=password-root-sicura
 DB_NAME=RatedDB
 APP_PORT=8080
 ```
 
-> Non versionare il file `.env`: contiene credenziali locali e deve restare fuori dal repository.
->
-> `init.sql` inizializza il database `RatedDB`: mantieni questo valore per `DB_NAME`, a meno di aggiornare anche lo script SQL.
-
-### 3. Avvia i servizi
+### 3. Avviare i servizi
 
 ```bash
 docker compose up --build -d
@@ -98,20 +104,6 @@ docker compose ps
 ```
 
 Rated sarà disponibile su [http://localhost:8080](http://localhost:8080).
-
-Per seguire i log dell'applicazione:
-
-```bash
-docker compose logs -f webapp
-```
-
-Per arrestare i container senza eliminare il database:
-
-```bash
-docker compose down
-```
-
-Per ricreare completamente il database, elimina anche il volume con `docker compose down -v`. Questa operazione rimuove definitivamente i dati locali.
 
 ## Build e sviluppo locale
 
@@ -126,14 +118,14 @@ Il WAR viene generato in `Rated/target/rated-app.war` e può essere distribuito 
 
 ## Test e analisi di qualità
 
-Esegui i test unitari e di integrazione:
+Eseguire i test unitari e di integrazione:
 
 ```bash
 cd Rated
 mvn test
 ```
 
-Esegui l'intera fase di verifica e genera il report JaCoCo:
+Eseguire l'intera fase di verifica e generare il report JaCoCo:
 
 ```bash
 mvn clean verify
@@ -141,7 +133,7 @@ mvn clean verify
 
 Il report di copertura sarà disponibile in `target/site/jacoco/index.html`.
 
-Esegui il mutation testing con PIT:
+Eseguire il mutation testing con PIT:
 
 ```bash
 mvn org.pitest:pitest-maven:mutationCoverage
@@ -163,25 +155,6 @@ Le specifiche formali JML possono essere controllate con gli script inclusi. Ope
 
 La pipeline GitHub Actions esegue inoltre scansione dei segreti, analisi delle dipendenze e SAST, verifica SonarCloud, JaCoCo, PIT e build dell'immagine Docker.
 
-## Struttura del repository
-
-```text
-Rated-Dependability/
-├── Rated/                         # Applicazione, test e configurazione Docker
-│   ├── src/main/java/             # Entity, DAO, servizi e Servlet
-│   ├── src/main/webapp/           # JSP e risorse frontend
-│   ├── src/test/java/             # Test unitari, integrazione e benchmark
-│   ├── Dockerfile
-│   ├── docker-compose.yml
-│   ├── init.sql
-│   └── pom.xml
-├── Deliverables/                  # Elaborati finali organizzati per area
-├── Diagrams/                      # Diagrammi UML, navigazionali e di sequenza
-├── Raw Docs Files/                # Sorgenti modificabili della documentazione
-├── DB.sql                         # Schema SQL storico del progetto
-└── RATED_icon.png
-```
-
 ## Documentazione
 
 - [Software Engineering](Deliverables/1.Deliverables-IS)
@@ -189,7 +162,3 @@ Rated-Dependability/
 - [Software Testing](Deliverables/3.Deliverables-ISTA)
 - [Dependability](Deliverables/4.Deliverables-Dependability)
 - [Diagrammi di progetto](Diagrams)
-
-## Note sui dati locali
-
-Il primo avvio di MySQL esegue `Rated/init.sql`, che crea schema e dati dimostrativi. Le modifiche successive a questo file non vengono applicate a un volume già inizializzato: per ripartire dallo script aggiornato occorre ricreare il volume del database.
