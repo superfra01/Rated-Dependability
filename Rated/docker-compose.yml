@@ -40,19 +40,6 @@ services:
     networks:
       - rated-network
 
-  # Optional local administration interface: docker compose --profile tools up
-  db_gui:
-    image: adminer:4.8.1
-    profiles: ["tools"]
-    restart: unless-stopped
-    ports:
-      - "${ADMINER_PORT:-8081}:8080"
-    depends_on:
-      db_service:
-        condition: service_healthy
-    networks:
-      - rated-network
-
 volumes:
   db_data:
 
